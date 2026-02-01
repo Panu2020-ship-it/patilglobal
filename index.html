@@ -20,7 +20,12 @@
         }
 
         /* --- Typography --- */
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--cream); color: var(--slate); }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--cream); 
+            color: var(--slate); 
+            -webkit-tap-highlight-color: transparent;
+        }
         h1, h2, h3, h4, .serif { font-family: 'Playfair Display', serif; }
 
         /* --- Custom Animations --- */
@@ -37,10 +42,10 @@
         .animate-float { animation: float 6s ease-in-out infinite; }
 
         @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(40px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .reveal { opacity: 0; }
+        .reveal { opacity: 0; transition: opacity 0.5s ease; }
         .reveal.visible { animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
         /* --- Navigation States --- */
@@ -51,114 +56,121 @@
         .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background: var(--primary); transition: width 0.3s ease; }
         .nav-link:hover::after, .nav-link.active::after { width: 100%; }
 
-        /* --- Product Interaction --- */
-        .product-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .product-card:hover { transform: scale(1.02); }
+        /* --- Interaction Tokens --- */
+        .btn-press { transition: transform 0.1s active; }
+        .btn-press:active { transform: scale(0.95); }
+        .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         
         /* --- Glassmorphism --- */
-        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
-        .glass-dark { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .glass-dark { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
 
         /* --- Custom Scrollbar --- */
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--cream); }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
-        /* --- Responsive Tweaks --- */
+        /* Mobile specific layout fixes */
         @media (max-width: 768px) {
-            .hero-text { font-size: 3.5rem !important; line-height: 1 !important; }
+            .hero-text { font-size: 3.2rem !important; line-height: 1 !important; }
+            .mobile-pt { padding-top: 130px; }
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased overflow-x-hidden">
 
     <!-- TOP ANNOUNCEMENT TICKER -->
-    <div class="fixed top-0 w-full bg-[#1B5E20] text-white py-2.5 overflow-hidden whitespace-nowrap z-[100] border-b border-white/10 shadow-lg">
-        <div class="animate-marquee px-4 text-[10px] font-bold tracking-[0.3em] uppercase">
+    <div class="fixed top-0 w-full bg-[#1B5E20] text-white py-2 overflow-hidden whitespace-nowrap z-[100] border-b border-white/10 shadow-lg h-[40px] flex items-center">
+        <div class="animate-marquee px-4 text-[9px] sm:text-[10px] font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase">
             Direct Farm Sourcing • Transparent Pricing for Farmers • 0% Middlemen • 100% Organic Fodder • IIT Lab Certified Purity • Global Cold Chain Ready • Direct Farm Sourcing • Transparent Pricing for Farmers • 0% Middlemen • 100% Organic Fodder • IIT Lab Certified Purity
         </div>
     </div>
 
     <!-- MAIN NAVIGATION -->
-    <nav class="fixed top-[41px] w-full z-[90] glass border-b border-slate-100 h-20 transition-all duration-300" id="main-nav">
-        <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+    <nav class="fixed top-[40px] w-full z-[90] glass border-b border-slate-100 h-20 transition-all duration-300 flex items-center" id="main-nav">
+        <div class="max-w-7xl mx-auto px-6 w-full flex justify-between items-center">
             <!-- Brand -->
-            <div class="flex items-center space-x-4 cursor-pointer group" onclick="navigateTo('home')">
-                <div class="relative">
-                    <div class="w-12 h-12 bg-[#1B5E20] rounded-2xl flex items-center justify-center text-white font-serif text-3xl shadow-xl group-hover:rotate-12 transition-transform duration-500">P</div>
-                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-amber-500 rounded-full border-2 border-white"></div>
+            <div class="flex items-center space-x-3 cursor-pointer group" onclick="navigateTo('home')">
+                <div class="relative shrink-0">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-[#1B5E20] rounded-xl flex items-center justify-center text-white font-serif text-2xl sm:text-3xl shadow-xl transition-transform duration-500 group-hover:rotate-6">P</div>
+                    <div class="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full border-2 border-white"></div>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-black tracking-tighter text-slate-900 uppercase leading-none">Patil Global</h1>
-                    <p class="text-[9px] tracking-[0.4em] font-bold text-amber-700 uppercase">Dairy Export House</p>
+                    <h1 class="text-lg sm:text-2xl font-black tracking-tighter text-slate-900 uppercase leading-none">Patil Global</h1>
+                    <p class="text-[8px] sm:text-[9px] tracking-[0.3em] font-bold text-amber-700 uppercase">Dairy Export House</p>
                 </div>
             </div>
 
             <!-- Desktop Menu -->
-            <div class="hidden lg:flex space-x-10 items-center text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
+            <div class="hidden lg:flex space-x-8 items-center text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
                 <button onclick="navigateTo('home')" class="nav-link text-slate-900 active" data-nav="home">Home</button>
                 <button onclick="navigateTo('products')" class="nav-link" data-nav="products">Products</button>
                 <button onclick="navigateTo('heritage')" class="nav-link" data-nav="heritage">Our Story</button>
                 <button onclick="navigateTo('quality')" class="nav-link" data-nav="quality">The Lab</button>
-                <button onclick="navigateTo('contact')" class="bg-slate-900 text-white px-8 py-3.5 rounded-full hover:bg-[#1B5E20] hover:shadow-2xl transition-all duration-300">Inquire Desk</button>
+                <button onclick="navigateTo('contact')" class="bg-slate-900 text-white px-7 py-3 rounded-full hover:bg-[#1B5E20] hover:shadow-xl transition-all duration-300">Inquire Desk</button>
             </div>
 
             <!-- Mobile Toggle -->
-            <button class="lg:hidden text-slate-900" onclick="toggleMobileMenu()">
+            <button class="lg:hidden p-2 text-slate-900 bg-slate-50 rounded-lg border border-slate-100" onclick="toggleMobileMenu()">
                 <i data-lucide="menu" id="menu-icon"></i>
             </button>
         </div>
     </nav>
 
     <!-- MOBILE MENU OVERLAY -->
-    <div id="mobile-menu" class="fixed inset-0 z-[110] bg-white hidden flex-col items-center justify-center space-y-8 text-center">
-        <button class="absolute top-10 right-10 text-slate-900" onclick="toggleMobileMenu()"><i data-lucide="x" class="w-10 h-10"></i></button>
-        <button onclick="navigateTo('home'); toggleMobileMenu();" class="text-3xl font-bold">Home</button>
-        <button onclick="navigateTo('products'); toggleMobileMenu();" class="text-3xl font-bold">Portfolio</button>
-        <button onclick="navigateTo('heritage'); toggleMobileMenu();" class="text-3xl font-bold">Heritage</button>
-        <button onclick="navigateTo('quality'); toggleMobileMenu();" class="text-3xl font-bold">The Lab</button>
-        <button onclick="navigateTo('contact'); toggleMobileMenu();" class="bg-green-800 text-white px-12 py-4 rounded-full font-bold">Contact Export Desk</button>
+    <div id="mobile-menu" class="fixed inset-0 z-[110] bg-white hidden flex-col items-center justify-center space-y-8 text-center px-10">
+        <button class="absolute top-8 right-8 p-3 bg-slate-50 rounded-full text-slate-900" onclick="toggleMobileMenu()">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <div class="w-16 h-1 w-12 bg-amber-500 rounded-full mb-4"></div>
+        <button onclick="navigateTo('home'); toggleMobileMenu();" class="text-4xl font-black tracking-tighter text-slate-900">Home</button>
+        <button onclick="navigateTo('products'); toggleMobileMenu();" class="text-4xl font-black tracking-tighter text-slate-900">Portfolio</button>
+        <button onclick="navigateTo('heritage'); toggleMobileMenu();" class="text-4xl font-black tracking-tighter text-slate-900">Heritage</button>
+        <button onclick="navigateTo('quality'); toggleMobileMenu();" class="text-4xl font-black tracking-tighter text-slate-900">The Lab</button>
+        <div class="pt-10">
+            <button onclick="navigateTo('contact'); toggleMobileMenu();" class="w-full bg-green-800 text-white px-10 py-5 rounded-full font-bold text-sm tracking-widest uppercase shadow-2xl">Contact Export Desk</button>
+        </div>
     </div>
 
     <!-- MAIN CONTENT VIEW ENGINE -->
-    <main class="pt-[121px]">
+    <main class="pt-[120px] md:pt-[121px]">
         
         <!-- ==========================================
              PAGE: HOME 
              ========================================== -->
         <div id="home" class="page-view active">
             <!-- Hero Wrapper -->
-            <section class="relative min-h-[90vh] flex items-center overflow-hidden">
+            <section class="relative min-h-[85vh] sm:min-h-[90vh] flex items-center overflow-hidden">
                 <div class="absolute inset-0 z-0 scale-110">
                     <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=2400" 
                          class="w-full h-full object-cover grayscale-[10%]" alt="Indian Lush Farm">
-                    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/50 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/60 to-transparent"></div>
                 </div>
 
                 <div class="relative z-10 max-w-7xl mx-auto px-6 w-full text-white py-20">
                     <div class="max-w-4xl">
-                        <div class="reveal inline-flex items-center gap-3 px-5 py-2 bg-green-700/80 backdrop-blur-md rounded-full text-[11px] font-bold uppercase tracking-[0.25em] mb-10 border border-green-400/30">
+                        <div class="reveal inline-flex items-center gap-2 px-4 py-2 bg-green-700/80 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-8 border border-green-400/30">
                             <span class="w-2 h-2 bg-green-400 rounded-full animate-ping"></span> IIT-Backed Purity Certification
                         </div>
-                        <h2 class="hero-text text-6xl md:text-9xl font-bold mb-10 leading-[0.85] tracking-tighter reveal">
+                        <h2 class="hero-text text-5xl md:text-9xl font-bold mb-8 md:mb-10 leading-[0.9] tracking-tighter reveal">
                             Nature's Soul <br><span class="italic font-light text-green-200">Exported Raw.</span>
                         </h2>
-                        <p class="text-xl md:text-2xl text-white/70 mb-14 leading-relaxed max-w-2xl font-light reveal">
-                            At Patil Global, we don't just manufacture dairy. we engineer trust. Connecting 500+ Indian farming families with discerning international markets via IIT-standard technical rigor.
+                        <p class="text-lg md:text-2xl text-white/70 mb-10 md:mb-14 leading-relaxed max-w-2xl font-light reveal">
+                            Connecting 500+ Indian farming families with discerning international markets via technical rigor. we don't just manufacture dairy. we engineer trust.
                         </p>
-                        <div class="flex flex-col sm:flex-row gap-6 reveal">
-                            <button onclick="navigateTo('products')" class="group relative bg-white text-slate-950 px-12 py-6 rounded-full font-bold flex items-center justify-center gap-4 hover:bg-amber-500 hover:text-white transition-all shadow-2xl overflow-hidden">
-                                <span class="relative z-10">Explore Our Portfolio</span>
+                        <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 reveal">
+                            <button onclick="navigateTo('products')" class="btn-press group relative bg-white text-slate-950 px-10 py-5 sm:px-12 sm:py-6 rounded-full font-bold flex items-center justify-center gap-4 hover:bg-amber-500 hover:text-white transition-all shadow-2xl overflow-hidden">
+                                <span class="relative z-10 text-sm sm:text-base">Explore Our Portfolio</span>
                                 <i data-lucide="arrow-right" class="w-5 h-5 relative z-10 transition-transform group-hover:translate-x-2"></i>
                             </button>
-                            <button onclick="navigateTo('contact')" class="glass-dark text-white px-12 py-6 rounded-full font-bold hover:bg-white hover:text-slate-950 transition-all">
+                            <button onclick="navigateTo('contact')" class="btn-press glass-dark text-white px-10 py-5 sm:px-12 sm:py-6 rounded-full font-bold hover:bg-white hover:text-slate-950 transition-all text-sm sm:text-base">
                                 Request Export Catalog
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Floating Statistics -->
+                <!-- Floating Statistics (Hidden on Mobile for clarity) -->
                 <div class="absolute bottom-12 right-12 hidden xl:grid grid-cols-2 gap-4 z-20">
                     <div class="glass p-6 rounded-3xl text-center w-40 animate-float">
                         <p class="text-4xl font-bold text-green-800">20+</p>
@@ -171,62 +183,64 @@
                 </div>
             </section>
 
-            <!-- THE PATIL LEGACY: HERITAGE MEETS TECHNOLOGY (Requested Design) -->
-            <section class="py-32 bg-white relative overflow-hidden">
+            <!-- THE PATIL LEGACY (Responsive Fix) -->
+            <section class="py-20 md:py-32 bg-white relative overflow-hidden">
                 <div class="max-w-7xl mx-auto px-6">
-                    <div class="grid lg:grid-cols-2 gap-24 items-center">
+                    <div class="grid lg:grid-cols-2 gap-16 md:gap-24 items-center">
                         <div class="reveal relative">
-                            <div class="relative z-10 rounded-[3rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] transform hover:scale-[1.01] transition-all duration-700">
+                            <div class="relative z-10 rounded-3xl md:rounded-[3rem] overflow-hidden shadow-2xl">
                                 <img src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?auto=format&fit=crop&q=80&w=1200" 
-                                     class="w-full aspect-[4/5] object-cover" alt="Happy Cattle">
+                                     class="w-full aspect-[4/5] md:aspect-[4/5] object-cover" alt="Happy Cattle">
                             </div>
                             <!-- Background Decor -->
-                            <div class="absolute -top-10 -left-10 w-64 h-64 bg-green-50 rounded-full blur-3xl -z-0"></div>
-                            <div class="absolute -bottom-12 -right-12 glass p-10 rounded-[2.5rem] shadow-2xl z-20 border-l-4 border-green-800">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-14 h-14 bg-green-800 rounded-full flex items-center justify-center text-white italic text-2xl font-bold">IIT</div>
+                            <div class="absolute -top-10 -left-10 w-48 h-48 bg-green-50 rounded-full blur-3xl -z-0"></div>
+                            
+                            <!-- IIT Badge: Repositioned for Mobile -->
+                            <div class="absolute -bottom-6 right-0 md:-bottom-12 md:-right-12 glass p-6 md:p-10 rounded-2xl md:rounded-[2.5rem] shadow-2xl z-20 border-l-4 border-green-800 max-w-[200px] md:max-w-none">
+                                <div class="flex items-center gap-3 md:gap-4">
+                                    <div class="w-10 h-10 md:w-14 md:h-14 bg-green-800 rounded-full flex items-center justify-center text-white italic text-lg md:text-2xl font-bold">IIT</div>
                                     <div>
-                                        <p class="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] mb-1">Founder Pedigree</p>
-                                        <p class="text-sm font-bold text-slate-800">Precision Quality Engine</p>
+                                        <p class="text-[8px] md:text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1">Pedigree</p>
+                                        <p class="text-xs md:text-sm font-bold text-slate-800">Precision Quality</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="reveal">
-                            <h2 class="text-6xl font-bold mb-10 leading-[1.1] tracking-tighter">
+                        <div class="reveal mt-12 lg:mt-0">
+                            <h2 class="text-4xl md:text-6xl font-bold mb-8 leading-tight tracking-tighter">
                                 The Patil Legacy: <br><span class="text-amber-700 italic font-light">Heritage Meets Technology.</span>
                             </h2>
-                            <p class="text-xl text-slate-600 mb-10 leading-relaxed italic">
-                                Founded by <strong>Pranil Patil (IIT)</strong>, Patil Global is a family-run export powerhouse. We combine the 20-year dairy processing expertise of <strong>Raghunath & Vijaymala Patil</strong> with modern scientific rigor.
+                            <p class="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed italic">
+                                Founded by <strong>Pranil Patil (IIT)</strong>, we combine the 20-year dairy expertise of <strong>Raghunath & Vijaymala Patil</strong> with modern scientific rigor.
                             </p>
                             
-                            <div class="grid md:grid-cols-2 gap-10 mt-16">
-                                <div class="group">
-                                    <div class="w-14 h-14 bg-green-50 text-green-800 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-green-800 group-hover:text-white transition-all duration-500 shadow-sm">
+                            <div class="grid md:grid-cols-2 gap-8 md:gap-10 mt-12">
+                                <div class="group p-6 bg-slate-50 rounded-2xl">
+                                    <div class="w-12 h-12 bg-green-100 text-green-800 rounded-xl flex items-center justify-center mb-5 group-hover:bg-green-800 group-hover:text-white transition-all">
                                         <i data-lucide="shield-check"></i>
                                     </div>
-                                    <h4 class="text-xl font-bold mb-4">Organic Sourcing</h4>
-                                    <p class="text-sm text-slate-500 leading-relaxed">
-                                        Ethically sourced milk from grass-fed cows and buffaloes, ensuring zero hormone residue and the original, rich taste.
+                                    <h4 class="text-lg font-bold mb-3">Organic Sourcing</h4>
+                                    <p class="text-xs text-slate-500 leading-relaxed">
+                                        Ethically sourced milk from grass-fed cattle, ensuring zero hormone residue and original rich taste.
                                     </p>
                                 </div>
-                                <div class="group">
-                                    <div class="w-14 h-14 bg-amber-50 text-amber-800 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-800 group-hover:text-white transition-all duration-500 shadow-sm">
+                                <div class="group p-6 bg-slate-50 rounded-2xl">
+                                    <div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-xl flex items-center justify-center mb-5 group-hover:bg-amber-800 group-hover:text-white transition-all">
                                         <i data-lucide="flask-conical"></i>
                                     </div>
-                                    <h4 class="text-xl font-bold mb-4">IIT Process Control</h4>
-                                    <p class="text-sm text-slate-500 leading-relaxed">
-                                        Our production line is engineered for micron-level consistency in texture and flavour profile, every single time.
+                                    <h4 class="text-lg font-bold mb-3">IIT Process Control</h4>
+                                    <p class="text-xs text-slate-500 leading-relaxed">
+                                        Our production line is engineered for micron-level consistency in texture and flavour profile.
                                     </p>
                                 </div>
                             </div>
 
                             <!-- Deep Truth Quote -->
-                            <div class="mt-16 p-10 bg-slate-50 rounded-[2.5rem] border border-slate-200">
-                                <h5 class="text-2xl font-bold mb-6 text-[#1B5E20]">The Deep Truth</h5>
-                                <p class="text-slate-500 italic leading-relaxed text-lg">
-                                    "Unlike massive industrial aggregators, we operate on a <span class="text-slate-900 font-bold">Direct-to-Community</span> model. Every litre of milk used is sourced from local farmers we have known for two decades."
+                            <div class="mt-12 p-8 bg-slate-50 rounded-[2rem] border border-slate-200">
+                                <h5 class="text-xl font-bold mb-4 text-[#1B5E20]">The Deep Truth</h5>
+                                <p class="text-slate-500 italic leading-relaxed text-base">
+                                    "Unlike industrial aggregators, we operate on a <span class="text-slate-900 font-bold underline decoration-amber-500">Direct-to-Community</span> model. Every litre is sourced from farmers we have known for decades."
                                 </p>
                             </div>
                         </div>
@@ -234,284 +248,261 @@
                 </div>
             </section>
 
-            <!-- BY THE NUMBERS (Interactive Counters) -->
-            <section class="py-24 bg-slate-900 text-white overflow-hidden relative">
-                <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-12 text-center relative z-10">
+            <!-- BY THE NUMBERS -->
+            <section class="py-16 md:py-24 bg-slate-900 text-white overflow-hidden relative">
+                <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 text-center relative z-10">
                     <div class="reveal">
-                        <div class="text-6xl font-black text-amber-500 mb-2">100%</div>
-                        <p class="text-[10px] uppercase font-bold tracking-[0.3em] opacity-40">Organic Sourcing</p>
+                        <div class="text-4xl md:text-6xl font-black text-amber-500 mb-2">100%</div>
+                        <p class="text-[8px] md:text-[10px] uppercase font-bold tracking-[0.2em] opacity-50 uppercase">Organic</p>
                     </div>
                     <div class="reveal">
-                        <div class="text-6xl font-black text-amber-500 mb-2">45+</div>
-                        <p class="text-[10px] uppercase font-bold tracking-[0.3em] opacity-40">Lab QC Parameters</p>
+                        <div class="text-4xl md:text-6xl font-black text-amber-500 mb-2">45+</div>
+                        <p class="text-[8px] md:text-[10px] uppercase font-bold tracking-[0.2em] opacity-50 uppercase">QC Tests</p>
                     </div>
                     <div class="reveal">
-                        <div class="text-6xl font-black text-amber-500 mb-2">24h</div>
-                        <p class="text-[10px] uppercase font-bold tracking-[0.3em] opacity-40">Farm-to-Facility</p>
+                        <div class="text-4xl md:text-6xl font-black text-amber-500 mb-2">24h</div>
+                        <p class="text-[8px] md:text-[10px] uppercase font-bold tracking-[0.2em] opacity-50 uppercase">Farm to Lab</p>
                     </div>
                     <div class="reveal">
-                        <div class="text-6xl font-black text-amber-500 mb-2">0%</div>
-                        <p class="text-[10px] uppercase font-bold tracking-[0.3em] opacity-40">Middlemen Model</p>
+                        <div class="text-4xl md:text-6xl font-black text-amber-500 mb-2">0%</div>
+                        <p class="text-[8px] md:text-[10px] uppercase font-bold tracking-[0.2em] opacity-50 uppercase">Middlemen</p>
                     </div>
                 </div>
-                <div class="absolute top-0 right-0 w-1/2 h-full bg-green-800/20 skew-x-12 translate-x-32"></div>
+                <div class="absolute top-0 right-0 w-1/2 h-full bg-green-800/10 skew-x-12 translate-x-32"></div>
             </section>
         </div>
 
         <!-- ==========================================
-             PAGE: PRODUCTS (The Dairy Master Range)
+             PAGE: PRODUCTS 
              ========================================== -->
-        <div id="products" class="page-view py-24">
-            <div class="max-w-7xl mx-auto px-6">
+        <div id="products" class="page-view py-20 px-4 sm:px-0">
+            <div class="max-w-7xl mx-auto px-4 md:px-6">
                 <!-- Header -->
-                <div class="text-center mb-32 reveal">
-                    <span class="text-amber-700 font-bold text-xs uppercase tracking-[0.5em] mb-6 block italic">The Dairy Portfolio</span>
-                    <h2 class="text-6xl md:text-8xl font-bold mb-8 tracking-tighter">Pure Export Catalog.</h2>
-                    <div class="h-2 w-32 bg-[#1B5E20] mx-auto rounded-full mb-10"></div>
+                <div class="text-center mb-20 md:mb-32 reveal">
+                    <span class="text-amber-700 font-bold text-xs uppercase tracking-[0.3em] mb-6 block italic">The Dairy Portfolio</span>
+                    <h2 class="text-5xl md:text-8xl font-bold mb-6 md:mb-8 tracking-tighter">Pure Export Catalog.</h2>
+                    <div class="h-1.5 w-24 bg-[#1B5E20] mx-auto rounded-full mb-8"></div>
                     <p class="text-slate-500 italic max-w-2xl mx-auto text-lg">
-                        From farm-fresh essentials to industrial-grade export solids. Every product is a masterpiece of Indian heritage and technical precision.
+                        From farm-fresh essentials to industrial-grade export solids. Processed with IIT precision.
                     </p>
                 </div>
 
-                <!-- Product 01: Paneer -->
-                <div class="grid lg:grid-cols-2 gap-24 items-center mb-48 group reveal">
+                <!-- Product 01: Paneer (Responsive Optimized) -->
+                <div class="grid lg:grid-cols-2 gap-12 md:gap-24 items-center mb-24 md:mb-48 group reveal">
                     <div class="relative">
-                        <div class="rounded-[4rem] overflow-hidden shadow-2xl aspect-square transform group-hover:-translate-y-2 transition-transform duration-700">
-                            <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&q=80&w=1500" class="w-full h-full object-cover grayscale-[5%] group-hover:grayscale-0 transition-all duration-700" alt="Gourmet Paneer">
+                        <div class="rounded-3xl md:rounded-[4rem] overflow-hidden shadow-2xl aspect-square">
+                            <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&q=80&w=1500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="Gourmet Paneer">
                         </div>
-                        <div class="absolute -top-6 -right-6 bg-white p-6 rounded-3xl shadow-xl text-center border border-slate-100 z-20">
-                            <p class="text-2xl font-bold text-green-800">180d</p>
+                        <div class="absolute -top-4 -right-4 md:-top-6 md:-right-6 bg-white p-4 md:p-6 rounded-2xl shadow-xl text-center border border-slate-50 z-20">
+                            <p class="text-xl md:text-2xl font-bold text-green-800">180d</p>
                             <p class="text-[8px] font-bold uppercase text-slate-400">Export Shelf Life</p>
                         </div>
                     </div>
                     <div>
-                        <div class="flex items-center gap-3 mb-6">
-                            <span class="px-4 py-1 bg-amber-100 text-amber-800 text-[10px] font-bold rounded-full uppercase tracking-widest">Flagship Selection</span>
-                            <span class="text-slate-300 font-bold text-xs">SKU: PG-PAN-EX</span>
+                        <div class="flex items-center gap-2 mb-6">
+                            <span class="px-3 py-1 bg-amber-100 text-amber-800 text-[10px] font-bold rounded-md uppercase tracking-widest">Flagship</span>
+                            <span class="text-slate-300 font-bold text-[10px]">SKU: PG-PAN-EX</span>
                         </div>
-                        <h3 class="text-5xl font-bold mb-8 text-slate-900 leading-tight">01. Premium & Flavoured Paneer</h3>
-                        <p class="text-slate-600 mb-10 text-lg leading-relaxed italic text-justify">
-                            Crafted using heritage acidification curves, our Paneer maintains a soft, velvety mouthfeel while remaining structurally firm for high-heat cooking. Vacuum-sealed and deep-chilled for global transit.
+                        <h3 class="text-4xl md:text-5xl font-bold mb-6 text-slate-900 leading-tight">01. Premium & Flavoured Paneer</h3>
+                        <p class="text-base md:text-lg text-slate-600 mb-8 md:mb-10 leading-relaxed italic text-justify">
+                            Crafted using heritage acidification curves, our Paneer maintains a soft, velvety mouthfeel while remaining structurally firm. Vacuum-sealed for global transit.
                         </p>
                         
-                        <!-- Interactive Specs -->
-                        <div class="grid grid-cols-2 gap-4 mb-12">
-                            <div class="p-6 bg-white border border-slate-100 rounded-3xl hover:bg-green-50 transition-colors">
-                                <h5 class="font-bold text-slate-900 text-xs uppercase mb-2 tracking-widest">Milk Base</h5>
-                                <p class="text-sm font-semibold italic text-slate-500">Pure Cow (A2 focus) / Rich Buffalo</p>
+                        <!-- Specs -->
+                        <div class="grid grid-cols-2 gap-3 md:gap-4 mb-10">
+                            <div class="p-5 bg-white border border-slate-100 rounded-2xl">
+                                <h5 class="font-bold text-slate-900 text-[9px] uppercase mb-2 tracking-widest">Milk Base</h5>
+                                <p class="text-xs font-semibold text-slate-500 italic">Pure Cow / Rich Buffalo</p>
                             </div>
-                            <div class="p-6 bg-white border border-slate-100 rounded-3xl hover:bg-green-50 transition-colors">
-                                <h5 class="font-bold text-slate-900 text-xs uppercase mb-2 tracking-widest">Infusion Range</h5>
-                                <p class="text-sm font-semibold italic text-slate-500">Malai, Chili-Garlic, Black Pepper</p>
+                            <div class="p-5 bg-white border border-slate-100 rounded-2xl">
+                                <h5 class="font-bold text-slate-900 text-[9px] uppercase mb-2 tracking-widest">Infusions</h5>
+                                <p class="text-xs font-semibold text-slate-500 italic">Malai, Chili, Pepper</p>
                             </div>
                         </div>
 
-                        <button onclick="navigateTo('contact')" class="group bg-slate-950 text-white px-10 py-5 rounded-full font-bold flex items-center justify-center gap-4 hover:bg-[#1B5E20] transition-all">
-                            Request Export Pricing <i data-lucide="chevron-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                        <button onclick="navigateTo('contact')" class="btn-press w-full md:w-auto bg-slate-950 text-white px-10 py-5 rounded-full font-bold flex items-center justify-center gap-4 hover:bg-[#1B5E20] transition-all">
+                            Request Export Pricing <i data-lucide="chevron-right" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- Product 02: Milk -->
-                <div class="grid lg:grid-cols-2 gap-24 items-center mb-48 group reveal">
+                <div class="grid lg:grid-cols-2 gap-12 md:gap-24 items-center mb-24 md:mb-48 group reveal">
                     <div class="lg:order-2 relative">
-                        <div class="rounded-[4rem] overflow-hidden shadow-2xl aspect-square transform group-hover:-translate-y-2 transition-transform duration-700">
-                            <img src="https://images.unsplash.com/photo-1550583724-1255818c0533?auto=format&fit=crop&q=80&w=1500" class="w-full h-full object-cover" alt="Fresh Milk">
+                        <div class="rounded-3xl md:rounded-[4rem] overflow-hidden shadow-2xl aspect-square">
+                            <img src="https://images.unsplash.com/photo-1550583724-1255818c0533?auto=format&fit=crop&q=80&w=1500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="Fresh Milk">
                         </div>
                     </div>
                     <div class="lg:order-1 lg:text-right">
-                        <div class="flex items-center lg:justify-end gap-3 mb-6">
-                            <span class="text-slate-300 font-bold text-xs uppercase">Foundation Purity</span>
-                            <span class="px-4 py-1 bg-green-100 text-green-800 text-[10px] font-bold rounded-full uppercase tracking-widest">B2B & Retail</span>
+                        <div class="flex items-center lg:justify-end gap-2 mb-6">
+                            <span class="px-3 py-1 bg-green-100 text-green-800 text-[10px] font-bold rounded-md uppercase tracking-widest">Foundation Purity</span>
                         </div>
-                        <h3 class="text-5xl font-bold mb-8 text-slate-900 leading-tight">02. Pure Cow & Buffalo Milk</h3>
-                        <p class="text-slate-600 mb-10 text-lg leading-relaxed italic">
-                            Unadulterated raw milk sourced via our Direct-to-Community model. We maintain strict temperature control within 4 hours of milking, ensuring zero loss in natural enzymes.
+                        <h3 class="text-4xl md:text-5xl font-bold mb-6 text-slate-900 leading-tight">02. Pure Cow & Buffalo Milk</h3>
+                        <p class="text-base md:text-lg text-slate-600 mb-10 leading-relaxed italic">
+                            Unadulterated raw milk sourced via our Direct-to-Community model. Temperature control within 4 hours of milking.
                         </p>
-                        <div class="space-y-6 mb-12">
-                            <div class="flex items-center lg:justify-end gap-4">
-                                <span class="text-sm font-bold text-slate-800 italic">High Fat Buffalo Milk (6.5% - 7%)</span>
-                                <i data-lucide="check-circle" class="text-green-600 w-5 h-5"></i>
-                            </div>
-                            <div class="flex items-center lg:justify-end gap-4">
-                                <span class="text-sm font-bold text-slate-800 italic">Nutritious A2 Cow Milk</span>
-                                <i data-lucide="check-circle" class="text-green-600 w-5 h-5"></i>
-                            </div>
-                            <div class="flex items-center lg:justify-end gap-4">
-                                <span class="text-sm font-bold text-slate-800 italic">Zero Preservative Pasteurization</span>
-                                <i data-lucide="check-circle" class="text-green-600 w-5 h-5"></i>
-                            </div>
+                        <div class="space-y-4 mb-10">
+                            <div class="flex items-center lg:justify-end gap-3 text-sm font-bold text-slate-700 italic">High Fat Buffalo Milk <i data-lucide="check" class="text-green-600 w-4 h-4"></i></div>
+                            <div class="flex items-center lg:justify-end gap-3 text-sm font-bold text-slate-700 italic">Nutritious A2 Cow Milk <i data-lucide="check" class="text-green-600 w-4 h-4"></i></div>
+                            <div class="flex items-center lg:justify-end gap-3 text-sm font-bold text-slate-700 italic">Zero Preservative Process <i data-lucide="check" class="text-green-600 w-4 h-4"></i></div>
                         </div>
-                        <button onclick="navigateTo('contact')" class="bg-amber-700 text-white px-10 py-5 rounded-full font-bold uppercase text-[10px] tracking-[0.2em] hover:bg-slate-950 transition-all shadow-xl">Volume Quotation</button>
+                        <button onclick="navigateTo('contact')" class="btn-press w-full md:w-auto bg-amber-700 text-white px-10 py-5 rounded-full font-bold uppercase text-[10px] tracking-widest hover:bg-slate-950 transition-all">Volume Quotation</button>
                     </div>
                 </div>
 
                 <!-- Product 03: Lassi -->
-                <div class="grid lg:grid-cols-2 gap-24 items-center mb-48 group reveal">
-                    <div class="relative rounded-[4rem] bg-blue-50 aspect-square flex flex-col items-center justify-center p-20 shadow-inner group-hover:bg-blue-100 transition-colors">
-                        <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-xl animate-float">
-                            <i data-lucide="droplets" class="text-blue-500 w-12 h-12"></i>
+                <div class="grid lg:grid-cols-2 gap-12 md:gap-24 items-center mb-24 md:mb-48 group reveal">
+                    <div class="relative rounded-3xl md:rounded-[4rem] bg-blue-50 aspect-square flex flex-col items-center justify-center p-12 md:p-20 shadow-inner">
+                        <div class="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center shadow-xl animate-float">
+                            <i data-lucide="droplets" class="text-blue-500 w-8 h-8 md:w-12 md:h-12"></i>
                         </div>
-                        <h4 class="text-4xl font-bold text-blue-900/10 italic text-center mt-10 tracking-[0.2em] uppercase">Gourmet Refreshment</h4>
+                        <h4 class="text-2xl md:text-4xl font-bold text-blue-900/10 italic text-center mt-8 md:mt-10 tracking-widest uppercase">Gourmet Drink</h4>
                     </div>
                     <div>
-                        <span class="text-blue-600 font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">03. Cultured Wellness</span>
-                        <h3 class="text-5xl font-bold mb-8 text-blue-950">Premium Probiotic Lassi</h3>
-                        <p class="text-slate-600 mb-10 text-lg leading-relaxed italic text-justify">
-                            Our Lassi is cultured using traditional artisanal strains. It’s thick, creamy, and balances sweetness with gut-friendly probiotics. A world-class digestive beverage.
+                        <span class="text-blue-600 font-bold text-[10px] uppercase tracking-[0.3em] mb-4 block">03. Wellness</span>
+                        <h3 class="text-4xl md:text-5xl font-bold mb-6 text-blue-950">Probiotic Lassi Range</h3>
+                        <p class="text-base md:text-lg text-slate-600 mb-10 leading-relaxed italic text-justify">
+                            Thick, creamy, and naturally set. Our Lassi uses traditional artisanal strains for gut health.
                         </p>
-                        <div class="flex flex-wrap gap-4 mb-12">
-                            <span class="px-6 py-2 bg-white border border-blue-100 rounded-full text-blue-900 text-xs font-bold uppercase">Classic Sweet</span>
-                            <span class="px-6 py-2 bg-white border border-blue-100 rounded-full text-blue-900 text-xs font-bold uppercase">Alphonso Mango</span>
-                            <span class="px-6 py-2 bg-white border border-blue-100 rounded-full text-blue-900 text-xs font-bold uppercase">Vedic Rose</span>
+                        <div class="flex flex-wrap gap-2 mb-10">
+                            <span class="px-5 py-2 bg-white border border-blue-100 rounded-full text-blue-900 text-[10px] font-bold uppercase">Sweet</span>
+                            <span class="px-5 py-2 bg-white border border-blue-100 rounded-full text-blue-900 text-[10px] font-bold uppercase">Mango</span>
+                            <span class="px-5 py-2 bg-white border border-blue-100 rounded-full text-blue-900 text-[10px] font-bold uppercase">Rose</span>
                         </div>
-                        <button onclick="navigateTo('contact')" class="bg-blue-950 text-white px-10 py-5 rounded-full font-bold uppercase text-[10px] tracking-widest hover:bg-black transition-all">Partner Distribution</button>
+                        <button onclick="navigateTo('contact')" class="btn-press w-full md:w-auto bg-blue-950 text-white px-10 py-5 rounded-full font-bold uppercase text-[10px] tracking-widest">Partner Distribution</button>
                     </div>
                 </div>
 
                 <!-- Product 04: Ice Cream -->
-                <div class="grid lg:grid-cols-2 gap-24 items-center mb-48 group reveal">
-                    <div class="lg:order-2 relative overflow-hidden rounded-[4rem] aspect-square shadow-2xl">
-                        <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&q=80&w=1500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s]" alt="Gourmet Ice Cream">
-                        <div class="absolute inset-0 bg-pink-900/10"></div>
+                <div class="grid lg:grid-cols-2 gap-12 md:gap-24 items-center mb-24 md:mb-48 group reveal">
+                    <div class="lg:order-2 relative overflow-hidden rounded-3xl md:rounded-[4rem] aspect-square shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&q=80&w=1500" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s]" alt="Ice Cream">
                     </div>
                     <div class="lg:order-1 lg:text-right">
-                        <span class="text-pink-600 font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">04. Pure Indulgence</span>
-                        <h3 class="text-5xl font-bold mb-8 text-pink-900">100% Pure Milk Ice Cream</h3>
-                        <p class="text-slate-600 mb-10 text-lg leading-relaxed italic">
-                            Unlike mass-market "frozen desserts," our ice cream is made with 100% pure milk and fresh cream. Zero vegetable oils. Pure richness from our farmer's finest.
+                        <span class="text-pink-600 font-bold text-[10px] uppercase tracking-[0.3em] mb-4 block">04. Indulgence</span>
+                        <h3 class="text-4xl md:text-5xl font-bold mb-6 text-pink-900">Pure Milk Ice Cream</h3>
+                        <p class="text-base md:text-lg text-slate-600 mb-10 leading-relaxed italic">
+                            100% pure milk and fresh cream. Zero vegetable oils. Pure richness.
                         </p>
-                        <div class="space-y-4 mb-12">
-                            <div class="p-8 bg-pink-50 rounded-[2rem] inline-block text-left w-full lg:w-auto">
-                                <h5 class="text-xs font-black uppercase text-pink-300 tracking-widest mb-4">Elite Flavor Menu</h5>
-                                <div class="grid grid-cols-2 gap-x-8 gap-y-2 font-bold text-pink-900 italic">
-                                    <span>• Kesar Pista</span>
-                                    <span>• Belgian Cocoa</span>
-                                    <span>• Rajbhog</span>
-                                    <span>• Fresh Mango</span>
-                                </div>
+                        <div class="inline-block p-6 md:p-8 bg-pink-50 rounded-2xl md:rounded-[2rem] text-left w-full mb-10">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2 font-bold text-pink-900 italic text-sm">
+                                <span>• Kesar Pista</span>
+                                <span>• Belgian Cocoa</span>
+                                <span>• Rajbhog</span>
+                                <span>• Fresh Mango</span>
                             </div>
                         </div>
-                        <button onclick="navigateTo('contact')" class="bg-pink-950 text-white px-10 py-5 rounded-full font-bold uppercase text-[10px] tracking-widest hover:shadow-2xl transition-all">Flavor Licensing</button>
+                        <button onclick="navigateTo('contact')" class="btn-press w-full md:w-auto bg-pink-950 text-white px-10 py-5 rounded-full font-bold uppercase text-[10px] tracking-widest">Flavor Licensing</button>
                     </div>
                 </div>
 
                 <!-- Product 05: Milk Powder -->
-                <div class="grid lg:grid-cols-2 gap-24 items-center group reveal">
-                    <div class="bg-slate-950 rounded-[4rem] aspect-square flex flex-col items-center justify-center p-20 text-white border-8 border-slate-900 shadow-2xl">
-                        <div class="w-24 h-24 bg-white/5 rounded-[2rem] flex items-center justify-center mb-10">
-                            <i data-lucide="package-check" class="w-10 h-10 text-amber-500"></i>
-                        </div>
-                        <h4 class="text-4xl font-bold italic text-center text-white/40 uppercase tracking-[0.3em] leading-snug">Industrial <br>Solids Export</h4>
+                <div class="grid lg:grid-cols-2 gap-12 md:gap-24 items-center group reveal">
+                    <div class="bg-slate-950 rounded-3xl md:rounded-[4rem] aspect-square flex flex-col items-center justify-center p-12 md:p-20 text-white border-4 md:border-8 border-slate-900 shadow-2xl">
+                        <i data-lucide="package-check" class="w-12 h-12 md:w-16 md:h-16 text-amber-500 mb-8"></i>
+                        <h4 class="text-2xl md:text-4xl font-bold italic text-center text-white/40 uppercase tracking-widest">Industrial <br>Solids Export</h4>
                     </div>
-                    <div>
-                        <span class="text-amber-600 font-bold text-[10px] uppercase tracking-[0.3em] mb-4 block">05. B2B Excellence</span>
-                        <h3 class="text-5xl font-bold mb-8 text-slate-900 leading-tight">Premium SMP & WMP</h3>
-                        <p class="text-slate-600 mb-10 text-lg leading-relaxed italic text-justify">
-                            Our spray-dried milk powder is engineered for maximum solubility. Whether for reconstruction or as a base for premium confectionery, our powders meet the highest EU/FDA microbial standards.
+                    <div class="mt-8 lg:mt-0">
+                        <span class="text-amber-600 font-bold text-[10px] uppercase tracking-[0.3em] mb-4 block">05. B2B Global</span>
+                        <h3 class="text-4xl md:text-5xl font-bold mb-6 text-slate-900 leading-tight">Premium SMP & WMP</h3>
+                        <p class="text-base md:text-lg text-slate-600 mb-10 leading-relaxed italic text-justify">
+                            Our spray-dried powder is engineered for maximum solubility. Meets highest EU/FDA standards.
                         </p>
-                        <div class="grid grid-cols-2 gap-6 mb-12">
-                            <div class="p-8 border-2 border-slate-100 rounded-3xl group-hover:border-[#1B5E20] transition-colors">
-                                <p class="text-2xl font-black text-slate-900 mb-2">SMP</p>
-                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Skimmed Milk Power</p>
+                        <div class="grid grid-cols-2 gap-4 mb-10">
+                            <div class="p-6 border-2 border-slate-100 rounded-2xl group-hover:border-[#1B5E20]">
+                                <p class="text-xl font-black text-slate-900 mb-1">SMP</p>
+                                <p class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Skimmed</p>
                             </div>
-                            <div class="p-8 border-2 border-slate-100 rounded-3xl group-hover:border-[#1B5E20] transition-colors">
-                                <p class="text-2xl font-black text-slate-900 mb-2">WMP</p>
-                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Whole Milk Powder</p>
+                            <div class="p-6 border-2 border-slate-100 rounded-2xl group-hover:border-[#1B5E20]">
+                                <p class="text-xl font-black text-slate-900 mb-1">WMP</p>
+                                <p class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Whole</p>
                             </div>
                         </div>
-                        <button onclick="navigateTo('contact')" class="w-full lg:w-auto bg-[#1B5E20] text-white px-12 py-5 rounded-full font-bold uppercase text-xs tracking-[0.2em] hover:bg-black transition-all shadow-xl">Tonnage Inquiry</button>
+                        <button onclick="navigateTo('contact')" class="btn-press w-full md:w-auto bg-[#1B5E20] text-white px-10 py-5 rounded-full font-bold uppercase text-[10px] tracking-widest">Tonnage Inquiry</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- ==========================================
-             PAGE: HERITAGE (The Farmer's Story)
+             PAGE: HERITAGE (The Story)
              ========================================== -->
-        <div id="heritage" class="page-view py-32 bg-white overflow-hidden">
-            <div class="max-w-7xl mx-auto px-6">
-                <!-- Timeline/Story Wrapper -->
-                <div class="text-center mb-32 reveal">
-                    <h2 class="text-6xl md:text-8xl font-bold mb-10 leading-none tracking-tighter">The Patil Journey.</h2>
-                    <p class="text-xl text-slate-400 max-w-2xl mx-auto italic font-light uppercase tracking-widest">Two Decades of Rural Purity</p>
+        <div id="heritage" class="page-view py-24 bg-white px-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-20 reveal">
+                    <h2 class="text-5xl md:text-8xl font-bold mb-6 tracking-tighter">The Patil Journey.</h2>
+                    <p class="text-sm font-bold text-slate-300 uppercase tracking-[0.3em]">Two Decades of Rural Purity</p>
                 </div>
 
-                <div class="grid lg:grid-cols-2 gap-24 items-center">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
                     <div class="reveal">
-                        <p class="text-2xl text-slate-600 leading-relaxed italic mb-12 text-justify">
-                            Our founders, <strong class="text-slate-900 underline decoration-amber-500 decoration-4">Raghunath and Vijaymala Patil</strong>, didn't start a business; they started a community. For 20 years, they have walked the village roads of Pune, building trust with the families who care for the cows.
+                        <p class="text-xl md:text-2xl text-slate-600 leading-relaxed italic mb-10 text-justify">
+                            Our founders, <strong class="text-slate-900 border-b-2 border-amber-500 pb-1">Raghunath and Vijaymala Patil</strong>, spent 20 years building trust with the families who care for the cows. 
                         </p>
-                        <p class="text-2xl text-slate-600 leading-relaxed italic mb-12 text-justify">
-                            They understood that global quality isn't built in a lab—it's built in the fodder, the cow's health, and the farmer's satisfaction. Today, that legacy is the engine behind Patil Global.
+                        <p class="text-xl md:text-2xl text-slate-600 leading-relaxed italic mb-12 text-justify">
+                            They understood that global quality isn't built in a lab—it's built in the fodder and the farmer's satisfaction. Today, that legacy is the engine behind Patil Global.
                         </p>
-                        <div class="p-10 bg-green-900 text-white rounded-[3rem] shadow-2xl">
-                            <p class="text-sm font-bold uppercase tracking-widest opacity-40 mb-4">A Note from Pranil Patil (IIT)</p>
-                            <p class="text-xl italic font-light leading-relaxed">
-                                "My parents taught me the heart of dairy. My education taught me the science of scale. At Patil Global, we ensure that neither is ever compromised."
+                        <div class="p-8 md:p-10 bg-green-900 text-white rounded-3xl md:rounded-[3rem] shadow-2xl">
+                            <p class="text-[9px] font-bold uppercase tracking-widest opacity-40 mb-4 italic text-amber-500">Pranil Patil (IIT)</p>
+                            <p class="text-lg md:text-xl italic font-light leading-relaxed">
+                                "My parents taught me the heart of dairy. My education taught me the science of scale. At Patil Global, we ensure neither is ever compromised."
                             </p>
                         </div>
                     </div>
-                    <div class="reveal relative">
+                    <div class="reveal">
                         <img src="https://images.unsplash.com/photo-1594142393084-3c662820067b?auto=format&fit=crop&q=80&w=1200" 
-                             class="rounded-[4rem] shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000" alt="Farming Wisdom">
-                        <div class="absolute -top-12 -right-12 w-48 h-48 bg-amber-50 rounded-full flex items-center justify-center p-8 text-center border-4 border-white shadow-xl animate-float">
-                            <p class="text-[9px] font-bold uppercase tracking-tighter text-amber-800 italic">"Pay the farmer fairly, and the cow will give you nectar."</p>
-                        </div>
+                             class="rounded-3xl md:rounded-[4rem] shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000" alt="Farmer Wisdom">
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- ==========================================
-             PAGE: QUALITY (Technical Precision Lab)
+             PAGE: QUALITY 
              ========================================== -->
-        <div id="quality" class="page-view py-32 bg-slate-50">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="bg-white rounded-[5rem] p-12 lg:p-24 shadow-2xl border border-slate-100 relative overflow-hidden">
-                    <div class="relative z-10 grid lg:grid-cols-2 gap-24 items-center">
+        <div id="quality" class="page-view py-24 bg-slate-50 px-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="bg-white rounded-[3rem] md:rounded-[5rem] p-10 lg:p-24 shadow-2xl border border-slate-100">
+                    <div class="grid lg:grid-cols-2 gap-16 md:gap-24 items-center">
                         <div>
-                            <div class="flex items-center gap-6 mb-12">
-                                <div class="w-24 h-24 bg-[#1B5E20] text-white flex items-center justify-center rounded-[2rem] font-bold text-4xl shadow-2xl shadow-green-900/30">IIT</div>
-                                <h2 class="text-5xl font-bold tracking-tighter italic">Precision Quality Engine.</h2>
+                            <div class="flex items-center gap-6 mb-10">
+                                <div class="w-20 h-20 bg-[#1B5E20] text-white flex items-center justify-center rounded-3xl font-bold text-3xl shadow-xl">IIT</div>
+                                <h2 class="text-4xl md:text-5xl font-bold italic tracking-tighter leading-tight">Precision <br>Quality Engine.</h2>
                             </div>
-                            <p class="text-slate-600 text-xl mb-12 leading-relaxed italic">
-                                Our facility is more than a processing plant; it's a technical laboratory. We analyze batch data in real-time to maintain the highest standards for US-FDA, GCC, and European markets.
+                            <p class="text-slate-600 text-lg md:text-xl mb-10 leading-relaxed italic">
+                                Our facility is a technical laboratory. We analyze batch data in real-time to maintain standards for US-FDA and EU markets.
                             </p>
                             <div class="space-y-6">
-                                <div class="flex items-start gap-6 group">
-                                    <div class="w-12 h-12 bg-green-50 text-green-700 rounded-2xl flex items-center justify-center shrink-0 font-bold group-hover:bg-green-700 group-hover:text-white transition-all italic">01</div>
-                                    <p class="text-lg font-bold text-slate-800">Advanced Spectrometry for Adulteration Check</p>
+                                <div class="flex items-center gap-5">
+                                    <i data-lucide="microscope" class="text-green-700 w-6 h-6 shrink-0"></i>
+                                    <p class="text-base font-bold text-slate-800 italic">Advanced Spectrometry for Adulteration Check</p>
                                 </div>
-                                <div class="flex items-start gap-6 group">
-                                    <div class="w-12 h-12 bg-green-50 text-green-700 rounded-2xl flex items-center justify-center shrink-0 font-bold group-hover:bg-green-700 group-hover:text-white transition-all italic">02</div>
-                                    <p class="text-lg font-bold text-slate-800">Zero-Preservative High-Pressure Processing</p>
+                                <div class="flex items-center gap-5">
+                                    <i data-lucide="shield-check" class="text-green-700 w-6 h-6 shrink-0"></i>
+                                    <p class="text-base font-bold text-slate-800 italic">Zero-Preservative Export Processing</p>
                                 </div>
-                                <div class="flex items-start gap-6 group">
-                                    <div class="w-12 h-12 bg-green-50 text-green-700 rounded-2xl flex items-center justify-center shrink-0 font-bold group-hover:bg-green-700 group-hover:text-white transition-all italic">03</div>
-                                    <p class="text-lg font-bold text-slate-800">IoT Integrated Global Cold-Chain Tracking</p>
+                                <div class="flex items-center gap-5">
+                                    <i data-lucide="navigation" class="text-green-700 w-6 h-6 shrink-0"></i>
+                                    <p class="text-base font-bold text-slate-800 italic">IoT Integrated Cold-Chain Tracking</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-8">
-                            <div class="aspect-square bg-slate-50 rounded-[3.5rem] flex flex-col items-center justify-center p-10 border-2 border-slate-100 hover:shadow-2xl transition-all">
-                                <p class="text-5xl font-black text-green-800 mb-2">45+</p>
-                                <p class="text-[9px] uppercase font-black text-slate-400 tracking-[0.3em]">QC Parameters</p>
+                        <div class="grid grid-cols-2 gap-4 md:gap-8">
+                            <div class="aspect-square bg-slate-50 rounded-3xl flex flex-col items-center justify-center p-6 border-2 border-slate-100">
+                                <p class="text-4xl md:text-5xl font-black text-green-800">45+</p>
+                                <p class="text-[8px] md:text-[9px] uppercase font-black text-slate-400 tracking-widest mt-2 uppercase text-center">Parameters</p>
                             </div>
-                            <div class="aspect-square bg-slate-50 rounded-[3.5rem] flex flex-col items-center justify-center p-10 border-2 border-slate-100 hover:shadow-2xl transition-all">
-                                <i data-lucide="microscope" class="w-12 h-12 text-green-800 mb-6"></i>
-                                <p class="text-[9px] uppercase font-black text-slate-400 tracking-[0.3em]">IIT Supervised</p>
+                            <div class="aspect-square bg-slate-50 rounded-3xl flex flex-col items-center justify-center p-6 border-2 border-slate-100">
+                                <i data-lucide="award" class="w-8 h-8 md:w-12 md:h-12 text-green-800 mb-4"></i>
+                                <p class="text-[8px] md:text-[9px] uppercase font-black text-slate-400 tracking-widest uppercase text-center">IIT Certified</p>
                             </div>
-                            <div class="col-span-2 bg-slate-900 text-white rounded-[3.5rem] p-12 relative overflow-hidden">
-                                <h5 class="text-2xl font-bold mb-6 italic text-amber-500">Compliance Portfolio</h5>
-                                <div class="flex flex-wrap gap-4">
-                                    <span class="px-6 py-2 bg-white/10 rounded-full text-xs font-bold uppercase">ISO 22000</span>
-                                    <span class="px-6 py-2 bg-white/10 rounded-full text-xs font-bold uppercase">HACCP</span>
-                                    <span class="px-6 py-2 bg-white/10 rounded-full text-xs font-bold uppercase">FSSAI EXPORT</span>
-                                    <span class="px-6 py-2 bg-white/10 rounded-full text-xs font-bold uppercase">HALAL READY</span>
-                                </div>
-                                <div class="absolute -bottom-10 -right-10 opacity-10">
-                                    <i data-lucide="shield-check" class="w-40 h-40"></i>
+                            <div class="col-span-2 bg-slate-900 text-white rounded-3xl md:rounded-[3.5rem] p-10 relative overflow-hidden">
+                                <h5 class="text-xl md:text-2xl font-bold mb-6 italic text-amber-500">Compliance Portfolio</h5>
+                                <div class="flex flex-wrap gap-2 md:gap-4">
+                                    <span class="px-4 py-1.5 bg-white/10 rounded-full text-[9px] font-bold uppercase tracking-widest">ISO 22000</span>
+                                    <span class="px-4 py-1.5 bg-white/10 rounded-full text-[9px] font-bold uppercase tracking-widest">HACCP</span>
+                                    <span class="px-4 py-1.5 bg-white/10 rounded-full text-[9px] font-bold uppercase tracking-widest">FSSAI</span>
+                                    <span class="px-4 py-1.5 bg-white/10 rounded-full text-[9px] font-bold uppercase tracking-widest">HALAL</span>
                                 </div>
                             </div>
                         </div>
@@ -521,71 +512,54 @@
         </div>
 
         <!-- ==========================================
-             PAGE: CONTACT (Global Export Desk)
+             PAGE: CONTACT 
              ========================================== -->
-        <div id="contact" class="page-view py-32 bg-white">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="bg-slate-950 rounded-[5rem] overflow-hidden flex flex-col lg:flex-row shadow-[0_100px_100px_-50px_rgba(0,0,0,0.4)] border border-slate-900">
-                    <!-- Branding Side -->
-                    <div class="p-16 lg:p-24 lg:w-[45%] text-white relative">
-                        <div class="relative z-10">
-                            <span class="text-amber-500 font-bold uppercase tracking-[0.5em] text-xs mb-10 block italic">Direct To Importer</span>
-                            <h2 class="text-6xl font-bold mb-10 leading-none italic tracking-tighter">Global Sales <br>Desk.</h2>
-                            <p class="text-white/40 text-xl mb-16 italic font-light leading-relaxed">
-                                We are strictly B2B. Connect with our corporate procurement team for international wholesale, private labeling (OEM), or industrial supply.
-                            </p>
-                            
-                            <div class="space-y-12">
-                                <div class="flex items-center gap-8 group">
-                                    <div class="w-14 h-14 rounded-3xl bg-white/5 flex items-center justify-center text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-all"><i data-lucide="mail"></i></div>
-                                    <div>
-                                        <p class="text-[9px] uppercase font-bold text-white/30 tracking-[0.3em] mb-1">Corporate Procurement</p>
-                                        <p class="text-xl font-medium tracking-tight">exports@patilglobal.com</p>
-                                    </div>
+        <div id="contact" class="page-view py-24 px-6 bg-white">
+            <div class="max-w-7xl mx-auto">
+                <div class="bg-slate-950 rounded-[3rem] md:rounded-[5rem] overflow-hidden flex flex-col lg:flex-row shadow-2xl">
+                    <!-- Text Side -->
+                    <div class="p-10 md:p-20 lg:w-[45%] text-white bg-slate-900 relative">
+                        <span class="text-amber-500 font-bold uppercase tracking-[0.4em] text-[10px] mb-8 block italic">B2B Priority Desk</span>
+                        <h2 class="text-5xl md:text-6xl font-bold mb-10 leading-none italic tracking-tighter">Global Sales.</h2>
+                        <p class="text-white/40 text-lg md:text-xl mb-12 italic leading-relaxed">
+                            Connect with our corporate procurement team for international wholesale or private labeling.
+                        </p>
+                        
+                        <div class="space-y-10">
+                            <div class="flex items-center gap-6">
+                                <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-amber-500"><i data-lucide="mail"></i></div>
+                                <div>
+                                    <p class="text-[9px] uppercase font-bold text-white/30 tracking-[0.2em] mb-1">Procurement</p>
+                                    <p class="text-base md:text-xl font-medium">exports@patilglobal.com</p>
                                 </div>
-                                <div class="flex items-center gap-8 group">
-                                    <div class="w-14 h-14 rounded-3xl bg-white/5 flex items-center justify-center text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-all"><i data-lucide="phone"></i></div>
-                                    <div>
-                                        <p class="text-[9px] uppercase font-bold text-white/30 tracking-[0.3em] mb-1">Direct Hotline</p>
-                                        <p class="text-xl font-medium tracking-tight">+91 98XX XXX XXX</p>
-                                    </div>
+                            </div>
+                            <div class="flex items-center gap-6">
+                                <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-amber-500"><i data-lucide="map-pin"></i></div>
+                                <div>
+                                    <p class="text-[9px] uppercase font-bold text-white/30 tracking-[0.2em] mb-1">Location</p>
+                                    <p class="text-base md:text-xl font-medium">Pune, India (JNPT Link)</p>
                                 </div>
                             </div>
                         </div>
-                        <!-- Background Accents -->
-                        <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-green-900 rounded-full blur-[120px] opacity-30"></div>
                     </div>
 
                     <!-- Form Side -->
-                    <div class="p-16 lg:p-24 lg:w-[55%] bg-white">
-                        <h4 class="text-4xl font-bold mb-12 text-slate-900 italic">Partnership Inquiry</h4>
-                        <form onsubmit="event.preventDefault(); alert('Inquiry sent to the Patil Global Export Desk.')" class="space-y-10">
-                            <div class="grid md:grid-cols-2 gap-10">
-                                <div class="relative">
-                                    <input type="text" placeholder="Full Name" class="w-full border-b border-slate-200 py-4 outline-none focus:border-[#1B5E20] font-bold text-lg placeholder:text-slate-300 transition-all">
-                                </div>
-                                <div class="relative">
-                                    <input type="email" placeholder="Corporate Email" class="w-full border-b border-slate-200 py-4 outline-none focus:border-[#1B5E20] font-bold text-lg placeholder:text-slate-300 transition-all">
-                                </div>
-                            </div>
-                            <div class="relative">
-                                <input type="text" placeholder="Company Name & Target Market (e.g. London, UK)" class="w-full border-b border-slate-200 py-4 outline-none focus:border-[#1B5E20] font-bold text-lg placeholder:text-slate-300 transition-all">
-                            </div>
-                            <div class="relative">
-                                <select class="w-full border-b border-slate-200 py-4 outline-none focus:border-[#1B5E20] font-bold text-slate-300 text-lg bg-transparent">
-                                    <option>Expected Monthly Volume</option>
-                                    <option>LCL Trial (1-5 Tons)</option>
-                                    <option>FCL (Full Container - 18+ Tons)</option>
-                                    <option>OEM / Private Label Inquiry</option>
-                                </select>
-                            </div>
-                            <div class="relative pt-6">
-                                <button class="w-full bg-[#1B5E20] text-white font-bold py-7 rounded-[2rem] hover:bg-black transition-all shadow-2xl uppercase tracking-[0.3em] text-[11px]">
-                                    Initialize Procurement
-                                </button>
-                            </div>
+                    <div class="p-10 md:p-20 lg:w-[55%] bg-white">
+                        <h4 class="text-3xl font-bold mb-10 text-slate-900 italic">Procurement Inquiry</h4>
+                        <form onsubmit="event.preventDefault(); alert('Request sent to the Patil Global Export Desk.')" class="space-y-8">
+                            <input type="text" placeholder="Full Name" class="w-full border-b border-slate-200 py-4 outline-none focus:border-[#1B5E20] font-bold text-base placeholder:text-slate-300">
+                            <input type="email" placeholder="Corporate Email" class="w-full border-b border-slate-200 py-4 outline-none focus:border-[#1B5E20] font-bold text-base placeholder:text-slate-300">
+                            <input type="text" placeholder="Company Name & Market (e.g. UAE, UK)" class="w-full border-b border-slate-200 py-4 outline-none focus:border-[#1B5E20] font-bold text-base placeholder:text-slate-300">
+                            <select class="w-full border-b border-slate-200 py-4 outline-none focus:border-[#1B5E20] font-bold text-slate-300 text-sm bg-transparent">
+                                <option>Volume Required</option>
+                                <option>LCL Trial (1-5 Tons)</option>
+                                <option>FCL (18+ Tons)</option>
+                                <option>Private Labeling Request</option>
+                            </select>
+                            <button class="btn-press w-full bg-[#1B5E20] text-white font-bold py-6 rounded-3xl hover:bg-black transition-all shadow-xl uppercase tracking-widest text-[10px]">
+                                Submit Inquiry
+                            </button>
                         </form>
-                        <p class="text-center text-[10px] text-slate-400 mt-10 font-bold uppercase tracking-widest">Global Supply Chain Optimized for Port Connectivity</p>
                     </div>
                 </div>
             </div>
@@ -593,30 +567,16 @@
 
     </main>
 
-    <!-- FOOTER (Enhanced Global Heritage) -->
-    <footer class="bg-white py-32 border-t border-slate-100">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-12 mb-20">
-                <div class="flex items-center space-x-4 opacity-70">
-                    <div class="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center text-white font-serif text-3xl">P</div>
-                    <div>
-                        <h1 class="text-2xl font-bold tracking-tight text-slate-900 uppercase">Patil Global</h1>
-                        <p class="text-[9px] tracking-[0.4em] font-bold text-slate-400 uppercase">Original Indian Heritage</p>
-                    </div>
-                </div>
-                <div class="flex flex-wrap justify-center gap-10 text-[10px] font-bold uppercase tracking-[0.4em] text-slate-300">
-                    <a href="#" class="hover:text-amber-600 transition-all">Farmer Policy</a>
-                    <a href="#" class="hover:text-amber-600 transition-all">Export Compliance</a>
-                    <a href="#" class="hover:text-amber-600 transition-all">IIT Quality Standards</a>
-                    <a href="#" class="hover:text-amber-600 transition-all">Privacy</a>
-                </div>
+    <!-- FOOTER -->
+    <footer class="bg-white py-24 border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="flex items-center justify-center space-x-3 mb-10 opacity-60">
+                <div class="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center text-white font-serif text-2xl">P</div>
+                <span class="text-sm font-bold tracking-tight uppercase">Patil Global Exports</span>
             </div>
-            
-            <div class="text-center pt-20 border-t border-slate-50">
-                <p class="text-[10px] text-slate-200 font-bold uppercase tracking-[0.5em] italic">Direct Sourcing • Heritage Wisdom • Global Science</p>
-                <p class="text-[10px] text-slate-200 mt-6 tracking-widest">Pune District, Maharashtra, India | Logistics Hub (JNPT Ready)</p>
-                <p class="text-[10px] text-slate-200 mt-12 italic">© 2024 Patil Global Dairy Exports. All Rights Reserved.</p>
-            </div>
+            <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-slate-300 mb-4 italic">Direct Sourcing • Heritage Wisdom • Global Science</p>
+            <p class="text-[9px] text-slate-400">Pune District, Maharashtra, India | Optimized for International Supply</p>
+            <p class="text-[9px] text-slate-300 mt-12 italic">© 2024 Patil Global. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -625,21 +585,19 @@
         // Initialize Icons
         lucide.createIcons();
 
-        // Multi-View Router
+        // Navigation Controller
         function navigateTo(pageId) {
-            // Hide all pages
             const pages = document.querySelectorAll('.page-view');
             pages.forEach(p => p.classList.remove('active'));
 
-            // Show current page
-            const targetPage = document.getElementById(pageId);
-            if(targetPage) {
-                targetPage.classList.add('active');
+            const target = document.getElementById(pageId);
+            if(target) {
+                target.classList.add('active');
                 window.scrollTo(0, 0);
-                triggerReveal();
+                setTimeout(triggerReveal, 100);
             }
 
-            // Update Nav State
+            // UI Feedback
             const navLinks = document.querySelectorAll('.nav-link');
             navLinks.forEach(l => {
                 if(l.dataset.nav === pageId) l.classList.add('active');
@@ -647,29 +605,33 @@
             });
         }
 
-        // Mobile Menu Logic
+        // Mobile Menu
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
+            
+            // Lock body scroll when menu is open
+            document.body.style.overflow = menu.classList.contains('hidden') ? 'auto' : 'hidden';
         }
 
-        // Scroll Reveal Engine
+        // Reveal Animation Engine
         function triggerReveal() {
             const reveals = document.querySelectorAll('.reveal');
             reveals.forEach(r => {
                 const windowHeight = window.innerHeight;
                 const elementTop = r.getBoundingClientRect().top;
-                const elementVisible = 100;
+                const elementVisible = 80;
                 if (elementTop < windowHeight - elementVisible) {
                     r.classList.add('visible');
                 }
             });
         }
 
-        // Navbar Scroll Styling
+        // Scroll Performance
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('main-nav');
-            if(window.scrollY > 20) {
+            if(window.scrollY > 30) {
                 nav.classList.add('shadow-xl');
                 nav.classList.remove('h-20');
                 nav.classList.add('h-16');
@@ -681,7 +643,7 @@
             triggerReveal();
         });
 
-        // Initialize App
+        // App Boot
         window.onload = () => {
             navigateTo('home');
             triggerReveal();
