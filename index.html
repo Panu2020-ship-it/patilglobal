@@ -3,114 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patil Global | Premium Flavoured Paneer Exports</title>
+    <title>Patil Global | Original Indian Dairy Heritage & Exports</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
-        .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
-        .hero-gradient { background: linear-gradient(to right, rgba(255,255,255,1) 30%, rgba(255,255,255,0) 100%); }
-        .card-hover:hover { transform: translateY(-5px); transition: all 0.3s ease; }
+        :root {
+            --soil: #8B4513;
+            --milk: #FDFCF8;
+            --grass: #2D4F1E;
+            --gold: #D4AF37;
+        }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--milk); scroll-behavior: smooth; }
+        h1, h2, h3, .heritage-font { font-family: 'Playfair Display', serif; }
+        
+        .texture-bg {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+        }
+        
+        .organic-border {
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .gradient-overlay {
+            background: linear-gradient(to bottom, rgba(45,79,30,0.1) 0%, rgba(0,0,0,0.7) 100%);
+        }
+
+        .hover-lift { transition: transform 0.3s ease, shadow 0.3s ease; }
+        .hover-lift:hover { transform: translateY(-10px); }
     </style>
 </head>
-<body class="bg-white text-slate-900 overflow-x-hidden">
+<body class="text-slate-900 antialiased texture-bg">
+
+    <!-- Pre-header: Farmer Support Ticker -->
+    <div class="bg-[#2D4F1E] text-white py-2 overflow-hidden whitespace-nowrap">
+        <div class="inline-block animate-marquee px-4 text-[10px] font-bold tracking-widest uppercase">
+            Direct Farm Sourcing • Transparent Pricing for Farmers • 0% Middlemen • 100% Organic Fodder • IIT Lab Certified Purity • Global Cold Chain Ready
+        </div>
+    </div>
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-nav border-b border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-xl">P</div>
-                    <div>
-                        <span class="block text-xl font-bold tracking-tight uppercase leading-none">Patil Global</span>
-                        <span class="text-[10px] tracking-[0.2em] text-amber-600 font-bold uppercase">Export Excellence</span>
-                    </div>
+    <nav id="navbar" class="sticky top-0 w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-orange-100">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-[#8B4513] rounded-full flex items-center justify-center text-white font-serif text-2xl shadow-inner">P</div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tighter text-[#2D4F1E] uppercase leading-none">Patil Global</h1>
+                    <p class="text-[9px] tracking-[0.3em] font-semibold text-orange-800 uppercase">The Soil. The Soul. The Science.</p>
                 </div>
-                <div class="hidden md:flex space-x-8 items-center text-sm font-semibold tracking-wide uppercase">
-                    <a href="#about" class="hover:text-amber-600 transition-colors">Heritage</a>
-                    <a href="#products" class="hover:text-amber-600 transition-colors">Products</a>
-                    <a href="#quality" class="hover:text-amber-600 transition-colors">Quality</a>
-                    <a href="#contact" class="bg-slate-900 text-white px-6 py-3 rounded-full hover:bg-slate-800 transition-all">Inquire Now</a>
-                </div>
-                <div class="md:hidden">
-                    <i data-lucide="menu"></i>
-                </div>
+            </div>
+            
+            <div class="hidden lg:flex space-x-10 items-center text-[11px] font-bold uppercase tracking-widest text-slate-600">
+                <a href="#about" class="hover:text-[#8B4513]">The Story</a>
+                <a href="#products" class="hover:text-[#8B4513]">Dairy Portfolio</a>
+                <a href="#science" class="hover:text-[#8B4513]">The Lab</a>
+                <a href="#contact" class="bg-[#2D4F1E] text-white px-8 py-3 rounded-md hover:bg-black transition-all">Export Inquiry</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-slate-50">
+    <header class="relative min-h-[90vh] flex items-center overflow-hidden">
         <div class="absolute inset-0 z-0">
-            <div class="absolute inset-0 hero-gradient z-10"></div>
-            <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&q=80&w=2000" class="w-full h-full object-cover object-center" alt="Premium Paneer">
+            <img src="https://images.unsplash.com/photo-1594142393084-3c662820067b?auto=format&fit=crop&q=80&w=2000" class="w-full h-full object-cover" alt="Indian Rural Dairy">
+            <div class="absolute inset-0 gradient-overlay"></div>
         </div>
         
-        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="relative z-10 max-w-7xl mx-auto px-6 w-full text-white pt-20">
             <div class="max-w-3xl">
-                <div class="inline-flex items-center space-x-2 mb-6">
-                    <span class="h-px w-12 bg-amber-600"></span>
-                    <span class="text-amber-600 font-bold uppercase tracking-[0.3em] text-xs">Since 2004 | IIT-Backed Innovation</span>
-                </div>
-                <h1 class="text-5xl md:text-8xl font-light mb-6 leading-tight">
-                    Precision Engineered <br><span class="font-bold italic">Gourmet Paneer</span>
-                </h1>
-                <p class="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed max-w-xl">
-                    Patil Global merges 20 years of traditional dairy wisdom with IIT-standard process engineering to deliver the world's most consistent flavored paneer.
+                <span class="inline-block px-4 py-1 bg-orange-600 rounded text-[10px] font-bold uppercase tracking-widest mb-6">Affordable Luxury • Directly from Farmers</span>
+                <h2 class="text-6xl md:text-8xl font-bold mb-8 leading-[0.95] tracking-tighter">
+                    Original <br><span class="italic font-light text-orange-200">Indian Dairy</span> <br>to the World.
+                </h2>
+                <p class="text-xl text-white/80 mb-12 leading-relaxed max-w-xl font-light">
+                    Founded on the ethics of 20-year dairy veterans Raghunath & Vijaymala Patil, and engineered for global standards by Pranil Patil (IIT). We bridge the gap between rural purity and international excellence.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="#contact" class="bg-slate-900 text-white px-10 py-5 rounded-lg font-bold flex items-center justify-center space-x-3 hover:shadow-2xl transition-all">
-                        <span>Partner With Us</span>
-                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                    </a>
-                    <a href="#products" class="border border-slate-300 bg-white/50 backdrop-blur-sm px-10 py-5 rounded-lg font-bold text-center hover:bg-white transition-all">
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <a href="#products" class="bg-white text-slate-900 px-10 py-5 rounded-full font-bold text-center hover:bg-orange-500 hover:text-white transition-all shadow-xl">
                         View Product Range
                     </a>
+                    <a href="#contact" class="border border-white/30 backdrop-blur-md text-white px-10 py-5 rounded-full font-bold text-center hover:bg-white/10 transition-all">
+                        Bulk Export Desk
+                    </a>
                 </div>
             </div>
         </div>
-    </section>
+    </header>
 
-    <!-- Trust Badges -->
-    <div class="bg-white py-12 border-b border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-5 gap-8 items-center justify-items-center opacity-40">
-            <span class="font-bold text-xl tracking-tighter italic">ISO 22000</span>
-            <span class="font-bold text-xl tracking-tighter italic">HACCP CERTIFIED</span>
-            <span class="font-bold text-xl tracking-tighter italic">FSSAI EXPORT</span>
-            <span class="font-bold text-xl tracking-tighter italic">FDA COMPLIANT</span>
-            <span class="font-bold text-xl tracking-tighter italic">KOSHER READY</span>
-        </div>
-    </div>
-
-    <!-- About Section -->
-    <section id="about" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Deep Research: The Sourcing Story -->
+    <section id="about" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-6">
             <div class="grid lg:grid-cols-2 gap-20 items-center">
                 <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1596733430284-f7437764b1a9?auto=format&fit=crop&q=80&w=1000" class="rounded-2xl shadow-2xl relative z-10" alt="Dairy Farming">
-                    <div class="absolute -bottom-6 -right-6 w-48 h-48 bg-amber-50 rounded-2xl -z-0"></div>
+                    <img src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?auto=format&fit=crop&q=80&w=1000" class="rounded-[3rem] shadow-2xl relative z-10" alt="Indian Cows">
+                    <div class="absolute -top-10 -left-10 w-40 h-40 bg-orange-100 rounded-full -z-0"></div>
                 </div>
                 <div>
-                    <h2 class="text-4xl font-bold mb-8">The Patil Legacy: <br><span class="text-amber-600">Heritage Meets Technology</span></h2>
-                    <p class="text-slate-600 mb-6 text-lg leading-relaxed">
-                        Founded by <strong>Pranil Patil (IIT)</strong>, Patil Global is a family-run export powerhouse. We combine the 20-year dairy processing expertise of <strong>Raghunath & Vijaymala Patil</strong> with modern scientific rigor.
+                    <h3 class="text-4xl md:text-5xl font-bold mb-8 text-[#2D4F1E]">Why Patil Global? <br><span class="italic text-orange-800 font-light">The Deep Truth.</span></h3>
+                    <p class="text-slate-600 mb-8 leading-relaxed">
+                        Unlike massive industrial aggregators, we operate on a <strong>Direct-to-Community</strong> model. Every litre of milk used in our Paneer, Ghee, and Curd is sourced from local farmers we have known for two decades. 
                     </p>
-                    <div class="grid sm:grid-cols-2 gap-8 mt-10">
-                        <div>
-                            <div class="flex items-center space-x-3 mb-3 text-amber-600">
-                                <i data-lucide="shield-check" class="w-6 h-6"></i>
-                                <h4 class="font-bold">Organic Sourcing</h4>
-                            </div>
-                            <p class="text-sm text-slate-500 italic">Ethically sourced milk from grass-fed cows and buffaloes, ensuring zero hormone residue.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="p-6 bg-slate-50 rounded-2xl border-l-4 border-orange-500">
+                            <h4 class="font-bold text-slate-800 mb-2">IIT Quality Precision</h4>
+                            <p class="text-xs text-slate-500">Using advanced spectrometry to ensure zero adulteration, zero antibiotics, and zero hormone residue.</p>
                         </div>
-                        <div>
-                            <div class="flex items-center space-x-3 mb-3 text-amber-600">
-                                <i data-lucide="flask-conical" class="w-6 h-6"></i>
-                                <h4 class="font-bold">IIT Process Control</h4>
-                            </div>
-                            <p class="text-sm text-slate-500 italic">Our production line is engineered for micron-level consistency in texture and flavour profile.</p>
+                        <div class="p-6 bg-slate-50 rounded-2xl border-l-4 border-[#2D4F1E]">
+                            <h4 class="font-bold text-slate-800 mb-2">Generational Ethics</h4>
+                            <p class="text-xs text-slate-500">Managed by a family that understands the pulse of Indian milk—ensuring natural fat retention and original taste.</p>
                         </div>
                     </div>
                 </div>
@@ -118,55 +126,66 @@
         </div>
     </section>
 
-    <!-- Products Section -->
-    <section id="products" class="py-24 bg-slate-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4">Export Product Range</h2>
-                <p class="text-slate-500 max-w-2xl mx-auto italic">Vacuum-sealed, cold-chain ready, and crafted for global palates.</p>
+    <!-- Product Portfolio: Deep & Broad -->
+    <section id="products" class="py-24 bg-[#F8F6F2]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-bold text-[#2D4F1E] mb-4">Original Indian Offerings</h2>
+                <div class="h-1 w-24 bg-orange-600 mx-auto mb-6"></div>
+                <p class="text-slate-500 italic max-w-xl mx-auto">From the villages of Maharashtra, lab-tested for the tables of New York, Dubai, and London.</p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-12">
-                <!-- Cow Milk Card -->
-                <div class="bg-white rounded-3xl overflow-hidden shadow-sm card-hover border border-slate-100">
-                    <div class="h-64 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1550583724-1255818c0533?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover" alt="Cow Milk Paneer">
-                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-amber-600">Premium Choice</div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Product 1: Paneer -->
+                <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover-lift group">
+                    <div class="h-64 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Paneer">
                     </div>
-                    <div class="p-10">
-                        <h3 class="text-3xl font-bold mb-4">Gourmet Cow Milk Paneer</h3>
-                        <p class="text-slate-600 mb-6">A2-protein rich, lighter texture, and incredibly soft. Ideal for Mediterranean cuisines and health-conscious European markets.</p>
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-center text-sm"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-500"></i> Easy Digestibility</li>
-                            <li class="flex items-center text-sm"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-500"></i> Delicate Aroma Infusion</li>
-                            <li class="flex items-center text-sm"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-500"></i> Low Sodium Capability</li>
-                        </ul>
-                        <div class="flex space-x-2">
-                            <span class="text-[10px] border border-slate-200 px-2 py-1 rounded">MALAI</span>
-                            <span class="text-[10px] border border-slate-200 px-2 py-1 rounded">BLACK PEPPER</span>
-                            <span class="text-[10px] border border-slate-200 px-2 py-1 rounded">HERB-INFUSED</span>
+                    <div class="p-8 text-center">
+                        <h4 class="text-2xl font-bold mb-2">Export-Grade Paneer</h4>
+                        <p class="text-[10px] text-orange-600 font-bold uppercase tracking-widest mb-4">Cow & Buffalo Variants</p>
+                        <p class="text-sm text-slate-500 mb-6">Vacuum-packed with a 6-month shelf life. Available in Malai, Chili-Garlic, and Peri-Peri.</p>
+                        <hr class="mb-4">
+                        <div class="flex justify-between text-[10px] font-bold text-slate-400">
+                            <span>MOISTURE: <45%</span>
+                            <span>FAT: >50% (DRY BASIS)</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Buffalo Milk Card -->
-                <div class="bg-white rounded-3xl overflow-hidden shadow-sm card-hover border border-slate-100">
-                    <div class="h-64 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1631233866312-574c2b67ed37?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover" alt="Buffalo Milk Paneer">
-                        <div class="absolute top-4 left-4 bg-slate-900 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">High Performance</div>
+                <!-- Product 2: Ghee -->
+                <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover-lift group">
+                    <div class="h-64 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1631233866312-574c2b67ed37?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Ghee">
                     </div>
-                    <div class="p-10">
-                        <h3 class="text-3xl font-bold mb-4">Rich Buffalo Milk Paneer</h3>
-                        <p class="text-slate-600 mb-6">High fat, dense, and creamy. Specifically engineered for bulk B2B catering and industrial food service where structure matters.</p>
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-center text-sm"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-500"></i> Superior Searing Texture</li>
-                            <li class="flex items-center text-sm"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-500"></i> High-Protein Concentration</li>
-                            <li class="flex items-center text-sm"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-500"></i> Enhanced Shelf Stability</li>
-                        </ul>
-                        <div class="flex space-x-2">
-                            <span class="text-[10px] border border-slate-200 px-2 py-1 rounded">CHILI GARLIC</span>
-                            <span class="text-[10px] border border-slate-200 px-2 py-1 rounded">PERI PERI</span>
-                            <span class="text-[10px] border border-slate-200 px-2 py-1 rounded">PLAIN BULK</span>
+                    <div class="p-8 text-center">
+                        <h4 class="text-2xl font-bold mb-2">Vedic Bilona Ghee</h4>
+                        <p class="text-[10px] text-orange-600 font-bold uppercase tracking-widest mb-4">Slow Cooked Heritage</p>
+                        <p class="text-sm text-slate-500 mb-6">Hand-churned from cultured curd. Lab-certified for high butyrate and vitamins. Original aroma.</p>
+                        <hr class="mb-4">
+                        <div class="flex justify-between text-[10px] font-bold text-slate-400">
+                            <span>AROMA: NATURAL</span>
+                            <span>TEXTURE: GRANULAR</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3: Industrial Products -->
+                <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover-lift group">
+                    <div class="h-64 relative overflow-hidden bg-slate-900">
+                        <img src="https://images.unsplash.com/photo-1550583724-1255818c0533?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700" alt="Milk Powder">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-white border border-white/40 px-6 py-2 rounded-full text-xs font-bold">Industrial / B2B</span>
+                        </div>
+                    </div>
+                    <div class="p-8 text-center">
+                        <h4 class="text-2xl font-bold mb-2">Industrial Bulk</h4>
+                        <p class="text-[10px] text-orange-600 font-bold uppercase tracking-widest mb-4">Global Supply Chain</p>
+                        <p class="text-sm text-slate-500 mb-6">White Butter (Unsalted), Khoya (Mawa), Skimmed Milk Powder, and Frozen Cream blocks.</p>
+                        <hr class="mb-4">
+                        <div class="flex justify-between text-[10px] font-bold text-slate-400">
+                            <span>PACKING: 5KG-25KG</span>
+                            <span>HS CODE: 040510</span>
                         </div>
                     </div>
                 </div>
@@ -174,47 +193,50 @@
         </div>
     </section>
 
-    <!-- Global Compliance / Quality -->
-    <section id="quality" class="py-24 bg-slate-900 text-white overflow-hidden relative">
-        <div class="absolute top-0 right-0 w-1/3 h-full bg-amber-600 skew-x-12 translate-x-32 opacity-10"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-20 items-center">
+    <!-- Deep Tech Section: The IIT Lab -->
+    <section id="science" class="py-32 bg-[#2D4F1E] text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <img src="https://www.transparenttextures.com/patterns/blueprint.png" class="w-full h-full object-cover">
+        </div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-24 items-center">
                 <div>
-                    <h2 class="text-4xl font-bold mb-8 italic">World-Class <br>Export Readiness</h2>
-                    <div class="space-y-8">
-                        <div class="flex gap-6">
-                            <div class="bg-amber-600/20 p-4 rounded-xl text-amber-500 h-fit">
-                                <i data-lucide="thermometer-snowflake"></i>
-                            </div>
+                    <h2 class="text-5xl font-bold mb-8">The Science of <br><span class="text-orange-400 italic">Purity.</span></h2>
+                    <p class="text-white/60 text-lg mb-12 leading-relaxed">
+                        Pranil Patil's IIT background ensures that our facility operates with surgical precision. We don't just "process" milk; we analyze it.
+                    </p>
+                    
+                    <div class="space-y-12">
+                        <div class="flex gap-8">
+                            <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center shrink-0"><i data-lucide="test-tube"></i></div>
                             <div>
-                                <h5 class="font-bold text-xl mb-2 tracking-tight uppercase">Cold-Chain Protocol</h5>
-                                <p class="text-slate-400 text-sm leading-relaxed">End-to-end temperature tracking from our facility (Pune) to JNPT Port and beyond. Real-time data logging for every container.</p>
+                                <h5 class="font-bold text-xl mb-2 italic">Aflatoxin & Antibiotic Scanning</h5>
+                                <p class="text-white/40 text-sm">Every batch is tested against 45 parameters before it enters the production line.</p>
                             </div>
                         </div>
-                        <div class="flex gap-6">
-                            <div class="bg-amber-600/20 p-4 rounded-xl text-amber-500 h-fit">
-                                <i data-lucide="box"></i>
-                            </div>
+                        <div class="flex gap-8">
+                            <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center shrink-0"><i data-lucide="thermometer-snowflake"></i></div>
                             <div>
-                                <h5 class="font-bold text-xl mb-2 tracking-tight uppercase">Bespoke OEM Packaging</h5>
-                                <p class="text-slate-400 text-sm leading-relaxed">Flexible private labeling solutions for retailers in the UK, USA, and GCC. Customized grammage (200g, 500g, 1kg, 5kg).</p>
+                                <h5 class="font-bold text-xl mb-2 italic">Global Cold Chain Integrity</h5>
+                                <p class="text-white/40 text-sm">IoT-monitored refrigerated transport ensures the temperature remains at a constant -18°C from Pune to your doorstep.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white/5 backdrop-blur-lg border border-white/10 p-12 rounded-3xl">
-                    <div class="flex items-center space-x-4 mb-8">
-                        <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-slate-900 font-bold">IIT</div>
-                        <p class="text-lg font-semibold italic">"Our lab-to-table approach ensures zero batch variance."</p>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="p-6 bg-white/5 rounded-xl text-center">
-                            <p class="text-4xl font-bold text-amber-500 mb-1">100%</p>
-                            <p class="text-[10px] uppercase tracking-widest text-slate-500">Traceable Sourcing</p>
-                        </div>
-                        <div class="p-6 bg-white/5 rounded-xl text-center">
-                            <p class="text-4xl font-bold text-amber-500 mb-1">Zero</p>
-                            <p class="text-[10px] uppercase tracking-widest text-slate-500">Human Touch Process</p>
+                
+                <div class="relative">
+                    <div class="bg-white text-slate-900 p-12 rounded-[3rem] shadow-2xl">
+                        <h4 class="text-2xl font-bold mb-6">Export Readiness Checklist</h4>
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-3 text-sm font-semibold"><i data-lucide="check-circle" class="text-green-700"></i> FSSAI Central License for Exports</li>
+                            <li class="flex items-center gap-3 text-sm font-semibold"><i data-lucide="check-circle" class="text-green-700"></i> ISO 22000:2018 Certified Facility</li>
+                            <li class="flex items-center gap-3 text-sm font-semibold"><i data-lucide="check-circle" class="text-green-700"></i> HACCP Hazard Analysis Standard</li>
+                            <li class="flex items-center gap-3 text-sm font-semibold"><i data-lucide="check-circle" class="text-green-700"></i> FDA Compliance Documentation</li>
+                            <li class="flex items-center gap-3 text-sm font-semibold"><i data-lucide="check-circle" class="text-green-700"></i> Halal & Kosher Ready Sourcing</li>
+                        </ul>
+                        <div class="mt-8 pt-8 border-t border-slate-100 flex items-center gap-4">
+                            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center font-bold text-orange-800 italic">IIT</div>
+                            <p class="text-[10px] uppercase font-bold text-slate-400">Quality Management System (QMS) built by Pranil Patil</p>
                         </div>
                     </div>
                 </div>
@@ -222,47 +244,48 @@
         </div>
     </section>
 
-    <!-- Contact / Inquiry Section -->
-    <section id="contact" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="max-w-4xl mx-auto bg-slate-50 rounded-[3rem] overflow-hidden shadow-2xl flex flex-col md:flex-row">
-                <div class="p-12 md:w-1/2 bg-slate-900 text-white">
-                    <h2 class="text-4xl font-bold mb-6">Global Sales <br><span class="text-amber-500 italic">Inquiry Desk</span></h2>
-                    <p class="text-slate-400 mb-10 text-sm leading-relaxed">If you are an importer, distributor, or wholesaler in Europe, MENA, or North America, connect with us for direct factory pricing.</p>
+    <!-- Global Reach / Contact -->
+    <section id="contact" class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="bg-slate-50 rounded-[4rem] p-12 lg:p-20 shadow-xl flex flex-col lg:flex-row gap-20 overflow-hidden relative">
+                <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-orange-50 rounded-full blur-3xl opacity-50"></div>
+                
+                <div class="lg:w-1/2 relative z-10">
+                    <h2 class="text-5xl font-bold text-[#2D4F1E] mb-8">Start Your <br>Import Journey.</h2>
+                    <p class="text-slate-500 mb-12 italic">Whether you are a supermarket chain in the UK or a bulk wholesaler in Dubai, we offer direct factory pricing with original Indian quality.</p>
                     
-                    <div class="space-y-6">
-                        <div class="flex items-center gap-4">
-                            <i data-lucide="mail" class="text-amber-500 w-5 h-5"></i>
-                            <span class="text-sm">exports@patilglobal.com</span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div>
+                            <p class="text-[10px] font-bold uppercase text-orange-600 mb-2">General Inquiry</p>
+                            <p class="text-sm font-bold">info@patilglobal.com</p>
                         </div>
-                        <div class="flex items-center gap-4">
-                            <i data-lucide="globe" class="text-amber-500 w-5 h-5"></i>
-                            <span class="text-sm">www.patilglobal.com</span>
+                        <div>
+                            <p class="text-[10px] font-bold uppercase text-orange-600 mb-2">Export Desk (International)</p>
+                            <p class="text-sm font-bold">exports@patilglobal.com</p>
                         </div>
-                        <div class="flex items-center gap-4">
-                            <i data-lucide="map-pin" class="text-amber-500 w-5 h-5"></i>
-                            <span class="text-sm">Pune, MH, India (H.O)</span>
+                        <div>
+                            <p class="text-[10px] font-bold uppercase text-orange-600 mb-2">Logistics (India)</p>
+                            <p class="text-sm font-bold">+91 98XX XXX XXX</p>
                         </div>
-                    </div>
-                    
-                    <div class="mt-12 pt-8 border-t border-white/10">
-                        <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Targeted Markets</p>
-                        <p class="text-xs italic">GCC Countries, United Kingdom, USA, Australia, South East Asia.</p>
                     </div>
                 </div>
-                <div class="p-12 md:w-1/2">
-                    <form class="space-y-4">
-                        <input type="text" placeholder="Your Name" class="w-full px-6 py-4 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none">
-                        <input type="email" placeholder="Corporate Email Address" class="w-full px-6 py-4 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none">
-                        <input type="text" placeholder="Company Name & Country" class="w-full px-6 py-4 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none">
-                        <select class="w-full px-6 py-4 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none appearance-none">
-                            <option>Inquiry Type: Bulk Import</option>
-                            <option>Inquiry Type: Private Label / OEM</option>
-                            <option>Inquiry Type: Distributorship</option>
+                
+                <div class="lg:w-1/2 relative z-10">
+                    <form class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <input type="text" placeholder="Your Name" class="w-full bg-white border border-slate-200 px-6 py-4 rounded-2xl outline-none focus:ring-2 focus:ring-[#2D4F1E]">
+                            <input type="email" placeholder="Corporate Email" class="w-full bg-white border border-slate-200 px-6 py-4 rounded-2xl outline-none focus:ring-2 focus:ring-[#2D4F1E]">
+                        </div>
+                        <input type="text" placeholder="Company Name & Target Market (e.g. UAE, UK, Singapore)" class="w-full bg-white border border-slate-200 px-6 py-4 rounded-2xl outline-none focus:ring-2 focus:ring-[#2D4F1E]">
+                        <select class="w-full bg-white border border-slate-200 px-6 py-4 rounded-2xl outline-none focus:ring-2 focus:ring-[#2D4F1E] text-slate-400 text-sm">
+                            <option>Expected Monthly Volume</option>
+                            <option>LCL (Trial Pack - 1 to 5 Tons)</option>
+                            <option>FCL (Full Container - 18+ Tons)</option>
+                            <option>Private Labeling / OEM Request</option>
                         </select>
-                        <textarea placeholder="Message / Volume Requirements (e.g. 5 Tons/Month)" rows="4" class="w-full px-6 py-4 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none resize-none"></textarea>
-                        <button class="w-full bg-amber-600 text-white font-bold py-5 rounded-xl hover:bg-amber-700 transition-all shadow-lg shadow-amber-900/20">
-                            Send Export Inquiry
+                        <textarea placeholder="Tell us about your requirements..." rows="4" class="w-full bg-white border border-slate-200 px-6 py-4 rounded-2xl outline-none focus:ring-2 focus:ring-[#2D4F1E] resize-none"></textarea>
+                        <button class="w-full bg-[#2D4F1E] text-white font-bold py-6 rounded-2xl shadow-lg shadow-green-900/30 hover:bg-black transition-all uppercase tracking-widest text-xs">
+                            Submit Procurement Request
                         </button>
                     </form>
                 </div>
@@ -271,20 +294,49 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-white py-12 border-t border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <div class="flex items-center justify-center space-x-2 mb-6">
-                <div class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-lg">P</div>
-                <span class="text-lg font-bold tracking-tight uppercase">Patil Global</span>
+    <footer class="bg-white border-t border-slate-100 py-16">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="flex items-center justify-center space-x-3 mb-10">
+                <div class="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-white font-serif text-xl">P</div>
+                <span class="text-lg font-bold tracking-tight uppercase">Patil Global Exports</span>
             </div>
-            <p class="text-slate-400 text-xs uppercase tracking-widest mb-4 font-bold">Premium Dairy Exports | Organic & Ethical</p>
-            <p class="text-slate-500 text-[10px]">© 2024 Patil Global. All Export Standards Compliant. Designed for International B2B Trade.</p>
+            <div class="flex flex-wrap justify-center gap-10 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-10">
+                <a href="#" class="hover:text-orange-600">Privacy & Terms</a>
+                <a href="#" class="hover:text-orange-600">Farmer Policy</a>
+                <a href="#" class="hover:text-orange-600">Lab Standards</a>
+                <a href="#" class="hover:text-orange-600">Certifications</a>
+            </div>
+            <p class="text-[10px] text-slate-400 mb-2">Corporate Office: Pune, Maharashtra, India. Optimized for Port Accessibility.</p>
+            <p class="text-[10px] text-slate-300">© 2024 Patil Global. All Rights Reserved. IIT Heritage & Ethics.</p>
         </div>
     </footer>
 
     <script>
         // Initialize Icons
         lucide.createIcons();
+
+        // Scroll Reveal Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-md');
+                nav.classList.add('bg-white');
+            } else {
+                nav.classList.remove('shadow-md');
+                nav.classList.remove('bg-white');
+            }
+        });
     </script>
+    
+    <style>
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+        }
+    </style>
 </body>
 </html>
