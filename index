@@ -1,0 +1,296 @@
+import React, { useState, useEffect } from 'react';
+import { ChevronRight, ShieldCheck, Globe, FlaskConical, Award, Menu, X, Mail, Phone, ExternalLink } from 'lucide-react';
+
+const App = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const NavItem = ({ label, href }) => (
+    <a href={href} className="text-sm font-medium hover:text-amber-600 transition-colors duration-200">
+      {label}
+    </a>
+  );
+
+  return (
+    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-amber-100 selection:text-amber-900">
+      {/* Navigation */}
+      <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md py-4 shadow-sm' : 'bg-transparent py-6'}`}>
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-xl">P</div>
+            <div>
+              <h1 className="text-lg font-bold tracking-tight leading-none uppercase">Patil Global</h1>
+              <p className="text-[10px] tracking-widest text-amber-600 uppercase font-bold">Premium Exports</p>
+            </div>
+          </div>
+
+          <div className="hidden md:flex items-center gap-8">
+            <NavItem label="Home" href="#" />
+            <NavItem label="About" href="#" />
+            <NavItem label="Products" href="#" />
+            <NavItem label="Quality" href="#" />
+            <NavItem label="Export Desk" href="#" />
+            <button className="bg-slate-900 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-slate-800 transition-all">
+              Inquire Now
+            </button>
+          </div>
+
+          <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <header className="relative h-screen flex items-center overflow-hidden bg-slate-50">
+        <div className="absolute inset-0 z-0 opacity-20">
+          <div className="absolute inset-0 bg-gradient-to-r from-white to-transparent z-10" />
+          <img 
+            src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&q=80&w=2000" 
+            alt="Premium Dairy" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-20">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2 mb-6 animate-fade-in">
+              <span className="h-[1px] w-12 bg-amber-600" />
+              <span className="text-amber-600 uppercase tracking-widest text-xs font-bold font-serif">India's Finest Dairy Export House</span>
+            </div>
+            <h2 className="text-5xl md:text-7xl font-light mb-8 leading-[1.1] text-slate-900">
+              Precision Engineered <br />
+              <span className="font-bold">Gourmet Paneer</span>
+            </h2>
+            <p className="text-lg text-slate-600 mb-10 leading-relaxed max-w-lg">
+              Combining 20 years of dairy mastery with IIT-standard process innovation. Patil Global delivers export-grade, flavored paneer to the world's most discerning markets.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button className="bg-slate-900 text-white px-8 py-4 rounded-md text-sm font-bold flex items-center justify-center gap-2 group hover:gap-4 transition-all shadow-xl shadow-slate-200">
+                Explore The Collection <ChevronRight size={18} />
+              </button>
+              <button className="border border-slate-200 bg-white text-slate-900 px-8 py-4 rounded-md text-sm font-bold hover:bg-slate-50 transition-all shadow-sm">
+                Request Technical Specs
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Floating Trust Badge */}
+        <div className="absolute bottom-12 right-12 hidden lg:flex items-center gap-4 bg-white p-4 rounded-xl shadow-2xl border border-slate-100 max-w-xs">
+          <div className="bg-amber-50 p-3 rounded-full text-amber-600">
+            <Award size={32} />
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-tight text-slate-400 mb-1">Founder Pedigree</p>
+            <p className="text-sm font-semibold text-slate-800 italic">"Engineering purity into every block." — Pranil Patil, IIT</p>
+          </div>
+        </div>
+      </header>
+
+      {/* Trust Indicators */}
+      <section className="py-12 bg-white border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 flex flex-wrap justify-center md:justify-between items-center gap-8 opacity-60">
+          <span className="font-bold text-slate-400 text-xl tracking-tighter">ISO 22000</span>
+          <span className="font-bold text-slate-400 text-xl tracking-tighter">HACCP CERTIFIED</span>
+          <span className="font-bold text-slate-400 text-xl tracking-tighter">FSSAI EXPORT</span>
+          <span className="font-bold text-slate-400 text-xl tracking-tighter">ORGANIC SOURCE</span>
+          <span className="font-bold text-slate-400 text-xl tracking-tighter">COLD-CHAIN SECURE</span>
+        </div>
+      </section>
+
+      {/* Feature Section: The Dual Sourcing */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-20">
+            <h3 className="text-3xl font-bold mb-4 text-slate-900">Specialized Dairy Sourcing</h3>
+            <div className="h-1 w-20 bg-amber-600 mx-auto" />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12">
+            {/* Cow Milk */}
+            <div className="group relative overflow-hidden rounded-3xl aspect-[4/5] md:aspect-auto md:h-[600px]">
+              <img 
+                src="https://images.unsplash.com/photo-1596733430284-f7437764b1a9?auto=format&fit=crop&q=80&w=1000" 
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                alt="Cow Milk Paneer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent" />
+              <div className="absolute bottom-0 p-10">
+                <span className="inline-block px-3 py-1 bg-amber-600 text-white text-[10px] font-bold tracking-widest uppercase rounded mb-4">The Gourmet Choice</span>
+                <h4 className="text-3xl font-bold text-white mb-4">Premium Cow Milk Paneer</h4>
+                <p className="text-slate-200 mb-6 leading-relaxed opacity-90">
+                  Lighter in texture, easily digestible, and crafted for fine dining. Perfect for Mediterranean and European markets seeking sophisticated dairy alternatives.
+                </p>
+                <ul className="space-y-2 mb-8">
+                  {['A2 Protein Rich', 'Softer Texture', 'Delicate Aroma', 'Low Sodium Options'].map(item => (
+                    <li key={item} className="text-white/80 text-sm flex items-center gap-2">
+                      <ShieldCheck size={16} className="text-amber-500" /> {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Buffalo Milk */}
+            <div className="group relative overflow-hidden rounded-3xl aspect-[4/5] md:aspect-auto md:h-[600px]">
+              <img 
+                src="https://images.unsplash.com/photo-1550583724-1255818c0533?auto=format&fit=crop&q=80&w=1000" 
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                alt="Buffalo Milk Paneer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent" />
+              <div className="absolute bottom-0 p-10">
+                <span className="inline-block px-3 py-1 bg-amber-600 text-white text-[10px] font-bold tracking-widest uppercase rounded mb-4">The Export Classic</span>
+                <h4 className="text-3xl font-bold text-white mb-4">Rich Buffalo Milk Paneer</h4>
+                <p className="text-slate-200 mb-6 leading-relaxed opacity-90">
+                  High fat, high protein, and incredibly creamy. Designed to hold shape during long-distance shipping and intensive culinary processes.
+                </p>
+                <ul className="space-y-2 mb-8">
+                  {['Dense & Velvety', 'High Yield Strength', 'Superior Searing', 'Long Shelf Life'].map(item => (
+                    <li key={item} className="text-white/80 text-sm flex items-center gap-2">
+                      <ShieldCheck size={16} className="text-amber-500" /> {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Export Process */}
+      <section className="py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h3 className="text-4xl font-bold mb-6 text-slate-900">Seamless Global Supply</h3>
+              <p className="text-slate-600 mb-12 text-lg">
+                We understand the complexities of international food logistics. Our operations are designed to meet the stringent standards of the FDA (USA), EFSA (Europe), and Gulf standards.
+              </p>
+
+              <div className="space-y-8">
+                {[
+                  { icon: <FlaskConical />, title: "Precision Lab Testing", desc: "Batch-wise microbial and chemical analysis in certified labs." },
+                  { icon: <ShieldCheck />, title: "Cold-Chain Integrity", desc: "End-to-end temperature logging from our facility to your warehouse." },
+                  { icon: <Globe />, title: "International Compliance", desc: "Documentation support for customs clearance and import regulations." }
+                ].map((item, idx) => (
+                  <div key={idx} className="flex gap-6">
+                    <div className="bg-white p-4 rounded-xl shadow-md text-amber-600 h-fit shrink-0">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <h5 className="font-bold text-lg mb-1">{item.title}</h5>
+                      <p className="text-slate-500 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="bg-slate-900 rounded-3xl p-12 text-white relative z-10">
+                <h4 className="text-2xl font-bold mb-8">B2B Procurement Request</h4>
+                <form className="space-y-4">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <input type="text" placeholder="Full Name" className="w-full bg-slate-800 border-none rounded-lg p-4 text-white placeholder:text-slate-500 focus:ring-2 focus:ring-amber-500 outline-none" />
+                    <input type="email" placeholder="Corporate Email" className="w-full bg-slate-800 border-none rounded-lg p-4 text-white placeholder:text-slate-500 focus:ring-2 focus:ring-amber-500 outline-none" />
+                  </div>
+                  <input type="text" placeholder="Company Name & Country" className="w-full bg-slate-800 border-none rounded-lg p-4 text-white placeholder:text-slate-500 focus:ring-2 focus:ring-amber-500 outline-none" />
+                  <select className="w-full bg-slate-800 border-none rounded-lg p-4 text-white placeholder:text-slate-500 focus:ring-2 focus:ring-amber-500 outline-none appearance-none">
+                    <option>Select Product Interest</option>
+                    <option>Cow Milk Paneer (Bulk)</option>
+                    <option>Buffalo Milk Paneer (Bulk)</option>
+                    <option>Flavour Sampler Pack</option>
+                    <option>Private Labeling / OEM</option>
+                  </select>
+                  <textarea placeholder="Tell us about your volume requirements..." rows="4" className="w-full bg-slate-800 border-none rounded-lg p-4 text-white placeholder:text-slate-500 focus:ring-2 focus:ring-amber-500 outline-none resize-none" />
+                  <button className="w-full bg-amber-600 text-white font-bold py-4 rounded-lg hover:bg-amber-500 transition-all shadow-lg shadow-amber-900/20">
+                    Connect with Export Desk
+                  </button>
+                </form>
+              </div>
+              <div className="absolute -bottom-6 -right-6 w-full h-full border-2 border-slate-200 rounded-3xl -z-0" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-slate-900 pt-20 pb-10 text-slate-400">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-4 gap-12 mb-16">
+            <div className="col-span-1 md:col-span-1">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-slate-900 font-bold text-xl">P</div>
+                <div className="text-white">
+                  <h1 className="text-lg font-bold tracking-tight leading-none uppercase">Patil Global</h1>
+                  <p className="text-[10px] tracking-widest text-amber-500 uppercase font-bold">Premium Exports</p>
+                </div>
+              </div>
+              <p className="text-sm leading-relaxed mb-6">
+                Redefining Indian dairy for the global stage. Ethical sourcing, scientific processing, and uncompromising quality.
+              </p>
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-amber-600 transition-colors cursor-pointer"><Mail size={16} /></div>
+                <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-amber-600 transition-colors cursor-pointer"><Phone size={16} /></div>
+                <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-amber-600 transition-colors cursor-pointer"><ExternalLink size={16} /></div>
+              </div>
+            </div>
+
+            <div>
+              <h6 className="text-white font-bold mb-6">The Collection</h6>
+              <ul className="space-y-4 text-sm">
+                <li><a href="#" className="hover:text-amber-500 transition-colors">Cow Milk Paneer</a></li>
+                <li><a href="#" className="hover:text-amber-500 transition-colors">Buffalo Milk Paneer</a></li>
+                <li><a href="#" className="hover:text-amber-500 transition-colors">Chili Garlic Infusion</a></li>
+                <li><a href="#" className="hover:text-amber-500 transition-colors">Black Pepper Specialty</a></li>
+                <li><a href="#" className="hover:text-amber-500 transition-colors">Malai Heritage Line</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h6 className="text-white font-bold mb-6">Transparency</h6>
+              <ul className="space-y-4 text-sm">
+                <li><a href="#" className="hover:text-amber-500 transition-colors">Ethical Sourcing Policy</a></li>
+                <li><a href="#" className="hover:text-amber-500 transition-colors">Cold Chain Standards</a></li>
+                <li><a href="#" className="hover:text-amber-500 transition-colors">Compliance Certs</a></li>
+                <li><a href="#" className="hover:text-amber-500 transition-colors">Lab Reports</a></li>
+                <li><a href="#" className="hover:text-amber-500 transition-colors">Founder's Vision</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h6 className="text-white font-bold mb-6">Export Desk</h6>
+              <ul className="space-y-4 text-sm">
+                <li className="flex items-start gap-2"><Phone size={14} className="mt-1 shrink-0" /> +91 98XXX XXXXX (International)</li>
+                <li className="flex items-start gap-2"><Mail size={14} className="mt-1 shrink-0" /> export@patilglobal.com</li>
+                <li className="mt-4 pt-4 border-t border-slate-800">
+                  <p className="text-xs font-bold text-amber-500 uppercase mb-2">Facility Location</p>
+                  <p className="text-xs">Pune District, Maharashtra, India. Optimized for port connectivity (JNPT).</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="pt-10 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+            <p>© 2024 Patil Global Dairy Exports. All Rights Reserved.</p>
+            <div className="flex gap-6">
+              <a href="#" className="hover:text-white">Privacy Policy</a>
+              <a href="#" className="hover:text-white">Export Terms</a>
+              <a href="#" className="hover:text-white">Wholesale FAQ</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
