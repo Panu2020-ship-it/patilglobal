@@ -3,313 +3,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patil Global - Coming Soon</title>
+    <title>Patil Global - Innovation Beyond Boundaries</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
             scroll-behavior: smooth;
-            background-color: #0f172a;
-            color: white;
         }
 
-        .glass-card {
+        .glass {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, background 0.3s ease;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        #canvas-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
         }
 
         .gradient-text {
-            background: linear-gradient(90deg, #60a5fa, #a855f7);
+            background: linear-gradient(90deg, #60a5fa, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        #career-canvas-container {
+            width: 100%;
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem;
+        }
+
+        .nav-link {
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: #60a5fa;
+        }
+
+        /* InternPath Specific Styles (Integrated) */
+        .intern-portal-active body {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        .glass-nav-portal {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .intern-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .intern-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container {
+            background-image: linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%);
+        }
+
+        .modal-overlay {
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+        }
+        
+        .badge-premium {
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            color: white;
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .hidden-view {
+            display: none !important;
         }
     </style>
 </head>
 <body class="overflow-x-hidden">
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-slate-900/80 backdrop-blur-md border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold tracking-tighter">PATIL<span class="text-blue-500">GLOBAL</span></div>
-            <div class="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest">
-                <a href="#home" class="hover:text-blue-400 transition">Home</a>
-                <a href="#products" class="hover:text-blue-400 transition">Products</a>
-                <a href="#careers" class="hover:text-blue-400 transition">Careers</a>
-                <a href="#contact" class="hover:text-blue-400 transition">Contact</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Home / Coming Soon Section -->
-    <section id="home" class="relative min-h-screen flex items-center justify-center px-6">
-        <div class="text-center z-10">
-            <h2 class="text-blue-400 font-semibold tracking-widest uppercase mb-4">Innovation in Motion</h2>
-            <h1 class="text-5xl md:text-8xl font-bold mb-6 tracking-tight">COMING <span class="gradient-text">SOON</span></h1>
-            <p class="text-slate-400 max-w-xl mx-auto text-lg mb-8">
-                We are building the future of global logistics and technology solutions. Patil Global is launching its full digital suite shortly.
-            </p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="#contact" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-full font-semibold transition shadow-lg shadow-blue-500/20">Notify Me</a>
-                <a href="#products" class="px-8 py-3 bg-white/10 hover:bg-white/20 rounded-full font-semibold transition border border-white/10">Our Vision</a>
-            </div>
-        </div>
-        <!-- Three.js Background for Home -->
-        <div id="home-canvas" class="absolute inset-0 opacity-40"></div>
-    </section>
-
-    <!-- Products Section -->
-    <section id="products" class="py-24 px-6 bg-slate-900">
-        <div class="max-w-7xl mx-auto">
-            <div class="mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Ecosystem</h2>
-                <div class="h-1 w-20 bg-blue-500"></div>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Product 1 -->
-                <div class="glass-card p-8 rounded-2xl">
-                    <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">Smart Logistics</h3>
-                    <p class="text-slate-400 mb-6">Optimizing global supply chains with real-time AI analytics and tracking.</p>
-                    <button class="text-blue-400 font-semibold hover:text-blue-300 transition">Explore &rarr;</button>
+    <!-- View 1: Main Website -->
+    <div id="main-site-view">
+        <!-- Navigation -->
+        <nav class="fixed top-0 w-full z-50 glass py-4">
+            <div class="container mx-auto px-6 flex justify-between items-center">
+                <div class="text-2xl font-bold tracking-tighter">
+                    PATIL<span class="text-blue-500">GLOBAL</span>
                 </div>
-
-                <!-- Product 2 -->
-                <div class="glass-card p-8 rounded-2xl border-blue-500/30 ring-1 ring-blue-500/20">
-                    <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">Global Trade Platform</h3>
-                    <p class="text-slate-400 mb-6">A unified interface for international transactions and compliance management.</p>
-                    <div class="flex gap-4">
-                        <button class="px-4 py-2 bg-blue-600 rounded-lg text-sm font-bold">Standard</button>
-                        <button class="px-4 py-2 bg-purple-600 rounded-lg text-sm font-bold">Enterprise</button>
-                    </div>
-                </div>
-
-                <!-- Product 3 -->
-                <div class="glass-card p-8 rounded-2xl">
-                    <div class="w-12 h-12 bg-emerald-500/20 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04defaultA12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">Secure Storage</h3>
-                    <p class="text-slate-400 mb-6">Encrypted data warehousing and physical asset protection solutions.</p>
-                    <button class="text-emerald-400 font-semibold hover:text-emerald-300 transition">Case Studies &rarr;</button>
+                <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest font-medium">
+                    <a href="#home" class="nav-link">Home</a>
+                    <a href="#products" class="nav-link">Products</a>
+                    <a onclick="showPortal()" class="nav-link text-blue-400">Careers</a>
+                    <a href="#contact" class="nav-link">Contact</a>
                 </div>
             </div>
-        </div>
-    </section>
+        </nav>
 
-    <!-- Careers Section (3D Animated) -->
-    <section id="careers" class="relative py-24 min-h-[600px] flex items-center overflow-hidden">
-        <div id="careers-canvas" class="absolute inset-0"></div>
-        <div class="max-w-7xl mx-auto px-6 relative z-10 w-full">
-            <div class="md:w-1/2 glass-card p-10 rounded-3xl border-l-4 border-l-blue-500">
-                <h2 class="text-4xl font-bold mb-6">Join the Revolution</h2>
-                <p class="text-slate-300 text-lg mb-8 leading-relaxed">
-                    We're looking for visionary thinkers, engineers, and creatives. At Patil Global, we don't just follow trends—we set them. Explore our 3D ecosystem of growth and find your place.
+        <!-- Section 1: Home -->
+        <section id="home" class="relative min-h-screen flex items-center justify-center pt-20">
+            <div class="absolute inset-0 z-0 overflow-hidden">
+                <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full filter blur-[100px] animate-pulse"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full filter blur-[100px] animate-pulse"></div>
+            </div>
+            
+            <div class="container mx-auto px-6 text-center z-10">
+                <h2 class="text-sm uppercase tracking-[0.5em] mb-6 text-blue-400 font-semibold">Evolution in Progress</h2>
+                <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tighter">COMING <span class="gradient-text">SOON</span></h1>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg mb-10 leading-relaxed">
+                    We are building the future of global logistics and technology. Our new digital experience is currently under development.
                 </p>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-4">
-                        <div class="w-2 h-2 rounded-full bg-blue-500"></div>
-                        <span>Engineering & DevOps</span>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-2 h-2 rounded-full bg-blue-500"></div>
-                        <span>Product Design</span>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-2 h-2 rounded-full bg-blue-500"></div>
-                        <span>Global Operations</span>
-                    </div>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#products" class="px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-full font-bold transition-all transform hover:scale-105">Explore Products</a>
+                    <a onclick="showPortal()" class="px-8 py-4 glass hover:bg-white/10 rounded-full font-bold transition-all cursor-pointer">Careers Portal</a>
                 </div>
-                <button class="mt-10 px-10 py-4 bg-white text-slate-900 font-bold rounded-xl hover:bg-blue-100 transition">View Openings</button>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-24 px-6 bg-slate-900">
-        <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4">Get In Touch</h2>
-                <p class="text-slate-400">Have questions about our launch? Reach out to our team.</p>
+        <!-- Section 2: Products -->
+        <section id="products" class="py-24 bg-zinc-950">
+            <div class="container mx-auto px-6">
+                <div class="mb-16">
+                    <h2 class="text-4xl font-bold mb-4">Our <span class="text-blue-500">Products</span></h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="product-card glass p-8 rounded-3xl group">
+                        <i data-lucide="globe" class="text-blue-500 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-4">Global Network</h3>
+                        <p class="text-gray-400 text-sm mb-6">Integrated distribution system spanning five continents.</p>
+                        <button class="text-blue-500 font-bold flex items-center gap-2">Learn More <i data-lucide="arrow-right" class="w-4"></i></button>
+                    </div>
+                    <div class="product-card glass p-8 rounded-3xl group">
+                        <i data-lucide="cpu" class="text-purple-500 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-4">Smart Logistics</h3>
+                        <p class="text-gray-400 text-sm mb-6">AI-driven platform that predicts and optimizes routes.</p>
+                        <button class="text-purple-500 font-bold flex items-center gap-2">Learn More <i data-lucide="arrow-right" class="w-4"></i></button>
+                    </div>
+                    <div class="product-card glass p-8 rounded-3xl group">
+                        <i data-lucide="shield-check" class="text-emerald-500 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-4">Secure Chain</h3>
+                        <p class="text-gray-400 text-sm mb-6">Blockchain-powered security for global asset tracking.</p>
+                        <button class="text-emerald-500 font-bold flex items-center gap-2">Learn More <i data-lucide="arrow-right" class="w-4"></i></button>
+                    </div>
+                </div>
             </div>
-            
-            <form id="contactForm" class="grid md:grid-cols-2 gap-6">
-                <div class="space-y-2">
-                    <label class="text-sm font-medium text-slate-400">Full Name</label>
-                    <input type="text" class="w-full bg-slate-800 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" placeholder="John Doe">
-                </div>
-                <div class="space-y-2">
-                    <label class="text-sm font-medium text-slate-400">Email Address</label>
-                    <input type="email" class="w-full bg-slate-800 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" placeholder="john@patilglobal.com">
-                </div>
-                <div class="md:col-span-2 space-y-2">
-                    <label class="text-sm font-medium text-slate-400">Message</label>
-                    <textarea rows="4" class="w-full bg-slate-800 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" placeholder="How can we help?"></textarea>
-                </div>
-                <div class="md:col-span-2">
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-lg font-bold transition shadow-lg shadow-blue-500/20">Send Message</button>
-                </div>
-            </form>
-            
-            <div id="messageStatus" class="hidden mt-6 p-4 rounded-lg bg-emerald-500/20 border border-emerald-500/50 text-center">
-                Message sent successfully! We'll get back to you soon.
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer class="py-12 px-6 border-t border-white/5 bg-slate-950">
-        <div class="max-w-7xl mx-auto flex flex-col md:row justify-between items-center gap-8">
-            <div class="text-xl font-bold">PATIL<span class="text-blue-500">GLOBAL</span></div>
-            <p class="text-slate-500 text-sm">© 2024 Patil Global Solutions. All rights reserved.</p>
-            <div class="flex gap-6">
-                <a href="#" class="text-slate-400 hover:text-white transition">LinkedIn</a>
-                <a href="#" class="text-slate-400 hover:text-white transition">Twitter</a>
-                <a href="#" class="text-slate-400 hover:text-white transition">Instagram</a>
+        <!-- Section 3: Careers (3D Animated) -->
+        <section id="careers" class="py-24 relative">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-5xl font-bold mb-8 leading-tight">Build the Future of <br><span class="gradient-text">Global Trade</span></h3>
+                        <p class="text-gray-400 text-lg mb-8 leading-relaxed">Join our remote-first team and explore high-impact research opportunities.</p>
+                        <button onclick="showPortal()" class="inline-block px-10 py-4 bg-white text-black font-bold rounded-full hover:bg-blue-500 hover:text-white transition-all">
+                            View Openings
+                        </button>
+                    </div>
+                    <div id="career-canvas-container" class="glass">
+                        <div class="absolute top-6 left-6 z-10 pointer-events-none">
+                            <p class="text-xs uppercase tracking-widest text-blue-400 opacity-70">Interactive Global Node Network</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </section>
+
+        <!-- Contact etc. -->
+        <footer class="py-12 border-t border-white/5 text-center text-gray-500 text-sm">
+            © 2024 Patil Global.
+        </footer>
+    </div>
+
+    <!-- View 2: InternPath Portal (Hidden by default) -->
+    <div id="intern-portal-view" class="hidden-view bg-slate-50 text-slate-900 min-h-screen">
+        <!-- Navigation -->
+        <nav class="glass-nav-portal sticky top-0 z-50 py-4 px-6 md:px-12 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-indigo-600 p-2 rounded-lg">
+                    <i class="fas fa-graduation-cap text-white text-xl"></i>
+                </div>
+                <span class="text-2xl font-bold tracking-tight text-indigo-900">InternPath</span>
+            </div>
+            <div class="hidden md:flex gap-8 font-medium text-slate-600">
+                <a href="#" class="hover:text-indigo-600 transition">Find Internships</a>
+                <a onclick="hidePortal()" class="hover:text-red-500 transition cursor-pointer font-bold">Back to Patil Global</a>
+            </div>
+            <button class="bg-indigo-600 text-white px-5 py-2.5 rounded-full font-semibold hover:bg-indigo-700 transition">
+                Upload Resume
+            </button>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="search-container py-16 px-6 md:py-24 text-center text-white">
+            <div class="mb-4 inline-block px-4 py-1.5 bg-indigo-500/30 rounded-full border border-indigo-400/30 text-indigo-100 text-sm font-medium">
+                🚀 Direct Application Links for 2026 Programs
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6">Premier Institute Portals</h1>
+            <p class="text-lg md:text-xl text-indigo-100 mb-10 max-w-2xl mx-auto">One-stop access for IIT, NIT & IIIT research fellowships.</p>
+            
+            <div class="max-w-4xl mx-auto bg-white p-2 rounded-2xl shadow-2xl flex flex-col md:flex-row gap-2">
+                <div class="flex-1 flex items-center px-4 border-b md:border-b-0 md:border-r border-slate-100">
+                    <i class="fas fa-search text-slate-400 mr-3"></i>
+                    <input type="text" id="searchInput" placeholder="Search IIT, NIT, or Tech Stack..." class="w-full py-3 text-slate-800 focus:outline-none bg-transparent">
+                </div>
+                <div class="flex-1 flex items-center px-4">
+                    <i class="fas fa-university text-slate-400 mr-3"></i>
+                    <select id="categoryFilter" class="w-full py-3 text-slate-800 focus:outline-none bg-transparent appearance-none">
+                        <option value="all">All Disciplines</option>
+                        <option value="Academic Research">Academic Research</option>
+                        <option value="Software Development">Software Development</option>
+                        <option value="Data Science">Data Science</option>
+                    </select>
+                </div>
+                <button onclick="filterInternships()" class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition">Search</button>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto py-12 px-6">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-2xl font-bold text-slate-800" id="resultCount">Loading Openings...</h2>
+            </div>
+            <div id="internshipGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </main>
+
+        <footer class="bg-slate-900 text-white py-12 px-6 mt-12 text-center">
+            <div class="flex justify-center items-center gap-2 mb-4">
+                <i class="fas fa-graduation-cap text-indigo-400 text-2xl"></i>
+                <span class="text-2xl font-bold tracking-tight">InternPath</span>
+            </div>
+            <p class="text-slate-500 text-sm">© 2026 Academic Internship Hub | Powered by Patil Global</p>
+        </footer>
+    </div>
+
+    <!-- Modal System -->
+    <div id="applyModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="modal-overlay absolute inset-0" onclick="closeModal()"></div>
+        <div class="bg-white rounded-3xl w-full max-w-2xl relative z-10 shadow-2xl overflow-hidden animate-slide-up max-h-[90vh] overflow-y-auto p-8">
+            <div class="flex justify-between items-start mb-6">
+                <div id="modalLogo" class="w-20 h-20 bg-slate-50 rounded-2xl flex items-center justify-center text-3xl border border-slate-100"></div>
+                <button onclick="closeModal()" class="bg-slate-100 w-10 h-10 rounded-full flex items-center justify-center text-slate-500"><i class="fas fa-times"></i></button>
+            </div>
+            <h3 id="modalTitle" class="text-3xl font-bold text-slate-900 mb-1"></h3>
+            <p id="modalCompany" class="text-indigo-600 text-lg font-semibold mb-6"></p>
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100/50">
+                    <p class="text-[10px] uppercase font-bold text-indigo-400 mb-1">Duration</p>
+                    <p id="modalDuration" class="font-bold text-slate-800"></p>
+                </div>
+                <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100/50">
+                    <p class="text-[10px] uppercase font-bold text-emerald-500 mb-1">Mode</p>
+                    <p id="modalMode" class="font-bold text-slate-800"></p>
+                </div>
+            </div>
+            <div class="space-y-6 mb-8">
+                <div>
+                    <h4 class="text-sm font-bold text-slate-900 mb-2">About the Program</h4>
+                    <p id="modalDescription" class="text-slate-600 text-sm bg-slate-50 p-4 rounded-2xl"></p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 mb-2">Stipend & Support</h4>
+                        <p id="modalStipendFull" class="text-sm text-slate-700 font-medium"></p>
+                        <p id="modalStipendNote" class="text-xs text-slate-500 italic"></p>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 mb-2">Logistics</h4>
+                        <p id="modalAccommodation" class="text-sm text-slate-700"></p>
+                    </div>
+                </div>
+            </div>
+            <a id="modalApplyBtn" href="#" target="_blank" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold hover:bg-indigo-700 transition block text-center">Apply on Official Portal</a>
         </div>
-    </footer>
+    </div>
 
     <script>
-        // Form Submission Logic
-        document.getElementById('contactForm').onsubmit = (e) => {
-            e.preventDefault();
-            const status = document.getElementById('messageStatus');
-            status.classList.remove('hidden');
-            e.target.reset();
-            setTimeout(() => {
-                status.classList.add('hidden');
-            }, 5000);
-        };
+        // --- View Switching Logic ---
+        function showPortal() {
+            document.getElementById('main-site-view').classList.add('hidden-view');
+            document.getElementById('intern-portal-view').classList.remove('hidden-view');
+            window.scrollTo(0, 0);
+        }
 
-        // Three.js 3D Animations
-        window.onload = function() {
-            initHome3D();
-            initCareers3D();
-        };
+        function hidePortal() {
+            document.getElementById('intern-portal-view').classList.add('hidden-view');
+            document.getElementById('main-site-view').classList.remove('hidden-view');
+            window.scrollTo(0, 0);
+        }
 
-        function initHome3D() {
-            const container = document.getElementById('home-canvas');
+        // --- Patil Global Three.js Animation ---
+        const initThree = () => {
+            const container = document.getElementById('career-canvas-container');
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
             container.appendChild(renderer.domElement);
 
-            // Create a starfield/particles
-            const geometry = new THREE.BufferGeometry();
-            const vertices = [];
-            for (let i = 0; i < 2000; i++) {
-                vertices.push(THREE.MathUtils.randFloatSpread(2000));
-                vertices.push(THREE.MathUtils.randFloatSpread(2000));
-                vertices.push(THREE.MathUtils.randFloatSpread(2000));
-            }
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-            const material = new THREE.PointsMaterial({ color: 0x3b82f6, size: 2 });
-            const points = new THREE.Points(geometry, material);
-            scene.add(points);
+            const particlesGeometry = new THREE.BufferGeometry();
+            const posArray = new Float32Array(1500 * 3);
+            for(let i=0; i<4500; i++) posArray[i] = (Math.random() - 0.5) * 8;
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
-            camera.position.z = 500;
+            const particlesMesh = new THREE.Points(particlesGeometry, new THREE.PointsMaterial({ size: 0.015, color: '#60a5fa', transparent: true, opacity: 0.8 }));
+            scene.add(particlesMesh);
+            
+            const sphere = new THREE.Mesh(new THREE.SphereGeometry(2, 32, 32), new THREE.MeshBasicMaterial({ color: '#1e3a8a', wireframe: true, transparent: true, opacity: 0.1 }));
+            scene.add(sphere);
+
+            camera.position.z = 5;
 
             function animate() {
                 requestAnimationFrame(animate);
-                points.rotation.y += 0.001;
-                points.rotation.x += 0.0005;
+                particlesMesh.rotation.y += 0.001;
+                sphere.rotation.y -= 0.0005;
                 renderer.render(scene, camera);
             }
             animate();
+        };
 
-            window.addEventListener('resize', () => {
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(container.clientWidth, container.clientHeight);
-            });
+        // --- InternPath Data & Logic ---
+        const internships = [
+            { id: 1, title: "Summer Fellowship Programme", company: "IIT Madras", category: "Academic Research", location: "Chennai", mode: "On-campus", duration: "2 Months", stipend: "₹6,000 Total", stipendDetail: "Lump sum disbursement at end.", accommodation: "❌ No accommodation.", logo: "🏛️", tags: ["Engineering", "Research"], applyLink: "https://ssp.iitm.ac.in/", desc: "Enhance interest in academic research." },
+            { id: 2, title: "SURGE Program 2026", company: "IIT Kanpur", category: "Academic Research", location: "Kanpur", mode: "On-campus", duration: "8 Weeks", stipend: "Financial Support", stipendDetail: "Varies by department.", accommodation: "✅ Hostel included.", logo: "🏫", tags: ["STEM", "UG Research"], applyLink: "https://surge.iitk.ac.in/", desc: "Focuses on short-term research projects." },
+            { id: 3, title: "SURE Internship Scheme", company: "IIT Hyderabad", category: "Academic Research", location: "Hyderabad", mode: "On-campus", duration: "1-2 Months", stipend: "Fixed Stipend", stipendDetail: "Official research scheme.", accommodation: "✅ Available at nominal cost.", logo: "🔬", tags: ["Core", "SURE"], applyLink: "https://iith.ac.in/", desc: "Intensive research training." },
+            { id: 4, title: "Summer Research Internship", company: "IIIT Delhi", category: "Software Development", location: "New Delhi", mode: "Hybrid", duration: "2–3 Months", stipend: "₹8,000 – ₹15,000/mo", stipendDetail: "Project-dependent.", accommodation: "❌ Usually not included.", logo: "💻", tags: ["AI/ML", "Cyber"], applyLink: "https://iiitd.ac.in/", desc: "Work on cutting-edge AI and CSE." },
+            { id: 6, title: "Research Intern (ML)", company: "IIIT Hyderabad", category: "Data Science", location: "Hyderabad", mode: "On-campus", duration: "6 Months", stipend: "₹25,000/mo", stipendDetail: "One of the highest-paid.", accommodation: "✅ Subsidized hostel.", logo: "🧠", tags: ["PyTorch", "AI Lab"], applyLink: "https://www.iiit.ac.in/", desc: "Work with Kohli Centre on AI." },
+            { id: 7, title: "Global Internship (GIP)", company: "IIT Bombay", category: "Academic Research", location: "Mumbai", mode: "On-campus", duration: "3 Months", stipend: "₹10,000/mo", stipendDetail: "Total: ₹30,000.", accommodation: "✅ Hostel provided.", logo: "🌊", tags: ["IRCC", "Prestige"], applyLink: "https://www.ircc.iitb.ac.in/", desc: "Access IIT Bombay's research ecosystem." }
+        ];
+
+        function renderInternships(data) {
+            const grid = document.getElementById('internshipGrid');
+            grid.innerHTML = data.map(intern => `
+                <div class="intern-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-xl shadow-inner border border-slate-100">${intern.logo}</div>
+                        <span class="text-[10px] font-bold px-2 py-1 bg-indigo-50 text-indigo-600 rounded-md uppercase">${intern.duration}</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">${intern.title}</h3>
+                    <p class="text-indigo-600 font-semibold mb-4 text-xs">${intern.company}</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        ${intern.tags.map(tag => `<span class="px-2 py-1 bg-slate-100 text-slate-500 rounded text-[9px] font-bold uppercase">${tag}</span>`).join('')}
+                    </div>
+                    <div class="mt-auto flex justify-between items-center pt-4 border-t">
+                        <div>
+                            <p class="text-[9px] text-slate-400 font-bold uppercase">Stipend</p>
+                            <p class="text-sm font-bold text-emerald-600">${intern.stipend}</p>
+                        </div>
+                        <button onclick="openModal(${intern.id})" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-900 transition shadow-lg shadow-indigo-100">Details</button>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('resultCount').innerText = `Showing ${data.length} Opportunities`;
         }
 
-        function initCareers3D() {
-            const container = document.getElementById('careers-canvas');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            container.appendChild(renderer.domElement);
-
-            // Create a floating geometric structure
-            const geometry = new THREE.IcosahedronGeometry(10, 1);
-            const material = new THREE.MeshPhongMaterial({ 
-                color: 0x60a5fa, 
-                wireframe: true,
-                emissive: 0x1e3a8a,
-                shininess: 100
+        function filterInternships() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const filtered = internships.filter(item => {
+                const matchesSearch = item.title.toLowerCase().includes(query) || item.company.toLowerCase().includes(query);
+                const matchesCat = category === 'all' || item.category === category;
+                return matchesSearch && matchesCat;
             });
-            const mesh = new THREE.Mesh(geometry, material);
-            scene.add(mesh);
-
-            // Add some nodes at vertices
-            const nodeGeo = new THREE.SphereGeometry(0.3, 16, 16);
-            const nodeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-            
-            const positionAttribute = geometry.attributes.position;
-            const vertex = new THREE.Vector3();
-            for (let i = 0; i < positionAttribute.count; i++) {
-                vertex.fromBufferAttribute(positionAttribute, i);
-                const node = new THREE.Mesh(nodeGeo, nodeMat);
-                node.position.copy(vertex);
-                mesh.add(node);
-            }
-
-            const light = new THREE.PointLight(0xffffff, 1, 100);
-            light.position.set(20, 20, 20);
-            scene.add(light);
-            scene.add(new THREE.AmbientLight(0x404040));
-
-            camera.position.z = 30;
-            camera.position.x = 10; // Offset for the text content
-
-            function animate() {
-                requestAnimationFrame(animate);
-                mesh.rotation.y += 0.005;
-                mesh.rotation.z += 0.002;
-                
-                // Add a floating hover effect
-                mesh.position.y = Math.sin(Date.now() * 0.001) * 2;
-                
-                renderer.render(scene, camera);
-            }
-            animate();
-
-            window.addEventListener('resize', () => {
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(container.clientWidth, container.clientHeight);
-            });
+            renderInternships(filtered);
         }
+
+        function openModal(id) {
+            const intern = internships.find(i => i.id === id);
+            document.getElementById('modalTitle').innerText = intern.title;
+            document.getElementById('modalCompany').innerText = intern.company;
+            document.getElementById('modalDuration').innerText = intern.duration;
+            document.getElementById('modalMode').innerText = intern.mode;
+            document.getElementById('modalStipendFull').innerText = intern.stipend;
+            document.getElementById('modalStipendNote').innerText = intern.stipendDetail;
+            document.getElementById('modalAccommodation').innerText = intern.accommodation;
+            document.getElementById('modalDescription').innerText = intern.desc;
+            document.getElementById('modalLogo').innerHTML = intern.logo;
+            document.getElementById('modalApplyBtn').href = intern.applyLink;
+            document.getElementById('applyModal').classList.remove('hidden');
+        }
+
+        function closeModal() { document.getElementById('applyModal').classList.add('hidden'); }
+
+        window.onload = () => {
+            lucide.createIcons();
+            initThree();
+            renderInternships(internships);
+            document.getElementById('searchInput').addEventListener('input', filterInternships);
+        };
     </script>
 </body>
 </html>
