@@ -1,457 +1,568 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patil Global - Innovation Beyond Boundaries</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #050505;
-            color: #ffffff;
-            scroll-behavior: smooth;
-        }
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { 
+  Mail, 
+  Send, 
+  User, 
+  Search, 
+  CheckCircle, 
+  Clock, 
+  AlertCircle, 
+  FileText, 
+  ChevronRight,
+  RefreshCw,
+  School,
+  Building,
+  Menu,
+  X,
+  Globe,
+  Cpu,
+  ShieldCheck,
+  ArrowRight,
+  Navigation
+} from 'lucide-react';
 
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+// --- DATA: INTERNSHIP PORTAL ---
+const INTERNSHIPS_DATA = [
+  { id: 1, title: "Summer Fellowship Programme", company: "IIT Madras", category: "Academic Research", mode: "On-campus", duration: "2 Months", stipend: "₹6,000 Total", stipendDetail: "Lump sum disbursement at end.", accommodation: "❌ Self-arranged stay.", logo: "🏛️", tags: ["Research", "Engg"], applyLink: "https://ssp.iitm.ac.in/", desc: "Enhance interest in quality academic research." },
+  { id: 2, title: "SURGE Program 2026", company: "IIT Kanpur", category: "Academic Research", mode: "On-campus", duration: "8 Weeks", stipend: "Supported", stipendDetail: "Variable department funds.", accommodation: "✅ Hostel included.", logo: "🏫", tags: ["STEM", "UG"], applyLink: "https://surge.iitk.ac.in/", desc: "Focuses on short-term research projects with IITK faculty." },
+  { id: 3, title: "SURE Internship Scheme", company: "IIT Hyderabad", category: "Academic Research", mode: "On-campus", duration: "2 Months", stipend: "Fixed Stipend", stipendDetail: "Monthly allowance provided.", accommodation: "✅ Subsidized stay.", logo: "🔬", tags: ["Core", "SURE"], applyLink: "https://iith.ac.in/", desc: "Intensive research exposure in Core Engg." },
+  { id: 4, title: "Software Research Intern", company: "IIIT Delhi", category: "Software Development", mode: "Hybrid", duration: "3 Months", stipend: "₹10,000/mo", stipendDetail: "Merit-based payments.", accommodation: "❌ Not guaranteed.", logo: "💻", tags: ["AI", "CS"], applyLink: "https://iiitd.ac.in/", desc: "Practical skills in modern full-stack and AI." },
+  { id: 6, title: "ML Research Intern", company: "IIIT Hyderabad", category: "Data Science", mode: "On-campus", duration: "6 Months", stipend: "₹25,000/mo", stipendDetail: "Top-tier stipend.", accommodation: "✅ Hostel available.", logo: "🧠", tags: ["ML", "Research"], applyLink: "https://www.iiit.ac.in/", desc: "Focus on Intelligent Systems and CV." },
+  { id: 7, title: "Global Intern (GIP)", company: "IIT Bombay", category: "Academic Research", mode: "On-campus", duration: "3 Months", stipend: "₹10,000/mo", stipendDetail: "Total ₹30,000.", accommodation: "✅ Hostel provided.", logo: "🌊", tags: ["Bombay", "Prestige"], applyLink: "https://www.ircc.iitb.ac.in/", desc: "IIT Bombay's premier research ecosystem access." }
+];
 
-        .gradient-text {
-            background: linear-gradient(90deg, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+// --- DATA: OUTREACH TOOL MOCK DATA ---
+const generateOutreachMockData = () => {
+  const unis = [
+    { id: 1, name: 'Stanford University', domain: 'stanford.edu' },
+    { id: 2, name: 'MIT', domain: 'mit.edu' },
+    { id: 3, name: 'UC Berkeley', domain: 'berkeley.edu' },
+    { id: 4, name: 'IIT Bombay', domain: 'iitb.ac.in' },
+    { id: 5, name: 'IIT Madras', domain: 'iitm.ac.in' },
+  ];
+  const depts = ['Computer Science', 'Electrical Engineering', 'Robotics', 'Physics', 'Aerospace'];
+  let professors = [];
+  let idCounter = 1;
 
-        #career-canvas-container {
-            width: 100%;
-            height: 350px; /* Reduced for mobile */
-            position: relative;
-            overflow: hidden;
-            border-radius: 1.5rem;
-        }
+  unis.forEach(uni => {
+    depts.forEach(dept => {
+      const count = 3 + Math.floor(Math.random() * 3);
+      for (let i = 0; i < count; i++) {
+        const isIndian = uni.id >= 4;
+        const firstNamesUS = ['Alice', 'Robert', 'James', 'Emily', 'Michael', 'Sarah', 'David'];
+        const lastNamesUS = ['Chen', 'Smith', 'Johnson', 'Gupta', 'Lee', 'Wong', 'Miller'];
+        const firstNamesIN = ['Amit', 'Priya', 'Suresh', 'Deepak', 'Anjali', 'Vikram', 'Neha', 'Rohan'];
+        const lastNamesIN = ['Patil', 'Sharma', 'Verma', 'Reddy', 'Iyer', 'Singh', 'Kumar', 'Das'];
+        const fName = isIndian ? firstNamesIN[Math.floor(Math.random() * firstNamesIN.length)] : firstNamesUS[Math.floor(Math.random() * firstNamesUS.length)];
+        const lName = isIndian ? lastNamesIN[Math.floor(Math.random() * lastNamesIN.length)] : lastNamesUS[Math.floor(Math.random() * lastNamesUS.length)];
+        professors.push({
+          id: idCounter++,
+          name: `Dr. ${fName} ${lName}`,
+          universityId: uni.id,
+          universityName: uni.name,
+          department: dept,
+          email: `${fName.toLowerCase()}.${lName.toLowerCase()}@${uni.domain}`,
+          researchInterest: ['Machine Learning', 'Quantum Computing', 'Bioinformatics', 'Robotics', 'VLSI', 'AI Ethics'][Math.floor(Math.random() * 6)],
+          status: 'pending',
+          lastContacted: null
+        });
+      }
+    });
+  });
+  return { unis, professors };
+};
 
-        @media (min-width: 1024px) {
-            #career-canvas-container {
-                height: 500px;
-            }
-        }
+// --- COMPONENT: THREE.JS BACKGROUND ---
+const HeroCanvas = () => {
+  const containerRef = useRef();
 
-        .nav-link {
-            transition: color 0.3s ease;
-            cursor: pointer;
-        }
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const container = containerRef.current;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
 
-        .nav-link:hover {
-            color: #60a5fa;
-        }
+    const particlesGeometry = new THREE.BufferGeometry();
+    const count = window.innerWidth < 768 ? 800 : 1500;
+    const posArray = new Float32Array(count * 3);
+    for (let i = 0; i < count * 3; i++) posArray[i] = (Math.random() - 0.5) * 8;
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
-        .intern-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    const particlesMesh = new THREE.Points(particlesGeometry, new THREE.PointsMaterial({ size: 0.02, color: '#60a5fa', transparent: true, opacity: 0.8 }));
+    scene.add(particlesMesh);
 
-        .intern-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1);
-        }
+    const sphere = new THREE.Mesh(new THREE.SphereGeometry(2, 24, 24), new THREE.MeshBasicMaterial({ color: '#1e3a8a', wireframe: true, transparent: true, opacity: 0.1 }));
+    scene.add(sphere);
 
-        .search-container {
-            background-image: linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%);
-        }
+    camera.position.z = 5;
 
-        .modal-overlay {
-            background-color: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(8px);
-        }
-        
-        .animate-slide-up {
-            animation: slideUp 0.3s ease-out;
-        }
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      particlesMesh.rotation.y += 0.0008;
+      sphere.rotation.y -= 0.0004;
+      renderer.render(scene, camera);
+    };
+    animate();
 
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
 
-        .hidden-view {
-            display: none !important;
-        }
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      container.removeChild(renderer.domElement);
+    };
+  }, []);
 
-        /* Mobile Menu Overlay */
-        #mobile-menu-overlay {
-            position: fixed;
-            inset: 0;
-            background: #050505;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2rem;
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-        }
+  return <div ref={containerRef} className="absolute inset-0 z-0" />;
+};
 
-        #mobile-menu-overlay.active {
-            transform: translateX(0);
-        }
-    </style>
-</head>
-<body class="overflow-x-hidden">
+// --- MAIN APPLICATION ---
+export default function App() {
+  const [view, setView] = useState('home'); // 'home', 'internships', 'outreach'
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    <!-- Mobile Menu Overlay (Main Site) -->
-    <div id="mobile-menu-overlay">
-        <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 text-white text-3xl">
-            <i data-lucide="x"></i>
-        </button>
-        <a href="#home" onclick="toggleMobileMenu()" class="text-2xl font-bold">Home</a>
-        <a href="#products" onclick="toggleMobileMenu()" class="text-2xl font-bold">Products</a>
-        <a onclick="showPortal(); toggleMobileMenu();" class="text-2xl font-bold text-blue-400">Careers</a>
-        <a href="#contact" onclick="toggleMobileMenu()" class="text-2xl font-bold">Contact</a>
-    </div>
+  // Internship State
+  const [internSearch, setInternSearch] = useState('');
+  const [internCat, setInternCat] = useState('all');
+  const [activeIntern, setActiveIntern] = useState(null);
 
-    <!-- View 1: Main Website -->
-    <div id="main-site-view">
-        <!-- Navigation -->
-        <nav class="fixed top-0 w-full z-50 glass py-4">
-            <div class="container mx-auto px-6 flex justify-between items-center">
-                <div class="text-xl md:text-2xl font-bold tracking-tighter">
-                    PATIL<span class="text-blue-500">GLOBAL</span>
-                </div>
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest font-medium">
-                    <a href="#home" class="nav-link">Home</a>
-                    <a href="#products" class="nav-link">Products</a>
-                    <a onclick="showPortal()" class="nav-link text-blue-400">Careers</a>
-                    <a href="#contact" class="nav-link">Contact</a>
-                </div>
-                <!-- Mobile Trigger -->
-                <button onclick="toggleMobileMenu()" class="md:hidden text-white">
-                    <i data-lucide="menu"></i>
-                </button>
+  // Outreach Tool State
+  const [outreachData, setOutreachData] = useState({ unis: [], professors: [] });
+  const [selectedUni, setSelectedUni] = useState(null);
+  const [selectedDept, setSelectedDept] = useState('');
+  const [outreachSearch, setOutreachSearch] = useState('');
+  const [activeProfId, setActiveProfId] = useState(null);
+  const [isSending, setIsSending] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+  const [dailyCount, setDailyCount] = useState(2);
+  const DAILY_LIMIT = 50;
+
+  const [subjectTemplate, setSubjectTemplate] = useState("Inquiry regarding research internship in {{Department}}");
+  const [bodyTemplate, setBodyTemplate] = useState(`Dear {{ProfessorName}},
+
+I am a junior undergraduate student interested in your work on {{ResearchArea}}. 
+I have read your recent paper on...
+
+Would you be open to discussing a summer internship opportunity?
+
+Sincerely,
+[My Name]`);
+
+  useEffect(() => {
+    setOutreachData(generateOutreachMockData());
+  }, []);
+
+  useEffect(() => {
+    let timer;
+    if (cooldown > 0) {
+      timer = setInterval(() => setCooldown(prev => prev - 1), 1000);
+    }
+    return () => clearInterval(timer);
+  }, [cooldown]);
+
+  // Outreach Memoized Data
+  const filteredProfessors = useMemo(() => {
+    let profs = outreachData.professors;
+    if (selectedUni) profs = profs.filter(p => p.universityId === selectedUni.id);
+    if (selectedDept) profs = profs.filter(p => p.department === selectedDept);
+    if (outreachSearch.trim()) {
+      const q = outreachSearch.toLowerCase();
+      profs = profs.filter(p => p.name.toLowerCase().includes(q) || p.researchInterest.toLowerCase().includes(q));
+    }
+    return profs;
+  }, [outreachData, selectedUni, selectedDept, outreachSearch]);
+
+  const activeProf = useMemo(() => outreachData.professors.find(p => p.id === activeProfId) || null, [outreachData, activeProfId]);
+
+  const parseTemplate = (text, prof) => {
+    if (!prof) return text;
+    return text
+      .replace(/{{ProfessorName}}/g, prof.name.split(' ').slice(1).join(' '))
+      .replace(/{{FullName}}/g, prof.name)
+      .replace(/{{University}}/g, prof.universityName)
+      .replace(/{{Department}}/g, prof.department)
+      .replace(/{{ResearchArea}}/g, prof.researchInterest);
+  };
+
+  const previewSubject = activeProf ? parseTemplate(subjectTemplate, activeProf) : "(Select a professor to preview)";
+  const previewBody = activeProf ? parseTemplate(bodyTemplate, activeProf) : "(Select a professor to preview)";
+
+  const handleSendEmail = () => {
+    if (cooldown > 0 || dailyCount >= DAILY_LIMIT) return;
+    setIsSending(true);
+    setTimeout(() => {
+      setOutreachData(prev => ({
+        ...prev,
+        professors: prev.professors.map(p => 
+          p.id === activeProfId ? { ...p, status: 'sent', lastContacted: new Date().toISOString() } : p
+        )
+      }));
+      setDailyCount(prev => prev + 1);
+      setCooldown(30);
+      setIsSending(false);
+      const nextProf = filteredProfessors.find(p => p.id !== activeProfId && p.status === 'pending');
+      if (nextProf) setActiveProfId(nextProf.id);
+    }, 1500);
+  };
+
+  const handleSkip = () => {
+    setOutreachData(prev => ({
+      ...prev,
+      professors: prev.professors.map(p => p.id === activeProfId ? { ...p, status: 'skipped' } : p)
+    }));
+    const nextProf = filteredProfessors.find(p => p.id !== activeProfId && p.status === 'pending');
+    if (nextProf) setActiveProfId(nextProf.id);
+  };
+
+  // Views Logic
+  const filteredInternships = INTERNSHIPS_DATA.filter(item => {
+    const matchesSearch = item.title.toLowerCase().includes(internSearch.toLowerCase()) || item.company.toLowerCase().includes(internSearch.toLowerCase());
+    const matchesCat = internCat === 'all' || item.category === internCat;
+    return matchesSearch && matchesCat;
+  });
+
+  if (view === 'outreach') {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800 font-sans">
+        <header className="bg-white border-b border-slate-200 px-4 sm:px-6 py-4 flex justify-between items-center shadow-sm z-20 sticky top-0">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setView('home')} className="bg-indigo-600 p-2 rounded-lg text-white">
+              <School size={20} />
+            </button>
+            <div>
+              <h1 className="text-lg sm:text-xl font-bold text-slate-900 leading-tight">PatilGlobalReach</h1>
+              <p className="hidden sm:block text-xs text-slate-500">Ethical Academic Outreach</p>
             </div>
-        </nav>
-
-        <!-- Section 1: Home -->
-        <section id="home" class="relative min-h-screen flex items-center justify-center pt-24 pb-12">
-            <div class="absolute inset-0 z-0 overflow-hidden">
-                <div class="absolute top-1/4 left-1/4 w-64 md:w-96 h-64 md:h-96 bg-blue-600/20 rounded-full filter blur-[80px] md:blur-[100px] animate-pulse"></div>
-                <div class="absolute bottom-1/4 right-1/4 w-64 md:w-96 h-64 md:h-96 bg-purple-600/20 rounded-full filter blur-[80px] md:blur-[100px] animate-pulse"></div>
+          </div>
+          <div className="flex items-center gap-4 sm:gap-6">
+            <div className="hidden sm:flex items-center gap-2 text-sm">
+              <span className="text-slate-500">Daily Limit:</span>
+              <div className="w-32 h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div 
+                  className={`h-full ${dailyCount >= DAILY_LIMIT ? 'bg-red-500' : 'bg-indigo-500'}`} 
+                  style={{ width: `${(dailyCount/DAILY_LIMIT)*100}%` }}
+                ></div>
+              </div>
+              <span className="font-medium text-slate-700">{dailyCount}/{DAILY_LIMIT}</span>
             </div>
-            
-            <div class="container mx-auto px-6 text-center z-10">
-                <h2 class="text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.5em] mb-4 md:mb-6 text-blue-400 font-semibold">Evolution in Progress</h2>
-                <h1 class="text-4xl md:text-7xl lg:text-8xl font-bold mb-6 md:mb-8 tracking-tighter leading-tight">COMING <br class="md:hidden"> <span class="gradient-text">SOON</span></h1>
-                <p class="text-gray-400 max-w-2xl mx-auto text-base md:text-lg mb-8 md:mb-10 leading-relaxed px-4">
-                    We are building the future of global logistics and technology. Our new digital experience is currently under development.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <a href="#products" class="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-full font-bold transition-all transform hover:scale-105 text-center">Explore Products</a>
-                    <a onclick="showPortal()" class="w-full sm:w-auto px-8 py-4 glass hover:bg-white/10 rounded-full font-bold transition-all cursor-pointer text-center">Careers Portal</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 2: Products -->
-        <section id="products" class="py-20 bg-zinc-950">
-            <div class="container mx-auto px-6">
-                <div class="mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center md:text-left">Our <span class="text-blue-500">Products</span></h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                    <div class="product-card glass p-6 md:p-8 rounded-3xl group">
-                        <i data-lucide="globe" class="text-blue-500 mb-4 w-10 h-10"></i>
-                        <h3 class="text-xl font-bold mb-4">Global Network</h3>
-                        <p class="text-gray-400 text-sm mb-6">Integrated distribution system spanning five continents.</p>
-                        <button class="text-blue-500 font-bold flex items-center gap-2 hover:gap-4 transition-all">Learn More <i data-lucide="arrow-right" class="w-4"></i></button>
-                    </div>
-                    <div class="product-card glass p-6 md:p-8 rounded-3xl group">
-                        <i data-lucide="cpu" class="text-purple-500 mb-4 w-10 h-10"></i>
-                        <h3 class="text-xl font-bold mb-4">Smart Logistics</h3>
-                        <p class="text-gray-400 text-sm mb-6">AI-driven platform that predicts and optimizes routes.</p>
-                        <button class="text-purple-500 font-bold flex items-center gap-2 hover:gap-4 transition-all">Learn More <i data-lucide="arrow-right" class="w-4"></i></button>
-                    </div>
-                    <div class="product-card glass p-6 md:p-8 rounded-3xl group">
-                        <i data-lucide="shield-check" class="text-emerald-500 mb-4 w-10 h-10"></i>
-                        <h3 class="text-xl font-bold mb-4">Secure Chain</h3>
-                        <p class="text-gray-400 text-sm mb-6">Blockchain-powered security for global asset tracking.</p>
-                        <button class="text-emerald-500 font-bold flex items-center gap-2 hover:gap-4 transition-all">Learn More <i data-lucide="arrow-right" class="w-4"></i></button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Careers -->
-        <section id="careers" class="py-20 relative">
-            <div class="container mx-auto px-6">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div class="order-2 lg:order-1 text-center lg:text-left">
-                        <h3 class="text-3xl md:text-5xl font-bold mb-6 md:mb-8 leading-tight">Build the Future of <br><span class="gradient-text">Global Trade</span></h3>
-                        <p class="text-gray-400 text-base md:text-lg mb-8 leading-relaxed">Join our remote-first team and explore high-impact research opportunities across the globe.</p>
-                        <button onclick="showPortal()" class="w-full sm:w-auto inline-block px-10 py-4 bg-white text-black font-bold rounded-full hover:bg-blue-500 hover:text-white transition-all shadow-xl">
-                            View Openings
-                        </button>
-                    </div>
-                    <div id="career-canvas-container" class="glass order-1 lg:order-2">
-                        <div class="absolute top-4 left-4 z-10 pointer-events-none">
-                            <p class="text-[10px] uppercase tracking-widest text-blue-400 opacity-70">Interactive Global Node Network</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="py-20 bg-zinc-950">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl font-bold mb-4">Get In <span class="text-blue-500">Touch</span></h2>
-                <p class="text-gray-400 mb-8 max-w-md mx-auto">Ready to innovate? Reach out to our team.</p>
-                <a href="mailto:hello@patilglobal.com" class="text-2xl md:text-3xl font-bold text-white hover:text-blue-500 transition-colors">hello@patilglobal.com</a>
-            </div>
-        </section>
-
-        <footer class="py-12 border-t border-white/5 text-center text-gray-500 text-sm">
-            © 2024 Patil Global. All rights reserved.
-        </footer>
-    </div>
-
-    <!-- View 2: InternPath Portal -->
-    <div id="intern-portal-view" class="hidden-view bg-slate-50 text-slate-900 min-h-screen pb-12">
-        <!-- Navigation -->
-        <nav class="glass-nav-portal sticky top-0 z-50 py-4 px-4 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4 bg-white/80">
-            <div class="flex items-center gap-2">
-                <div class="bg-indigo-600 p-2 rounded-lg">
-                    <i class="fas fa-graduation-cap text-white text-xl"></i>
-                </div>
-                <span class="text-xl font-bold tracking-tight text-indigo-900">InternPath</span>
-            </div>
-            <div class="flex gap-6 font-medium text-slate-600 text-xs md:text-sm">
-                <a href="#" class="hover:text-indigo-600 transition">Find Internships</a>
-                <a onclick="hidePortal()" class="hover:text-red-500 transition cursor-pointer font-bold border-l pl-4 border-slate-200">Exit Portal</a>
-            </div>
-        </nav>
-
-        <!-- Hero Section -->
-        <header class="search-container py-12 px-6 md:py-20 text-center text-white">
-            <div class="mb-4 inline-block px-3 py-1 bg-indigo-500/30 rounded-full border border-indigo-400/30 text-indigo-100 text-[10px] md:text-xs font-medium">
-                🚀 Application Links for 2026 Programs
-            </div>
-            <h1 class="text-3xl md:text-6xl font-extrabold mb-4 px-4">Premier Institute Portals</h1>
-            <p class="text-sm md:text-xl text-indigo-100 mb-10 max-w-2xl mx-auto px-4">One-stop access for IIT, NIT & IIIT research fellowships.</p>
-            
-            <div class="max-w-4xl mx-auto bg-white p-2 rounded-2xl shadow-2xl flex flex-col lg:flex-row gap-2 mx-4">
-                <div class="flex-1 flex items-center px-4 border-b lg:border-b-0 lg:border-r border-slate-100">
-                    <i class="fas fa-search text-slate-400 mr-3"></i>
-                    <input type="text" id="searchInput" placeholder="Search IIT, NIT..." class="w-full py-3 text-slate-800 focus:outline-none bg-transparent text-sm">
-                </div>
-                <div class="flex-1 flex items-center px-4">
-                    <i class="fas fa-university text-slate-400 mr-3"></i>
-                    <select id="categoryFilter" class="w-full py-3 text-slate-800 focus:outline-none bg-transparent appearance-none text-sm">
-                        <option value="all">All Disciplines</option>
-                        <option value="Academic Research">Academic Research</option>
-                        <option value="Software Development">Software Development</option>
-                        <option value="Data Science">Data Science</option>
-                    </select>
-                </div>
-                <button onclick="filterInternships()" class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition w-full lg:w-auto">Search</button>
-            </div>
+            <button onClick={() => setView('home')} className="text-xs font-bold text-red-500 uppercase tracking-widest border border-red-200 px-3 py-1.5 rounded-lg hover:bg-red-50 transition">Exit</button>
+          </div>
         </header>
 
-        <main class="max-w-7xl mx-auto py-8 px-6">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
-                <h2 class="text-xl md:text-2xl font-bold text-slate-800" id="resultCount">Loading Opportunities...</h2>
-                <div class="px-3 py-1 bg-white border border-slate-200 rounded-full text-xs text-slate-500">
-                    Verified Daily
-                </div>
+        <main className="flex-1 p-4 sm:p-6 w-full max-w-7xl mx-auto flex flex-col lg:grid lg:grid-cols-12 gap-6 h-auto lg:h-[calc(100vh-80px)]">
+          <div className="order-1 lg:order-2 lg:col-span-5 flex flex-col gap-4 h-[50vh] lg:h-full overflow-hidden">
+            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3">
+              <h2 className="font-semibold text-slate-700 flex items-center gap-2">
+                <Search size={18} /> Directory
+              </h2>
+              <div className="relative">
+                 <Search className="absolute left-3 top-2.5 text-slate-400" size={16} />
+                 <input 
+                   type="text" 
+                   placeholder="Search name or research area..."
+                   className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all"
+                   value={outreachSearch}
+                   onChange={(e) => setOutreachSearch(e.target.value)}
+                 />
+              </div>
+              <div className="grid grid-cols-1 gap-2">
+                <select 
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                  onChange={(e) => {
+                    const uni = outreachData.unis.find(u => u.id === parseInt(e.target.value));
+                    setSelectedUni(uni || null);
+                    setActiveProfId(null);
+                  }}
+                >
+                  <option value="">Select University...</option>
+                  {outreachData.unis.map(uni => <option key={uni.id} value={uni.id}>{uni.name}</option>)}
+                </select>
+                <select 
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                  disabled={!selectedUni}
+                  onChange={(e) => { setSelectedDept(e.target.value); setActiveProfId(null); }}
+                >
+                  <option value="">Select Department...</option>
+                  {['Computer Science', 'Electrical Engineering', 'Robotics', 'Physics', 'Aerospace'].map(dept => <option key={dept} value={dept}>{dept}</option>)}
+                </select>
+              </div>
             </div>
-            <div id="internshipGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"></div>
+
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex-1 overflow-hidden flex flex-col">
+              <div className="p-3 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Professors List</span>
+                <span className="text-xs text-slate-400">{filteredProfessors.length} results</span>
+              </div>
+              <div className="overflow-y-auto flex-1 p-2 space-y-2">
+                {!selectedUni ? (
+                  <div className="flex flex-col items-center justify-center h-full text-slate-400 opacity-50"><School size={32} /><p className="text-sm mt-2">Select a university</p></div>
+                ) : (
+                  filteredProfessors.map(prof => (
+                    <div 
+                      key={prof.id} 
+                      onClick={() => setActiveProfId(prof.id)}
+                      className={`p-3 rounded-lg border cursor-pointer transition-all ${activeProfId === prof.id ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-slate-100 hover:border-slate-300'}`}
+                    >
+                      <div className="flex justify-between items-center mb-1">
+                        <h3 className="font-semibold text-sm">{prof.name}</h3>
+                        <span className={`px-2 py-0.5 rounded text-[10px] ${prof.status === 'sent' ? 'bg-green-100 text-green-700' : prof.status === 'skipped' ? 'bg-gray-100' : 'bg-blue-50 text-blue-600'}`}>{prof.status}</span>
+                      </div>
+                      <p className="text-xs text-slate-500 mb-2">{prof.department}</p>
+                      <span className="px-2 py-1 bg-slate-100 rounded text-[10px] text-slate-500">{prof.researchInterest}</span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="order-2 lg:order-1 lg:col-span-7 flex flex-col gap-4">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col flex-1 overflow-hidden min-h-[500px]">
+              <div className="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                <h2 className="font-semibold text-slate-700 flex items-center gap-2"><Mail size={18} /> Email Composer</h2>
+              </div>
+              <div className="p-6 flex flex-col gap-4 flex-1 overflow-y-auto">
+                {!activeProf && <div className="bg-amber-50 p-3 rounded-lg text-sm text-amber-800 flex items-center gap-2"><AlertCircle size={18}/> Select a professor to begin.</div>}
+                
+                <label className="text-xs font-bold uppercase text-slate-400">Subject</label>
+                {activeProf ? (
+                  <div className="p-3 bg-indigo-50 border border-indigo-100 rounded-lg text-sm font-medium">{previewSubject}</div>
+                ) : (
+                  <input value={subjectTemplate} onChange={e => setSubjectTemplate(e.target.value)} className="p-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-indigo-500" />
+                )}
+
+                <label className="text-xs font-bold uppercase text-slate-400">Body</label>
+                {activeProf ? (
+                  <div className="p-4 bg-white border rounded-lg text-sm whitespace-pre-wrap leading-relaxed shadow-inner flex-1">{previewBody}</div>
+                ) : (
+                  <textarea value={bodyTemplate} onChange={e => setBodyTemplate(e.target.value)} className="p-4 border rounded-lg text-sm font-mono h-64 outline-none focus:ring-2 focus:ring-indigo-500 resize-none" />
+                )}
+
+                <div className="flex justify-between items-center pt-4 border-t">
+                  {activeProf ? (
+                    <>
+                      <button onClick={() => setActiveProfId(null)} className="text-sm text-slate-500 hover:text-indigo-600">Edit Template</button>
+                      <div className="flex gap-2">
+                        <button onClick={handleSkip} className="px-4 py-2 border rounded-lg text-sm hover:bg-slate-50">Skip</button>
+                        <button 
+                          onClick={handleSendEmail} 
+                          disabled={cooldown > 0 || isSending || dailyCount >= DAILY_LIMIT}
+                          className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm font-bold flex items-center gap-2 disabled:bg-slate-300"
+                        >
+                          {isSending ? <RefreshCw className="animate-spin" size={16}/> : <Send size={16}/>}
+                          {cooldown > 0 ? `Wait ${cooldown}s` : 'Send Email'}
+                        </button>
+                      </div>
+                    </>
+                  ) : <p className="text-xs italic text-slate-400">Selection required</p>}
+                </div>
+              </div>
+            </div>
+          </div>
         </main>
-    </div>
+      </div>
+    );
+  }
 
-    <!-- Modal System -->
-    <div id="applyModal" class="fixed inset-0 z-[100] hidden flex items-end md:items-center justify-center p-0 md:p-4">
-        <div class="modal-overlay absolute inset-0" onclick="closeModal()"></div>
-        <div class="bg-white rounded-t-3xl md:rounded-3xl w-full max-w-2xl relative z-10 shadow-2xl overflow-hidden animate-slide-up max-h-[85vh] md:max-h-[90vh] overflow-y-auto p-6 md:p-8">
-            <div class="flex justify-between items-start mb-6">
-                <div id="modalLogo" class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-2xl border border-slate-100"></div>
-                <button onclick="closeModal()" class="bg-slate-100 w-10 h-10 rounded-full flex items-center justify-center text-slate-500"><i class="fas fa-times"></i></button>
+  if (view === 'internships') {
+    return (
+      <div className="bg-slate-50 text-slate-900 min-h-screen">
+        <nav className="sticky top-0 z-50 py-4 px-6 md:px-12 flex justify-between items-center bg-white/90 backdrop-blur-md border-b">
+          <div className="flex items-center gap-2">
+            <div className="bg-indigo-600 p-2 rounded-lg text-white"><School size={20} /></div>
+            <span className="text-xl font-bold tracking-tight text-indigo-900">InternPath</span>
+          </div>
+          <button onClick={() => setView('home')} className="text-sm font-bold text-red-500 hover:text-red-700">Exit Portal</button>
+        </nav>
+
+        <header className="bg-indigo-700 py-16 px-6 text-center text-white">
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-4">Premier Portals</h1>
+          <p className="text-indigo-100 max-w-2xl mx-auto mb-8">Access IIT, NIT & IIIT research fellowships in one place.</p>
+          <div className="max-w-3xl mx-auto bg-white p-2 rounded-2xl shadow-xl flex flex-col md:flex-row gap-2">
+            <input 
+              type="text" 
+              placeholder="Search institutions..." 
+              className="flex-1 p-3 text-slate-800 outline-none"
+              value={internSearch}
+              onChange={e => setInternSearch(e.target.value)}
+            />
+            <select 
+              className="p-3 text-slate-800 outline-none border-l md:w-48"
+              value={internCat}
+              onChange={e => setInternCat(e.target.value)}
+            >
+              <option value="all">All Disciplines</option>
+              <option value="Academic Research">Academic Research</option>
+              <option value="Software Development">Software Development</option>
+            </select>
+            <button className="bg-indigo-600 px-8 py-3 rounded-xl font-bold">Search</button>
+          </div>
+        </header>
+
+        <main className="max-w-7xl mx-auto py-12 px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredInternships.map(intern => (
+              <div key={intern.id} className="bg-white p-6 rounded-3xl border shadow-sm hover:shadow-md transition-all flex flex-col">
+                <div className="flex justify-between mb-4">
+                  <span className="text-2xl">{intern.logo}</span>
+                  <span className="text-[10px] font-bold px-2 py-1 bg-indigo-50 text-indigo-600 rounded uppercase">{intern.mode}</span>
+                </div>
+                <h3 className="text-lg font-bold mb-1">{intern.title}</h3>
+                <p className="text-indigo-600 text-sm font-semibold mb-4">{intern.company}</p>
+                <div className="mt-auto pt-4 border-t flex justify-between items-center">
+                  <div>
+                    <p className="text-[10px] text-slate-400 font-bold">STIPEND</p>
+                    <p className="text-sm font-bold text-emerald-600">{intern.stipend}</p>
+                  </div>
+                  <button onClick={() => setActiveIntern(intern)} className="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold">View Details</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </main>
+
+        {activeIntern && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onClick={() => setActiveIntern(null)}></div>
+            <div className="bg-white rounded-3xl w-full max-w-xl relative z-10 p-8 shadow-2xl animate-in slide-in-from-bottom-4">
+              <div className="flex justify-between mb-6">
+                <span className="text-4xl">{activeIntern.logo}</span>
+                <button onClick={() => setActiveIntern(null)} className="text-slate-400"><X /></button>
+              </div>
+              <h3 className="text-2xl font-bold mb-1">{activeIntern.title}</h3>
+              <p className="text-indigo-600 font-bold mb-6">{activeIntern.company}</p>
+              <p className="bg-slate-50 p-4 rounded-xl text-slate-600 text-sm mb-6">{activeIntern.desc}</p>
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className="border p-3 rounded-xl"><p className="text-xs text-slate-400">Duration</p><p className="font-bold">{activeIntern.duration}</p></div>
+                <div className="border p-3 rounded-xl"><p className="text-xs text-slate-400">Stay</p><p className="font-bold">{activeIntern.accommodation}</p></div>
+              </div>
+              <a href={activeIntern.applyLink} target="_blank" className="block w-full bg-indigo-600 text-center text-white py-4 rounded-xl font-bold">Apply Now</a>
             </div>
-            <h3 id="modalTitle" class="text-2xl md:text-3xl font-bold text-slate-900 mb-1 leading-tight"></h3>
-            <p id="modalCompany" class="text-indigo-600 text-base md:text-lg font-semibold mb-6"></p>
-            
-            <div class="grid grid-cols-2 gap-3 mb-6">
-                <div class="bg-indigo-50/50 p-3 rounded-xl border border-indigo-100/50">
-                    <p class="text-[9px] uppercase font-bold text-indigo-400 mb-1">Duration</p>
-                    <p id="modalDuration" class="text-sm font-bold text-slate-800"></p>
-                </div>
-                <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100/50">
-                    <p class="text-[9px] uppercase font-bold text-emerald-500 mb-1">Mode</p>
-                    <p id="modalMode" class="text-sm font-bold text-slate-800"></p>
-                </div>
-            </div>
-            
-            <div class="space-y-6 mb-8">
-                <div>
-                    <h4 class="text-xs font-bold text-slate-900 mb-2 uppercase tracking-wide">About</h4>
-                    <p id="modalDescription" class="text-slate-600 text-sm bg-slate-50 p-4 rounded-xl"></p>
-                </div>
-                <div class="grid grid-cols-1 gap-6">
-                    <div>
-                        <h4 class="text-xs font-bold text-slate-900 mb-2 uppercase tracking-wide">Stipend</h4>
-                        <p id="modalStipendFull" class="text-sm text-slate-700 font-bold"></p>
-                        <p id="modalStipendNote" class="text-xs text-slate-500 italic"></p>
-                    </div>
-                    <div>
-                        <h4 class="text-xs font-bold text-slate-900 mb-2 uppercase tracking-wide">Stay</h4>
-                        <p id="modalAccommodation" class="text-sm text-slate-700"></p>
-                    </div>
-                </div>
-            </div>
-            <a id="modalApplyBtn" href="#" target="_blank" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition block text-center shadow-lg shadow-indigo-200">Apply Now</a>
-            <p class="text-[10px] text-center text-slate-400 mt-4 uppercase font-bold">Patil Global Verified Opportunity</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-[#050505] text-white min-h-screen font-['Inter'] selection:bg-blue-500/30">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-xl border-b border-white/5 py-4">
+        <div className="container mx-auto px-6 flex justify-between items-center">
+          <div className="text-2xl font-bold tracking-tighter">
+            PATIL<span className="text-blue-500">GLOBAL</span>
+          </div>
+          <div className="hidden md:flex space-x-8 text-sm uppercase tracking-widest font-medium">
+            <a href="#home" className="hover:text-blue-400 transition">Home</a>
+            <a href="#products" className="hover:text-blue-400 transition">Products</a>
+            <button onClick={() => setView('internships')} className="text-blue-400 font-bold">Careers</button>
+            <a href="#contact" className="hover:text-blue-400 transition">Contact</a>
+          </div>
+          <button onClick={() => setMobileMenuOpen(true)} className="md:hidden"><Menu /></button>
         </div>
+      </nav>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center gap-8">
+          <button onClick={() => setMobileMenuOpen(false)} className="absolute top-6 right-6"><X size={32}/></button>
+          <a href="#home" onClick={() => setMobileMenuOpen(false)} className="text-3xl font-bold">Home</a>
+          <a href="#products" onClick={() => setMobileMenuOpen(false)} className="text-3xl font-bold">Products</a>
+          <button onClick={() => { setView('internships'); setMobileMenuOpen(false); }} className="text-3xl font-bold text-blue-400">Careers</button>
+          <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-3xl font-bold">Contact</a>
+        </div>
+      )}
+
+      {/* Hero */}
+      <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
+        <HeroCanvas />
+        <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-transparent to-[#050505]" />
+        <div className="container mx-auto px-6 text-center z-10 mt-20">
+          <span className="text-blue-400 text-xs font-bold uppercase tracking-[0.5em] mb-6 block">Building Global Connectivity</span>
+          <h1 className="text-5xl md:text-8xl font-bold mb-8 tracking-tighter leading-tight">INNOVATION <br/> <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">BEYOND</span></h1>
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg mb-10">We are reshaping the infrastructure of global logistics and academic outreach through intelligent technology.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#products" className="px-10 py-4 bg-blue-600 rounded-full font-bold hover:bg-blue-700 transition transform hover:scale-105">Explore Ecosystem</a>
+            <button onClick={() => setView('internships')} className="px-10 py-4 bg-white/5 border border-white/10 rounded-full font-bold hover:bg-white/10 transition">Careers Portal</button>
+          </div>
+        </div>
+      </section>
+
+      {/* Products */}
+      <section id="products" className="py-32 bg-[#050505]">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">Core <span className="text-blue-500">Engines</span></h2>
+              <p className="text-gray-500 max-w-xl">Proprietary technologies driving global trade and academic growth.</p>
+            </div>
+            <button onClick={() => setView('outreach')} className="text-blue-400 font-bold flex items-center gap-2 group">Launch Outreach Tool <ArrowRight className="group-hover:translate-x-2 transition" /></button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-blue-500/50 transition-all group">
+              <Globe className="text-blue-500 mb-6 w-10 h-10" />
+              <h3 className="text-xl font-bold mb-4">Global Network</h3>
+              <p className="text-gray-400 text-sm mb-6 leading-relaxed">Advanced distribution systems spanning five continents with real-time tracking.</p>
+              <button className="text-white font-bold text-xs flex items-center gap-2">Details <ArrowRight size={14}/></button>
+            </div>
+            <div className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-purple-500/50 transition-all">
+              <Cpu className="text-purple-500 mb-6 w-10 h-10" />
+              <h3 className="text-xl font-bold mb-4">Smart Logistics</h3>
+              <p className="text-gray-400 text-sm mb-6 leading-relaxed">AI-driven predictive platform that optimizes global cargo routes autonomously.</p>
+              <button className="text-white font-bold text-xs flex items-center gap-2">Details <ArrowRight size={14}/></button>
+            </div>
+            {/* NEW PRODUCT: PatilGlobalReach */}
+            <div className="p-8 rounded-3xl bg-gradient-to-br from-indigo-600/20 to-blue-600/20 border border-blue-500/30 hover:border-blue-500/80 transition-all scale-105 z-10 shadow-2xl shadow-blue-500/10">
+              <Mail className="text-blue-400 mb-6 w-10 h-10" />
+              <div className="bg-blue-500 text-[10px] font-bold px-2 py-0.5 rounded-full inline-block mb-2">NEW FLAGSHIP</div>
+              <h3 className="text-xl font-bold mb-4">PatilGlobalReach</h3>
+              <p className="text-gray-300 text-sm mb-6 leading-relaxed">The premier ethical outreach tool for academic researchers and student fellowships.</p>
+              <button onClick={() => setView('outreach')} className="w-full py-3 bg-blue-600 rounded-xl font-bold text-sm hover:bg-blue-500 transition shadow-lg shadow-blue-500/20">Launch Outreach</button>
+            </div>
+            <div className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-emerald-500/50 transition-all">
+              <ShieldCheck className="text-emerald-500 mb-6 w-10 h-10" />
+              <h3 className="text-xl font-bold mb-4">Secure Chain</h3>
+              <p className="text-gray-400 text-sm mb-6 leading-relaxed">Blockchain infrastructure for tamper-proof global asset authentication and verification.</p>
+              <button className="text-white font-bold text-xs flex items-center gap-2">Details <ArrowRight size={14}/></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Careers Teaser */}
+      <section className="py-32 relative overflow-hidden">
+        <div className="container mx-auto px-6">
+          <div className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-white/10 p-12 md:p-24 rounded-[3rem] text-center relative z-10">
+            <h2 className="text-4xl md:text-6xl font-bold mb-8">Build the <span className="text-blue-400">Future</span></h2>
+            <p className="text-gray-400 max-w-2xl mx-auto mb-12 text-lg">We are looking for researchers, engineers, and visionaries. Join our global fellowship program.</p>
+            <button onClick={() => setView('internships')} className="px-12 py-5 bg-white text-black font-bold rounded-full hover:bg-blue-500 hover:text-white transition">View Opportunities</button>
+          </div>
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] -z-10" />
+        </div>
+      </section>
+
+      {/* Contact */}
+      <section id="contact" className="py-32 border-t border-white/5">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold mb-8">Ready to <span className="text-blue-500">Innovate?</span></h2>
+          <p className="text-gray-500 mb-12">Connect with our global labs.</p>
+          <a href="mailto:hello@patilglobal.com" className="text-3xl md:text-5xl font-bold hover:text-blue-400 transition break-all">hello@patilglobal.com</a>
+        </div>
+      </section>
+
+      <footer className="py-12 text-center text-gray-600 text-sm border-t border-white/5">
+        <p>© 2026 Patil Global. All rights reserved.</p>
+      </footer>
     </div>
-
-    <script>
-        // --- UI State Logic ---
-        function toggleMobileMenu() {
-            document.getElementById('mobile-menu-overlay').classList.toggle('active');
-        }
-
-        function showPortal() {
-            document.getElementById('main-site-view').classList.add('hidden-view');
-            document.getElementById('intern-portal-view').classList.remove('hidden-view');
-            window.scrollTo(0, 0);
-        }
-
-        function hidePortal() {
-            document.getElementById('intern-portal-view').classList.add('hidden-view');
-            document.getElementById('main-site-view').classList.remove('hidden-view');
-            window.scrollTo(0, 0);
-        }
-
-        // --- Three.js Animation (Optimized for Mobile) ---
-        let scene, camera, renderer, particlesMesh, sphere;
-        const initThree = () => {
-            const container = document.getElementById('career-canvas-container');
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            container.appendChild(renderer.domElement);
-
-            const particlesGeometry = new THREE.BufferGeometry();
-            const count = window.innerWidth < 768 ? 800 : 1500; // Less particles on mobile
-            const posArray = new Float32Array(count * 3);
-            for(let i=0; i<count*3; i++) posArray[i] = (Math.random() - 0.5) * 8;
-            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-            particlesMesh = new THREE.Points(particlesGeometry, new THREE.PointsMaterial({ size: 0.02, color: '#60a5fa', transparent: true, opacity: 0.8 }));
-            scene.add(particlesMesh);
-            
-            sphere = new THREE.Mesh(new THREE.SphereGeometry(2, 24, 24), new THREE.MeshBasicMaterial({ color: '#1e3a8a', wireframe: true, transparent: true, opacity: 0.1 }));
-            scene.add(sphere);
-
-            camera.position.z = 5;
-
-            function animate() {
-                requestAnimationFrame(animate);
-                particlesMesh.rotation.y += 0.0008;
-                sphere.rotation.y -= 0.0004;
-                renderer.render(scene, camera);
-            }
-            animate();
-        };
-
-        // --- InternPath Content & Filter ---
-        const internships = [
-            { id: 1, title: "Summer Fellowship Programme", company: "IIT Madras", category: "Academic Research", mode: "On-campus", duration: "2 Months", stipend: "₹6,000 Total", stipendDetail: "Lump sum disbursement at end.", accommodation: "❌ Self-arranged stay.", logo: "🏛️", tags: ["Research", "Engg"], applyLink: "https://ssp.iitm.ac.in/", desc: "Enhance interest in quality academic research." },
-            { id: 2, title: "SURGE Program 2026", company: "IIT Kanpur", category: "Academic Research", mode: "On-campus", duration: "8 Weeks", stipend: "Supported", stipendDetail: "Variable department funds.", accommodation: "✅ Hostel included.", logo: "🏫", tags: ["STEM", "UG"], applyLink: "https://surge.iitk.ac.in/", desc: "Focuses on short-term research projects with IITK faculty." },
-            { id: 3, title: "SURE Internship Scheme", company: "IIT Hyderabad", category: "Academic Research", mode: "On-campus", duration: "2 Months", stipend: "Fixed Stipend", stipendDetail: "Monthly allowance provided.", accommodation: "✅ Subsidized stay.", logo: "🔬", tags: ["Core", "SURE"], applyLink: "https://iith.ac.in/", desc: "Intensive research exposure in Core Engg." },
-            { id: 4, title: "Software Research Intern", company: "IIIT Delhi", category: "Software Development", mode: "Hybrid", duration: "3 Months", stipend: "₹10,000/mo", stipendDetail: "Merit-based payments.", accommodation: "❌ Not guaranteed.", logo: "💻", tags: ["AI", "CS"], applyLink: "https://iiitd.ac.in/", desc: "Practical skills in modern full-stack and AI." },
-            { id: 6, title: "ML Research Intern", company: "IIIT Hyderabad", category: "Data Science", mode: "On-campus", duration: "6 Months", stipend: "₹25,000/mo", stipendDetail: "Top-tier stipend.", accommodation: "✅ Hostel available.", logo: "🧠", tags: ["ML", "Research"], applyLink: "https://www.iiit.ac.in/", desc: "Focus on Intelligent Systems and CV." },
-            { id: 7, title: "Global Intern (GIP)", company: "IIT Bombay", category: "Academic Research", mode: "On-campus", duration: "3 Months", stipend: "₹10,000/mo", stipendDetail: "Total ₹30,000.", accommodation: "✅ Hostel provided.", logo: "🌊", tags: ["Bombay", "Prestige"], applyLink: "https://www.ircc.iitb.ac.in/", desc: "IIT Bombay's premier research ecosystem access." }
-        ];
-
-        function renderInternships(data) {
-            const grid = document.getElementById('internshipGrid');
-            grid.innerHTML = data.map(intern => `
-                <div class="intern-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col h-full">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-xl border border-slate-100">${intern.logo}</div>
-                        <span class="text-[9px] font-bold px-2 py-1 bg-indigo-50 text-indigo-600 rounded-md uppercase">${intern.mode}</span>
-                    </div>
-                    <h3 class="text-base md:text-lg font-bold text-slate-800 mb-1 leading-tight">${intern.title}</h3>
-                    <p class="text-indigo-600 font-semibold mb-4 text-xs">${intern.company}</p>
-                    <div class="flex flex-wrap gap-1 mb-6">
-                        ${intern.tags.map(tag => `<span class="px-2 py-1 bg-slate-100 text-slate-500 rounded text-[8px] font-bold uppercase">${tag}</span>`).join('')}
-                    </div>
-                    <div class="mt-auto flex justify-between items-center pt-4 border-t border-slate-50">
-                        <div>
-                            <p class="text-[8px] text-slate-400 font-bold uppercase">Stipend</p>
-                            <p class="text-xs md:text-sm font-bold text-emerald-600">${intern.stipend}</p>
-                        </div>
-                        <button onclick="openModal(${intern.id})" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-900 transition">View</button>
-                    </div>
-                </div>
-            `).join('');
-            document.getElementById('resultCount').innerText = `${data.length} Available`;
-        }
-
-        function filterInternships() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const category = document.getElementById('categoryFilter').value;
-            const filtered = internships.filter(item => {
-                const matchesSearch = item.title.toLowerCase().includes(query) || item.company.toLowerCase().includes(query);
-                const matchesCat = category === 'all' || item.category === category;
-                return matchesSearch && matchesCat;
-            });
-            renderInternships(filtered);
-        }
-
-        function openModal(id) {
-            const intern = internships.find(i => i.id === id);
-            document.getElementById('modalTitle').innerText = intern.title;
-            document.getElementById('modalCompany').innerText = intern.company;
-            document.getElementById('modalDuration').innerText = intern.duration;
-            document.getElementById('modalMode').innerText = intern.mode;
-            document.getElementById('modalStipendFull').innerText = intern.stipend;
-            document.getElementById('modalStipendNote').innerText = intern.stipendDetail;
-            document.getElementById('modalAccommodation').innerText = intern.accommodation;
-            document.getElementById('modalDescription').innerText = intern.desc;
-            document.getElementById('modalLogo').innerHTML = intern.logo;
-            document.getElementById('modalApplyBtn').href = intern.applyLink;
-            document.getElementById('applyModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() { 
-            document.getElementById('applyModal').classList.add('hidden'); 
-            document.body.style.overflow = 'auto';
-        }
-
-        window.onload = () => {
-            lucide.createIcons();
-            initThree();
-            renderInternships(internships);
-            document.getElementById('searchInput').addEventListener('input', filterInternships);
-            
-            // Resize handler for Three.js
-            window.addEventListener('resize', () => {
-                const container = document.getElementById('career-canvas-container');
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(container.clientWidth, container.clientHeight);
-            });
-        };
-    </script>
-</body>
-</html>
+  );
+}
