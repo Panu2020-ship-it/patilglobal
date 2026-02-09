@@ -1,313 +1,1085 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patil Global - Innovation Beyond Boundaries</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+import React, { useState, useEffect, createContext, useContext } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { 
+  ArrowRight, 
+  Github, 
+  Linkedin, 
+  Twitter, 
+  Mail, 
+  Code2, 
+  Globe, 
+  Cpu, 
+  Layout, 
+  Terminal,
+  ExternalLink,
+  ChevronDown,
+  FileText,
+  Award,
+  Download,
+  Eye,
+  ArrowLeft,
+  Printer
+} from 'lucide-react';
+
+/**
+ * Premium Portfolio - Internationalized Edition
+ * * Supports: English (en), Japanese (ja), Chinese (zh), Hindi (hi), Marathi (mr)
+ * * Features: Integrated Digital Document Viewer for Resume & LORs
+ */
+
+// --- Document Data (Extracted from Uploaded PDFs) ---
+
+const DOCUMENT_DATA = {
+  resume: {
+    type: "resume",
+    title: "Pranil Raghunath Patil - Resume",
+    content: {
+      header: {
+        name: "PRANIL RAGHUNATH PATIL",
+        contact: "+91-9657512020 | patilpranil576@gmail.com | Maharashtra, India",
+        links: ["pranilpatilofficial"]
+      },
+      education: [
+        {
+          inst: "Birla Institute of Technology and Science (BITS Pilani)",
+          degree: "Bachelor of Science (Hons) in Computer Science",
+          year: "Expected 2027",
+          loc: "Pilani, India"
+        },
+        {
+          inst: "Indian Institute of Technology (IIT) Patna",
+          degree: "Bachelor of Business Administration",
+          details: "CGPA: 9.0/10 | Core focus on management analytics & strategic planning",
+          year: "2024 - Present",
+          loc: "Patna, India"
+        }
+      ],
+      experience: [
+        {
+          role: "Research Project Intern",
+          company: "Indian Institute of Technology (IIT) Jodhpur",
+          date: "Oct 2025 - Dec 2025",
+          loc: "Jodhpur, India",
+          points: [
+            "Enhanced research efficiency by streamlining project execution workflows.",
+            "Contributed to technical research operations supporting multiple initiatives.",
+            "Developed automated scripts for data processing and analysis using Python."
+          ]
+        },
+        {
+          role: "Research Project Intern",
+          company: "Indian Institute of Management (IIM) Mumbai",
+          date: "Apr 2025 - Jun 2025",
+          loc: "Mumbai, India",
+          points: [
+            "Conducted market research and competitive analysis for strategic decisions.",
+            "Crafted data-driven outreach strategies enhancing brand engagement.",
+            "Developed analytical frameworks and BI reports for executive presentations."
+          ]
+        },
+        {
+          role: "Summer Research Intern",
+          company: "Indian Institute of Technology (IIT) Dharwad",
+          date: "May 2025 - Jul 2025",
+          loc: "Dharwad, India",
+          points: [
+            "Developed web-based institutional research tools using Python, HTML, CSS, and Java.",
+            "Implemented testing protocols and software architecture best practices."
+          ]
+        },
+        {
+          role: "Social Media Marketing Intern",
+          company: "Techfest, IIT Bombay",
+          date: "Aug 2024 - Dec 2024",
+          loc: "Mumbai, India",
+          points: [
+            "Managed strategy for Asia's largest tech festival (100K+ attendees).",
+            "Developed data-driven content calendars and performance analytics."
+          ]
+        }
+      ],
+      skills: {
+        languages: "Python, Java, C++, JavaScript, SQL, HTML/CSS",
+        frameworks: "React, Node.js, Flask, Django, Pandas, NumPy, Matplotlib",
+        tools: "Git, Docker, AWS, PostgreSQL, MongoDB, Linux, VS Code",
+        business: "Strategic Planning, Project Management, Market Research, Excel Proficiency"
+      }
+    }
+  },
+  lor_patna: {
+    type: "letter",
+    title: "LOR - IIT Patna",
+    content: {
+      header_img_text: "INDIAN INSTITUTE OF TECHNOLOGY PATNA",
+      sub_header: "Center for Educational Technology (CET)",
+      ref: "Ref. - IITP/CET-UG/LOR/24A11RES57/002",
+      date: "02 Feb 2026",
+      to: "To Whom It May Concern",
+      body: [
+        "This is certified that Mr. Pranil Raghunath Patil (Roll No 24A11RES57) is pursuing Bachelor of Business Administration under hybrid mode of instruction at Centre for Educational Technology (CET), Indian Institute of Technology Patna. The student is currently in Semester - IV.",
+        "He has demonstrated exceptional problem-solving skills and a genuine passion for research in the Business Administration and Management fields, particularly in areas related to Business Management.",
+        "His ability to approach complex problems with creative solutions sets him apart from his peers. His enthusiasm for exploring new ideas and integrating theoretical knowledge with practical applications is remarkable.",
+        "I wholeheartedly recommend him for any academic or professional opportunities he may pursue."
+      ],
+      sign: {
+        name: "Dr. Nutan Kumar Tomar",
+        role: "Associate Professor",
+        inst: "IIT Patna"
+      }
+    }
+  },
+  lor_bits: {
+    type: "letter",
+    title: "LOR - BITS Pilani",
+    content: {
+      header_img_text: "BIRLA INSTITUTE OF TECHNOLOGY & SCIENCE PILANI",
+      sub_header: "Department of Computer Science & Information Systems",
+      date: "21 November 2025",
+      to: "To whom it may concern,",
+      body: [
+        "I am pleased to recommend Pranil Raghunath Patil for internship and job opportunities. I have known Pranil through his academic journey and have consistently observed him to be sincere, dedicated, and highly motivated to learn and improve.",
+        "Pranil has successfully completed research internships at IIM Mumbai, IIT Dharwad, and IIT Jodhpur, showcasing his growing interest in research, problem-solving, and the practical application of knowledge.",
+        "His willingness to take on advanced responsibilities early in his academic career reflects his determination and commitment to growth. His sincerity and disciplined approach makes him stand out.",
+        "Based on his work ethic, positive attitude, and consistent performance, I believe Pranil would be a valuable asset to any organisation or research team."
+      ],
+      sign: {
+        name: "Jagat Sesh Challa, Ph.D.",
+        role: "Assistant Professor",
+        inst: "BITS Pilani, Pilani Campus"
+      }
+    }
+  },
+  lor_jodhpur: {
+    type: "letter",
+    title: "LOR - IIT Jodhpur",
+    content: {
+      header_img_text: "INDIAN INSTITUTE OF TECHNOLOGY JODHPUR",
+      sub_header: "Department of Physics",
+      date: "15-01-2026",
+      to: "To Whom It May Concern,",
+      body: [
+        "I am pleased to recommend Mr. Patil Pranil Raghunath, who worked under my supervision for three months in my research laboratory at the Department of Physics, Indian Institute of Technology Jodhpur.",
+        "During this period, he independently designed and developed a website for my lab, demonstrating excellent technical competence, professionalism, and the ability to quickly translate requirements into a functional and user-friendly platform. He has skills in frontend development (HTML, CSS, JavaScript), backend development using Python frameworks, API integration including AI/LLM-based chatbot services, and website deployment.",
+        "Beyond his technical abilities, Mr. Patil is sincere, diligent, and possesses strong problem-solving and critical-thinking skills; he approaches challenges methodically, works independently, and incorporates feedback effectively.",
+        "I recommend him without reservation for academic, research, or industry opportunities."
+      ],
+      sign: {
+        name: "Dr. Yogeshwar Nath Mishra",
+        role: "Assistant Professor",
+        inst: "IIT Jodhpur"
+      }
+    }
+  }
+};
+
+// --- Internationalization Configuration ---
+
+const LOCALE_CONFIG = {
+  en: { label: "English", font: "font-sans" },
+  ja: { label: "日本語", font: "font-jp" },
+  zh: { label: "中文", font: "font-cn" },
+  hi: { label: "हिंदी", font: "font-devanagari" },
+  mr: { label: "मराठी", font: "font-devanagari" }
+};
+
+const TRANSLATIONS = {
+  en: {
+    nav: { about: "About", skills: "Skills", experience: "Experience", documents: "Documents", projects: "Projects", contact: "Contact", cta: "Hire Me" },
+    hero: { status: "Available for new opportunities", title: "Building Technology That Solves Real Problems", subtitle: "Web Engineer & Research Intern crafting high-performance, accessible, and beautiful digital experiences.", btn_work: "View Work", btn_contact: "Contact Me" },
+    about: { title: "About Me", p1: "I am a dual-degree student pursuing a BS in Computer Science at BITS Pilani and a BBA at IIT Patna. My unique background allows me to bridge the gap between technical engineering and strategic management.", p2_prefix: "My philosophy is simple:", p2_highlight: "Data-driven decisions, user-centric design.", p2_suffix: "I specialize in Full Stack Development and Management Analytics, bringing a rigorous research-oriented approach to building software.", p3: "I have contributed to research at top institutions like IIM Mumbai, IIT Jodhpur, and IIT Dharwad.", stat_exp: "Experience", stat_years: "2+ Years" },
+    skills: { title: "Technical Arsenal", frontend: { title: "Frontend Engineering", subtitle: "React, Next.js, Tailwind, HTML/CSS" }, backend: { title: "Backend & Data", subtitle: "Python, Django, Node.js, SQL" }, ai: { title: "AI & Research", subtitle: "Data Analytics & ML", desc: "Experience with Python libraries (Pandas, NumPy), AI-powered data analysis, and developing automated scripts for research operations." }, tools: { title: "Business & Tools" } },
+    experience: { title: "Experience", roles: [{ company: "IIT Jodhpur", role: "Research Project Intern", period: "Oct 2025 - Dec 2025", desc: "Enhanced research efficiency by streamlining project workflows. Developed automated scripts for data processing and analysis using Python." }, { company: "IIM Mumbai", role: "Research Project Intern", period: "Apr 2025 - Jun 2025", desc: "Conducted comprehensive market research and competitive analysis. Developed analytical frameworks and BI reports for executive presentations." }, { company: "IIT Dharwad", role: "Summer Research Intern", period: "May 2025 - Jul 2025", desc: "Built responsive web applications using Python and Java. Implemented testing protocols and software architecture best practices." }, { company: "Techfest, IIT Bombay", role: "Social Media Marketing Intern", period: "Aug 2024 - Dec 2024", desc: "Managed social media strategy for Asia's largest tech festival (100K+ attendees). Developed data-driven content calendars." }] },
+    documents: { title: "Credentials & Recommendations", resume: "My Resume", resume_desc: "Full professional history, education, and skills overview.", lor_patna: "LOR - IIT Patna", lor_patna_desc: "Recommendation from Dr. Nutan Kumar Tomar (Assoc. Professor).", lor_bits: "LOR - BITS Pilani", lor_bits_desc: "Recommendation from Dr. Jagat Sesh Challa (Asst. Professor).", lor_jodhpur: "LOR - IIT Jodhpur", lor_jodhpur_desc: "Recommendation from Dr. Yogeshwar Nath Mishra (Asst. Professor).", view_btn: "View Document" },
+    projects: { title: "Featured Work", items: [{ title: "Lab Website - IIT Jodhpur", desc: "Designed and developed a fully functional lab website with AI/LLM-based chatbot integration." }, { title: "Institutional Research Tools", desc: "Web-based tools developed during IIT Dharwad internship to streamline institutional data processing." }, { title: "Market Analytics Suite", desc: "Analytical frameworks and BI reports created for strategic decision making at IIM Mumbai." }] },
+    contact: { title: "Let's Collaborate", desc: "Have a project in mind or just want to chat? I'm always open to discussing new opportunities and ideas.", btn_email: "Email Me", form_email: "Your Email", form_msg: "Message", form_send: "Send Message", form_placeholder_email: "patilpranil576@gmail.com", form_placeholder_msg: "Tell me about your project..." },
+    footer: "Designed & Built with precision.",
+    viewer: { back: "Back to Portfolio", print: "Print" }
+  },
+  ja: {
+    nav: { about: "私について", skills: "スキル", experience: "経歴", documents: "ドキュメント", projects: "制作物", contact: "連絡先", cta: "依頼する" },
+    hero: { status: "新規案件募集中", title: "現実の課題を解決する\nテクノロジーを構築", subtitle: "高性能なデジタル体験を作り出すWebエンジニア兼リサーチインターン。", btn_work: "制作物を見る", btn_contact: "連絡する" },
+    about: { title: "私について", p1: "BITS Pilaniでコンピュータサイエンス、IIT Patnaで経営学を学ぶダブルディグリー学生です。", p2_prefix: "私の哲学はシンプルです：", p2_highlight: "データ主導の意思決定、ユーザー中心のデザイン。", p2_suffix: "フルスタック開発と経営分析を専門としています。", p3: "IIM Mumbai、IIT Jodhpur、IIT Dharwadなどのトップ機関での研究に貢献してきました。", stat_exp: "経験", stat_years: "2年以上" },
+    skills: { title: "技術スタック", frontend: { title: "フロントエンド開発", subtitle: "React, Next.js, Tailwind" }, backend: { title: "バックエンド & データ", subtitle: "Python, Django, Node.js" }, ai: { title: "AI & 研究", subtitle: "データ分析 & ML", desc: "Pythonライブラリ（Pandas, NumPy）を使用したAI駆動のデータ分析や、研究業務の自動化スクリプト開発の経験。" }, tools: { title: "ビジネス & ツール" } },
+    experience: { title: "経歴", roles: [{ company: "IIT Jodhpur", role: "リサーチプロジェクトインターン", period: "2025年10月 - 12月", desc: "プロジェクトワークフローを効率化し、研究効率を向上。Pythonを使用したデータ処理と分析のための自動化スクリプトを開発。" }, { company: "IIM Mumbai", role: "リサーチプロジェクトインターン", period: "2025年4月 - 6月", desc: "包括的な市場調査と競合分析を実施。分析フレームワークとBIレポートを作成。" }, { company: "IIT Dharwad", role: "サマーリサーチインターン", period: "2025年5月 - 7月", desc: "PythonとJavaを使用してレスポンシブなWebアプリケーションを構築。" }, { company: "Techfest, IIT Bombay", role: "ソーシャルメディアマーケティング", period: "2024年8月 - 12月", desc: "アジア最大のテックフェスティバルのSNS戦略を管理。" }] },
+    documents: { title: "資格証明書 & 推薦状", resume: "履歴書 (Resume)", resume_desc: "職務経歴、学歴、スキルの概要。", lor_patna: "推薦状 - IIT Patna", lor_patna_desc: "Nutan Kumar Tomar准教授からの推薦。", lor_bits: "推薦状 - BITS Pilani", lor_bits_desc: "Jagat Sesh Challa助教授からの推薦。", lor_jodhpur: "推薦状 - IIT Jodhpur", lor_jodhpur_desc: "Yogeshwar Nath Mishra助教授からの推薦。", view_btn: "ドキュメントを見る" },
+    projects: { title: "主な実績", items: [{ title: "研究室ウェブサイト - IIT Jodhpur", desc: "AI/LLMベースのチャットボット統合を備えた完全機能の研究室ウェブサイトを設計・開発。" }, { title: "機関研究ツール", desc: "IIT Dharwadのインターンシップ中に、機関データ処理を合理化するために開発されたWebベースのツール。" }, { title: "市場分析スイート", desc: "IIM Mumbaiでの戦略的意思決定のために作成された分析フレームワークとBIレポート。" }] },
+    contact: { title: "お問い合わせ", desc: "プロジェクトのご相談ですか？新しい機会について話し合う準備ができています。", btn_email: "メールを送る", form_email: "メールアドレス", form_msg: "メッセージ", form_send: "送信する", form_placeholder_email: "patilpranil576@gmail.com", form_placeholder_msg: "プロジェクトについて教えてください..." },
+    footer: "Designed & Built with precision.",
+    viewer: { back: "ポートフォリオに戻る", print: "印刷" }
+  },
+  zh: {
+    nav: { about: "关于", skills: "技能", experience: "经历", documents: "文档", projects: "项目", contact: "联系", cta: "聘用我" },
+    hero: { status: "接受新机会", title: "构建解决\n实际问题的技术", subtitle: "Web工程师和研究实习生，致力于打造高性能数字体验。", btn_work: "查看作品", btn_contact: "联系我" },
+    about: { title: "关于我", p1: "我是BITS Pilani计算机科学和IIT Patna工商管理的双学位学生。", p2_prefix: "我的理念很简单：", p2_highlight: "数据驱动决策，以用户为中心的设计。", p2_suffix: "我专注于全栈开发和管理分析。", p3: "我曾在IIM Mumbai、IIT Jodhpur和IIT Dharwad等顶尖机构参与研究工作。", stat_exp: "经验", stat_years: "2年以上" },
+    skills: { title: "技术栈", frontend: { title: "前端工程", subtitle: "React, Next.js, Tailwind" }, backend: { title: "后端与数据", subtitle: "Python, Django, Node.js" }, ai: { title: "AI 与研究", subtitle: "数据分析 & ML", desc: "具有使用Python库（Pandas, NumPy）进行AI驱动的数据分析以及开发用于研究操作的自动化脚本的经验。" }, tools: { title: "商业与工具" } },
+    experience: { title: "工作经历", roles: [{ company: "IIT Jodhpur", role: "研究项目实习生", period: "2025年10月 - 12月", desc: "通过简化项目工作流程提高了研究效率。使用Python开发了用于数据处理和分析的自动化脚本。" }, { company: "IIM Mumbai", role: "研究项目实习生", period: "2025年4月 - 6月", desc: "进行了全面的市场研究和竞争分析。为高管演示开发了分析框架和BI报告。" }, { company: "IIT Dharwad", role: "暑期研究实习生", period: "2025年5月 - 7月", desc: "使用Python和Java构建了响应式Web应用程序。" }, { company: "Techfest, IIT Bombay", role: "社交媒体营销实习生", period: "2024年8月 - 12月", desc: "管理亚洲最大的科技节的社交媒体策略。" }] },
+    documents: { title: "证书与推荐信", resume: "我的简历", resume_desc: "完整的职业历史、教育背景和技能概览。", lor_patna: "推荐信 - IIT Patna", lor_patna_desc: "来自Nutan Kumar Tomar副教授的推荐。", lor_bits: "推荐信 - BITS Pilani", lor_bits_desc: "来自Jagat Sesh Challa助理教授的推荐。", lor_jodhpur: "推荐信 - IIT Jodhpur", lor_jodhpur_desc: "来自Yogeshwar Nath Mishra助理教授的推荐。", view_btn: "查看文档" },
+    projects: { title: "精选作品", items: [{ title: "实验室网站 - IIT Jodhpur", desc: "设计并开发了一个功能齐全的实验室网站，集成了基于AI/LLM的聊天机器人。" }, { title: "机构研究工具", desc: "在IIT Dharwad实习期间开发的基于Web的工具，用于简化机构数据处理。" }, { title: "市场分析套件", desc: "为IIM Mumbai的战略决策创建的分析框架和BI报告。" }] },
+    contact: { title: "让我们合作", desc: "有项目想法？我随时准备讨论新的机会。", btn_email: "发送邮件", form_email: "您的邮箱", form_msg: "留言", form_send: "发送信息", form_placeholder_email: "patilpranil576@gmail.com", form_placeholder_msg: "告诉我关于您的项目..." },
+    footer: "Designed & Built with precision.",
+    viewer: { back: "返回", print: "打印" }
+  },
+  hi: {
+    nav: { about: "मेरे बारे में", skills: "कौशल", experience: "अनुभव", documents: "दस्तावेज़", projects: "प्रोजेक्ट्स", contact: "संपर्क", cta: "हायर करें" },
+    hero: { status: "नए अवसरों के लिए उपलब्ध", title: "वास्तविक समस्याओं को\nहल करने वाली तकनीक", subtitle: "वेब इंजीनियर और रिसर्च इंटर्न, उच्च-प्रदर्शन और सुलभ डिजिटल अनुभव तैयार करने में माहिर।", btn_work: "काम देखें", btn_contact: "संपर्क करें" },
+    about: { title: "मेरे बारे में", p1: "मैं बिट्स पिलानी से कंप्यूटर साइंस (BS) और आईआईटी पटना से बिजनेस एडमिनिस्ट्रेशन (BBA) की पढ़ाई कर रहा हूँ।", p2_prefix: "मेरा दर्शन सरल है:", p2_highlight: "डेटा-संचालित निर्णय, उपयोगकर्ता-केंद्रित डिज़ाइन।", p2_suffix: "मैं फुल स्टैक डेवलपमेंट और मैनेजमेंट एनालिटिक्स में विशेषज्ञता रखता हूँ।", p3: "मैंने IIM मुंबई, IIT जोधपुर और IIT धारवाड़ जैसे शीर्ष संस्थानों में शोध में योगदान दिया है।", stat_exp: "अनुभव", stat_years: "2+ साल" },
+    skills: { title: "तकनीकी कौशल", frontend: { title: "फ्रंटएंड इंजीनियरिंग", subtitle: "React, Next.js, Tailwind" }, backend: { title: "बैकएंड और डेटा", subtitle: "Python, Django, Node.js" }, ai: { title: "एआई और शोध", subtitle: "डेटा एनालिटिक्स और ML", desc: "Python (Pandas, NumPy) के साथ AI-संचालित डेटा विश्लेषण और शोध कार्यों के लिए स्वचालित स्क्रिप्ट विकसित करने का अनुभव।" }, tools: { title: "व्यापार और उपकरण" } },
+    experience: { title: "अनुभव", roles: [{ company: "IIT जोधपुर", role: "रिसर्च प्रोजेक्ट इंटर्न", period: "अक्टूबर 2025 - दिसंबर 2025", desc: "प्रोजेक्ट वर्कफ़्लो को सुव्यवस्थित करके शोध दक्षता बढ़ाई। Python का उपयोग करके डेटा प्रोसेसिंग के लिए स्वचालित स्क्रिप्ट विकसित कीं।" }, { company: "IIM मुंबई", role: "रिसर्च प्रोजेक्ट इंटर्न", period: "अप्रैल 2025 - जून 2025", desc: "व्यापक बाजार अनुसंधान और प्रतिस्पर्धी विश्लेषण किया।" }, { company: "IIT धारवाड़", role: "समर रिसर्च इंटर्न", period: "मई 2025 - जुलाई 2025", desc: "Python और Java का उपयोग करके वेब एप्लिकेशन बनाए।" }, { company: "Techfest, IIT बॉम्बे", role: "सोशल मीडिया मार्केटिंग इंटर्न", period: "अगस्त 2024 - दिसंबर 2024", desc: "एशिया के सबसे बड़े टेक फेस्टिवल के लिए सोशल मीडिया रणनीति का प्रबंधन किया।" }] },
+    documents: { title: "प्रमाणपत्र और सिफारिशें", resume: "मेरा बायोडाटा (Resume)", resume_desc: "पूर्ण पेशेवर इतिहास, शिक्षा और कौशल का अवलोकन।", lor_patna: "सिफारिश पत्र - IIT पटना", lor_patna_desc: "डॉ. नूतन कुमार तोमर (एसोसिएट प्रोफेसर) द्वारा सिफारिश।", lor_bits: "सिफारिश पत्र - BITS पिलानी", lor_bits_desc: "डॉ. जगत शेष चल्ला (सहायक प्रोफेसर) द्वारा सिफारिश।", lor_jodhpur: "सिफारिश पत्र - IIT जोधपुर", lor_jodhpur_desc: "डॉ. योगेश्वर नाथ मिश्रा (सहायक प्रोफेसर) द्वारा सिफारिश।", view_btn: "दस्तावेज़ देखें" },
+    projects: { title: "प्रमुख कार्य", items: [{ title: "लैब वेबसाइट - IIT जोधपुर", desc: "AI/LLM-आधारित चैटबॉट एकीकरण के साथ पूरी तरह से कार्यात्मक लैब वेबसाइट का डिज़ाइन और विकास किया।" }, { title: "संस्थागत अनुसंधान उपकरण", desc: "IIT धारवाड़ इंटर्नशिप के दौरान डेटा प्रोसेसिंग को सुव्यवस्थित करने के लिए वेब-आधारित उपकरण विकसित किए।" }, { title: "बाजार विश्लेषण सुइट", desc: "IIM मुंबई में रणनीतिक निर्णय लेने के लिए बनाए गए विश्लेषणात्मक ढांचे और BI रिपोर्ट।" }] },
+    contact: { title: "आइए सहयोग करें", desc: "क्या आपके पास कोई प्रोजेक्ट विचार है? मैं नए अवसरों पर चर्चा करने के लिए हमेशा तैयार हूँ।", btn_email: "मुझे ईमेल करें", form_email: "आपका ईमेल", form_msg: "संदेश", form_send: "संदेश भेजें", form_placeholder_email: "patilpranil576@gmail.com", form_placeholder_msg: "अपने प्रोजेक्ट के बारे में बताएं..." },
+    footer: "सटीकता के साथ डिज़ाइन और निर्मित।",
+    viewer: { back: "वापस जाएँ", print: "प्रिंट" }
+  },
+  mr: {
+    nav: { about: "माझ्याबद्दल", skills: "कौशल्ये", experience: "अनुभव", documents: "कागदपत्रे", projects: "प्रकल्प", contact: "संपर्क", cta: "हायर करा" },
+    hero: { status: "नवीन संधींसाठी उपलब्ध", title: "खऱ्या समस्या सोडवणारे\nतंत्रज्ञान तयार करणे", subtitle: "वेब अभियंता आणि संशोधन इंटर्न, उच्च-कार्यक्षमता आणि प्रवेशयोग्य डिजिटल अनुभव तयार करण्यात माहिर。", btn_work: "काम पहा", btn_contact: "संपर्क साधा" },
+    about: { title: "माझ्याबद्दल", p1: "मी बिट्स पिलानीमधून कॉम्प्युटर सायन्स (BS) आणि आयआयटी पटलामधून बिझनेस अॅडमिनिस्ट्रेशन (BBA) चे शिक्षण घेत आहे。", p2_prefix: "माझे तत्वज्ञान सोपे आहे:", p2_highlight: "डेटा-आधारित निर्णय, वापरकर्ता-केंद्रित डिझाइन。", p2_suffix: "मी फुल स्टॅक डेव्हलपमेंट आणि मॅनेजमेंट अॅनालिटिक्समध्ये पारंगत आहे。", p3: "मी IIM मुंबई, IIT जोधपूर आणि IIT धारवाड सारख्या शीर्ष संस्थांमध्ये संशोधनात योगदान दिले आहे。", stat_exp: "अनुभव", stat_years: "२+ वर्षे" },
+    skills: { title: "तांत्रिक कौशल्ये", frontend: { title: "फ्रंटएंड इंजिनिअरिंग", subtitle: "React, Next.js, Tailwind" }, backend: { title: "बॅकएंड आणि डेटा", subtitle: "Python, Django, Node.js" }, ai: { title: "एआय आणि संशोधन", subtitle: "डेटा अॅनालिटिक्स आणि ML", desc: "Python (Pandas, NumPy) सह एआय-आधारित डेटा विश्लेषण आणि संशोधन कार्यांसाठी स्वयंचलित स्क्रिप्ट विकसित करण्याचा अनुभव." }, tools: { title: "व्यवसाय आणि साधने" } },
+    experience: { title: "अनुभव", roles: [{ company: "IIT जोधपूर", role: "संशोधन प्रकल्प इंटर्न", period: "ऑक्टोबर २०२५ - डिसेंबर २०२५", desc: "प्रकल्प कार्यप्रवाह सुव्यवस्थित करून संशोधन कार्यक्षमता वाढवली。" }, { company: "IIM मुंबई", role: "संशोधन प्रकल्प इंटर्न", period: "एप्रिल २०२५ - जून २०२५", desc: "सर्वसमावेशक बाजार संशोधन आणि स्पर्धात्मक विश्लेषण केले。" }, { company: "IIT धारवाड", role: "समर रिसर्च इंटर्न", period: "मे २०२५ - जुलै २०२५", desc: "Python आणि Java वापरून वेब अनुप्रयोग तयार केले。" }, { company: "Techfest, IIT बॉम्बे", role: "सोशल मीडिया मार्केटिंग इंटर्न", period: "ऑगस्ट २०२४ - डिसेंबर २०२४", desc: "आशियातील सर्वात मोठ्या टेक फेस्टिव्हलसाठी (१ लाख+ उपस्थिती) सोशल मीडिया धोरणाचे व्यवस्थापन केले。" }] },
+    documents: { title: "प्रमाणपत्रे आणि शिफारस पत्रे", resume: "माझा बायोडाटा (Resume)", resume_desc: "संपूर्ण व्यावसायिक इतिहास, शिक्षण आणि कौशल्यांचा आढावा。", lor_patna: "शिफारस पत्र - IIT पटना", lor_patna_desc: "डॉ. नूतन कुमार तोमर (सहयोगी प्राध्यापक) यांच्याकडून शिफारस。", lor_bits: "शिफारस पत्र - BITS पिलानी", lor_bits_desc: "डॉ. जगत शेष चल्ला (सहाय्यक प्राध्यापक) यांच्याकडून शिफारस。", lor_jodhpur: "शिफारस पत्र - IIT जोधपूर", lor_jodhpur_desc: "डॉ. योगेश्वर नाथ मिश्रा (सहाय्यक प्राध्यापक) यांच्याकडून शिफारस。", view_btn: "दस्तऐवज पहा" },
+    projects: { title: "निवडक कामे", items: [{ title: "लॅब वेबसाइट - IIT जोधपूर", desc: "एआय/LLM-आधारित चॅटबॉट एकत्रीकरणासह पूर्णपणे कार्यशील लॅब वेबसाइटचे डिझाइन आणि विकास केला." }, { title: "संस्थात्मक संशोधन साधने", desc: "IIT धारवाड इंटर्नशिप दरम्यान डेटा प्रोसेसिंग सुलभ करण्यासाठी विकसित केलेली वेब-आधारित साधने." }, { title: "बाजार विश्लेषण सूट", desc: "IIM मुंबईमध्ये धोरणात्मक निर्णय घेण्यासाठी तयार केलेले विश्लेषणात्मक फ्रेमवर्क आणि BI अहवाल." }] },
+    contact: { title: "चला सहयोग करूया", desc: "तुमच्याकडे एखादी प्रकल्प कल्पना आहे का? मी नवीन संधींवर चर्चा करण्यासाठी नेहमीच तयार असतो。", btn_email: "मला ईमेल करा", form_email: "तुमचा ईमेल", form_msg: "संदेश", form_send: "संदेश पाठवा", form_placeholder_email: "patilpranil576@gmail.com", form_placeholder_msg: "तुमच्या प्रकल्पाबद्दल सांगा..." },
+    footer: "अचूकतेने डिझाइन आणि तयार केलेले。",
+    viewer: { back: "मागे जा", print: "प्रिंट" }
+  }
+};
+
+// --- Context ---
+
+const LanguageContext = createContext();
+
+const LanguageProvider = ({ children }) => {
+  const [locale, setLocale] = useState('en');
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
+
+  const t = (path) => {
+    const keys = path.split('.');
+    let current = TRANSLATIONS[locale];
+    for (const key of keys) {
+      if (current[key] === undefined) return path;
+      current = current[key];
+    }
+    return current;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ locale, setLocale, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+const useTranslation = () => useContext(LanguageContext);
+
+// --- Components ---
+
+const LanguageSwitcher = () => {
+  const { locale, setLocale } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="relative ml-2">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors rounded-full hover:bg-white/10"
+      >
+        <Globe size={16} />
+        <span className="uppercase">{locale}</span>
+        <ChevronDown size={14} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            className="absolute right-0 top-full mt-2 w-32 bg-zinc-900 border border-white/10 rounded-xl shadow-xl overflow-hidden z-50 backdrop-blur-xl"
+          >
+            {Object.keys(LOCALE_CONFIG).map((langKey) => (
+              <button
+                key={langKey}
+                onClick={() => {
+                  setLocale(langKey);
+                  setIsOpen(false);
+                }}
+                className={`w-full px-4 py-2 text-left text-sm hover:bg-white/10 transition-colors flex items-center justify-between ${
+                  locale === langKey ? 'text-white font-medium bg-white/5' : 'text-zinc-400'
+                }`}
+              >
+                {LOCALE_CONFIG[langKey].label}
+                {locale === langKey && <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" />}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: t('nav.about'), href: '#about' },
+    { name: t('nav.skills'), href: '#skills' },
+    { name: t('nav.experience'), href: '#experience' },
+    { name: t('nav.documents'), href: '#documents' },
+    { name: t('nav.projects'), href: '#projects' },
+    { name: t('nav.contact'), href: '#contact' },
+  ];
+
+  return (
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className={`fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4 transition-all duration-300 ${
+        scrolled ? 'pt-4' : 'pt-6'
+      }`}
+    >
+      <div className={`
+        flex items-center gap-1 p-1.5 rounded-full border border-white/10
+        backdrop-blur-xl transition-all duration-300
+        ${scrolled ? 'bg-black/80 shadow-2xl shadow-black/50' : 'bg-white/5'}
+      `}>
+        {navLinks.map((link) => (
+          <a
+            key={link.href}
+            href={link.href}
+            className="hidden lg:block px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors rounded-full hover:bg-white/10"
+          >
+            {link.name}
+          </a>
+        ))}
         
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #050505;
-            color: #ffffff;
-            scroll-behavior: smooth;
-        }
+        <LanguageSwitcher />
 
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+        <a 
+          href="#contact"
+          className="ml-2 px-5 py-2 text-sm font-semibold text-black bg-white rounded-full hover:bg-zinc-200 transition-colors"
+        >
+          {t('nav.cta')}
+        </a>
+      </div>
+    </motion.nav>
+  );
+};
 
-        .gradient-text {
-            background: linear-gradient(90deg, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+// --- New Document Viewer Component ---
 
-        .code-block {
-            font-family: 'Fira Code', monospace;
-            background: #0f172a;
-            border: 1px solid #1e293b;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            overflow-x: auto;
-            font-size: 0.85rem;
-            line-height: 1.6;
-            color: #cbd5e1;
-            margin-bottom: 1.5rem;
-        }
+const DocumentViewer = ({ docId, onBack }) => {
+  const doc = DOCUMENT_DATA[docId];
+  const { t } = useTranslation();
+  
+  if (!doc) return <div className="text-white pt-32 text-center">Document not found</div>;
 
-        .hidden-view { display: none !important; }
-
-        #career-canvas-container {
-            width: 100%;
-            height: 350px;
-            position: relative;
-            overflow: hidden;
-            border-radius: 1.5rem;
-        }
-
-        @media (min-width: 1024px) {
-            #career-canvas-container { height: 500px; }
-        }
-
-        /* Portal Specifics */
-        .glass-nav-portal {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-        }
-
-        .search-container {
-            background-image: linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%);
-        }
-
-        .intern-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .intern-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1);
-        }
-
-        #mobile-menu-overlay {
-            position: fixed;
-            inset: 0;
-            background: #050505;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2rem;
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-        }
-        #mobile-menu-overlay.active { transform: translateX(0); }
-    </style>
-</head>
-<body class="overflow-x-hidden">
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu-overlay">
-        <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 text-white text-3xl"><i data-lucide="x"></i></button>
-        <a href="#home" onclick="toggleMobileMenu()" class="text-2xl font-bold">Home</a>
-        <a href="#products" onclick="toggleMobileMenu()" class="text-2xl font-bold">Products</a>
-        <a onclick="showPortal(); toggleMobileMenu();" class="text-2xl font-bold text-blue-400">Careers</a>
-        <a href="#contact" onclick="toggleMobileMenu()" class="text-2xl font-bold">Contact</a>
-    </div>
-
-    <!-- View 1: Landing Page -->
-    <div id="main-site-view">
-        <nav class="fixed top-0 w-full z-50 glass py-4">
-            <div class="container mx-auto px-6 flex justify-between items-center">
-                <div class="text-xl md:text-2xl font-bold tracking-tighter">PATIL<span class="text-blue-500">GLOBAL</span></div>
-                <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest font-medium">
-                    <a href="#home" class="nav-link">Home</a>
-                    <a href="#products" class="nav-link">Products</a>
-                    <a onclick="showPortal()" class="nav-link text-blue-400 cursor-pointer">Careers</a>
-                    <a href="#contact" class="nav-link">Contact</a>
-                </div>
-                <button onclick="toggleMobileMenu()" class="md:hidden text-white"><i data-lucide="menu"></i></button>
-            </div>
-        </nav>
-
-        <section id="home" class="relative min-h-screen flex items-center justify-center pt-24 pb-12">
-            <div class="absolute inset-0 z-0 overflow-hidden">
-                <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full filter blur-[120px] animate-pulse"></div>
-            </div>
-            <div class="container mx-auto px-6 text-center z-10">
-                <h2 class="text-xs md:text-sm uppercase tracking-[0.5em] mb-6 text-blue-400 font-semibold">Engineering Excellence</h2>
-                <h1 class="text-4xl md:text-8xl font-bold mb-8 tracking-tighter leading-tight">INNOVATION <br><span class="gradient-text">GLOBALIZED</span></h1>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <button onclick="showProductDetail()" class="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-full font-bold transition-all shadow-lg">View Technical Specs</button>
-                    <button onclick="showPortal()" class="w-full sm:w-auto px-8 py-4 glass hover:bg-white/10 rounded-full font-bold transition-all text-white">Join Careers Portal</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="products" class="py-20 bg-zinc-950">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold mb-12">Our <span class="text-blue-500">Engineering</span></h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="product-card glass p-8 rounded-3xl border border-blue-500/20">
-                        <i data-lucide="mail" class="text-blue-500 mb-4 w-10 h-10"></i>
-                        <h3 class="text-xl font-bold mb-4">Auto Email Engine</h3>
-                        <p class="text-gray-400 text-sm mb-6">Production-ready transactional system with HMAC security and SendGrid integration.</p>
-                        <button onclick="showProductDetail()" class="text-blue-500 font-bold flex items-center gap-2">View Code <i data-lucide="arrow-right" class="w-4"></i></button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="careers" class="py-20">
-            <div class="container mx-auto px-6">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h3 class="text-4xl md:text-5xl font-bold mb-8">Build with <span class="gradient-text">US</span></h3>
-                        <p class="text-gray-400 text-lg mb-8 leading-relaxed">We connect the brightest minds with premier institutes like IIT and NIT. Access our verified portal to find your next breakthrough.</p>
-                        <button onclick="showPortal()" class="px-10 py-4 bg-white text-black font-bold rounded-full hover:bg-blue-500 hover:text-white transition-all">View 2026 Openings</button>
-                    </div>
-                    <div id="career-canvas-container" class="glass"></div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- View 2: Technical Spec -->
-    <div id="product-detail-view" class="hidden-view bg-[#020617] text-slate-300 min-h-screen">
-        <nav class="sticky top-0 z-50 bg-[#020617]/90 backdrop-blur-xl border-b border-slate-800 py-4 px-6 flex justify-between items-center">
-            <div class="flex items-center gap-2"><div class="bg-blue-600 p-2 rounded-lg"><i class="fas fa-code text-white"></i></div><span class="font-bold text-white">System Architecture</span></div>
-            <button onclick="hideProductDetail()" class="bg-white text-black px-4 py-2 rounded-full font-bold text-sm">Close Spec</button>
-        </nav>
-        <main class="max-w-4xl mx-auto py-12 px-6 space-y-12">
-            <section>
-                <h2 class="text-2xl font-bold text-white mb-4">Auto-Mail Tool Logic</h2>
-                <div class="code-block">
-// HMAC logic for secure unlocking (hmac.js)
-import crypto from "crypto";
-export function generateToken(jobId) {
-  return crypto.createHmac("sha256", process.env.HMAC_SECRET).update(jobId).digest("hex");
-}
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- View 3: Working Careers Portal (InternPath) -->
-    <div id="intern-portal-view" class="hidden-view bg-[#f8fafc] text-slate-900 min-h-screen">
-        <nav class="glass-nav-portal sticky top-0 z-50 py-4 px-6 md:px-12 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="bg-indigo-600 p-2 rounded-lg"><i class="fas fa-graduation-cap text-white"></i></div>
-                <span class="text-2xl font-bold tracking-tight text-indigo-900">InternPath</span>
-            </div>
-            <div class="hidden md:flex gap-8 font-medium text-slate-600">
-                <a href="#" class="hover:text-indigo-600">Find Internships</a>
-                <a href="#" class="hover:text-indigo-600">IIT/NIT Special</a>
-            </div>
-            <button onclick="hidePortal()" class="text-sm font-bold text-red-500 border border-red-200 px-5 py-2 rounded-full hover:bg-red-50">Exit Portal</button>
-        </nav>
-
-        <header class="search-container py-16 px-6 md:py-24 text-center text-white">
-            <div class="mb-4 inline-block px-4 py-1.5 bg-indigo-500/30 rounded-full border border-indigo-400/30 text-indigo-100 text-sm font-medium">🚀 Direct Application Links for 2026 Programs</div>
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">Premier Institute Portals</h1>
-            <p class="text-lg md:text-xl text-indigo-100 mb-10 max-w-2xl mx-auto">One-stop access for IIT, NIT & IIIT research fellowships with verified stipend data.</p>
-            
-            <div class="max-w-4xl mx-auto bg-white p-2 rounded-2xl shadow-2xl flex flex-col md:flex-row gap-2">
-                <div class="flex-1 flex items-center px-4 border-b md:border-b-0 md:border-r border-slate-100">
-                    <i class="fas fa-search text-slate-400 mr-3"></i>
-                    <input type="text" id="searchInput" placeholder="Search IIT, NIT, or Tech..." class="w-full py-3 text-slate-800 focus:outline-none bg-transparent">
-                </div>
-                <div class="flex-1 flex items-center px-4">
-                    <i class="fas fa-university text-slate-400 mr-3"></i>
-                    <select id="categoryFilter" class="w-full py-3 text-slate-800 focus:outline-none bg-transparent appearance-none">
-                        <option value="all">All Disciplines</option>
-                        <option value="Academic Research">Academic Research</option>
-                        <option value="Software Development">Software Development</option>
-                        <option value="Data Science">Data Science</option>
-                    </select>
-                </div>
-                <button onclick="filterInternships()" class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition">Search</button>
-            </div>
-        </header>
-
-        <main class="max-w-7xl mx-auto py-12 px-6">
-            <h2 class="text-2xl font-bold text-slate-800 mb-8" id="resultCount">Showing All Opportunities</h2>
-            <div id="internshipGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-        </main>
-    </div>
-
-    <!-- Portal Modal -->
-    <div id="applyModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md" onclick="closeModal()"></div>
-        <div class="bg-white rounded-3xl w-full max-w-2xl relative z-10 shadow-2xl overflow-hidden animate-slide-up max-h-[90vh] overflow-y-auto">
-            <div class="p-8">
-                <div class="flex justify-between items-start mb-6">
-                    <div id="modalLogo" class="w-20 h-20 bg-slate-50 rounded-2xl flex items-center justify-center text-3xl border border-slate-100"></div>
-                    <button onclick="closeModal()" class="bg-slate-100 w-10 h-10 rounded-full flex items-center justify-center text-slate-500"><i class="fas fa-times"></i></button>
-                </div>
-                <h3 id="modalTitle" class="text-3xl font-bold text-slate-900 mb-1"></h3>
-                <p id="modalCompany" class="text-indigo-600 text-lg font-semibold mb-6"></p>
-                <div class="grid grid-cols-2 gap-4 mb-8">
-                    <div class="bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100/50">
-                        <p class="text-[10px] uppercase font-bold text-indigo-400 mb-1">Duration</p>
-                        <p id="modalDuration" class="font-bold text-slate-800"></p>
-                    </div>
-                    <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100/50">
-                        <p class="text-[10px] uppercase font-bold text-emerald-500 mb-1">Mode</p>
-                        <p id="modalMode" class="font-bold text-slate-800"></p>
-                    </div>
-                </div>
-                <div class="space-y-6 mb-8">
-                    <div>
-                        <h4 class="text-sm font-bold text-slate-900 mb-2">About Program</h4>
-                        <p id="modalDescription" class="text-slate-600 leading-relaxed text-sm bg-slate-50 p-4 rounded-2xl"></p>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-900 mb-2">Stipend</h4>
-                            <p id="modalStipendFull" class="text-sm text-slate-700 font-bold"></p>
-                            <p id="modalStipendNote" class="text-xs text-slate-500 italic"></p>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-900 mb-2">Logistics</h4>
-                            <p id="modalAccommodation" class="text-sm text-slate-700"></p>
-                        </div>
-                    </div>
-                </div>
-                <a id="modalApplyBtn" href="#" target="_blank" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold block text-center shadow-xl shadow-indigo-100">Apply on Official Portal</a>
-            </div>
+  return (
+    <div className="min-h-screen bg-zinc-950 pt-24 pb-12 px-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex items-center justify-between mb-8">
+          <button 
+            onClick={onBack}
+            className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors px-4 py-2 rounded-full hover:bg-white/5"
+          >
+            <ArrowLeft size={20} />
+            {t('viewer.back')}
+          </button>
+          <div className="flex gap-2">
+            <button 
+              onClick={() => window.print()}
+              className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors px-4 py-2 rounded-full hover:bg-white/5"
+            >
+              <Printer size={20} />
+              {t('viewer.print')}
+            </button>
+          </div>
         </div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white text-zinc-900 rounded-lg shadow-2xl overflow-hidden min-h-[800px] print:m-0 print:shadow-none"
+        >
+          {doc.type === 'letter' ? (
+            <div className="p-12 md:p-16 space-y-8 font-serif leading-relaxed">
+              <div className="text-center border-b-2 border-zinc-100 pb-8 mb-8">
+                 <h2 className="text-2xl font-bold uppercase tracking-wider text-zinc-800">{doc.content.header_img_text}</h2>
+                 <p className="text-zinc-600 font-medium mt-2">{doc.content.sub_header}</p>
+              </div>
+              
+              <div className="flex justify-between text-sm text-zinc-600 font-medium font-sans">
+                 <span>{doc.content.ref}</span>
+                 <span>{doc.content.date}</span>
+              </div>
+
+              <div className="text-lg font-bold mt-8">{doc.content.to}</div>
+
+              <div className="space-y-6 text-lg text-zinc-800 text-justify">
+                {doc.content.body.map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
+
+              <div className="mt-16 pt-8">
+                <div className="font-bold text-lg">{doc.content.sign.name}</div>
+                <div className="text-zinc-600">{doc.content.sign.role}</div>
+                <div className="text-zinc-500 italic">{doc.content.sign.inst}</div>
+              </div>
+            </div>
+          ) : (
+            <div className="p-12 md:p-16 font-sans">
+              <div className="text-center border-b pb-8 mb-8">
+                <h1 className="text-3xl font-bold text-zinc-900 mb-2">{doc.content.header.name}</h1>
+                <p className="text-zinc-600 text-sm">{doc.content.header.contact}</p>
+              </div>
+
+              <div className="grid gap-8">
+                 <section>
+                   <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-widest border-b mb-4 pb-1">Education</h3>
+                   <div className="space-y-4">
+                     {doc.content.education.map((edu, i) => (
+                       <div key={i} className="flex justify-between">
+                         <div>
+                           <div className="font-bold text-zinc-800">{edu.inst}</div>
+                           <div className="text-zinc-600">{edu.degree}</div>
+                           {edu.details && <div className="text-sm text-zinc-500 mt-1">{edu.details}</div>}
+                         </div>
+                         <div className="text-right text-sm text-zinc-500">
+                           <div>{edu.year}</div>
+                           <div>{edu.loc}</div>
+                         </div>
+                       </div>
+                     ))}
+                   </div>
+                 </section>
+
+                 <section>
+                   <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-widest border-b mb-4 pb-1">Experience</h3>
+                   <div className="space-y-6">
+                     {doc.content.experience.map((exp, i) => (
+                       <div key={i}>
+                         <div className="flex justify-between mb-2">
+                           <div>
+                             <span className="font-bold text-zinc-800">{exp.role}</span>
+                             <span className="mx-2 text-zinc-300">|</span>
+                             <span className="text-zinc-600">{exp.company}</span>
+                           </div>
+                           <div className="text-sm text-zinc-500">{exp.date}</div>
+                         </div>
+                         <ul className="list-disc list-outside ml-4 space-y-1 text-zinc-600 text-sm">
+                           {exp.points.map((pt, j) => <li key={j}>{pt}</li>)}
+                         </ul>
+                       </div>
+                     ))}
+                   </div>
+                 </section>
+
+                 <section>
+                   <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-widest border-b mb-4 pb-1">Technical Skills</h3>
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                      <div><span className="font-bold">Languages:</span> {doc.content.skills.languages}</div>
+                      <div><span className="font-bold">Frameworks:</span> {doc.content.skills.frameworks}</div>
+                      <div><span className="font-bold">Tools:</span> {doc.content.skills.tools}</div>
+                      <div><span className="font-bold">Business:</span> {doc.content.skills.business}</div>
+                   </div>
+                 </section>
+              </div>
+            </div>
+          )}
+        </motion.div>
+      </div>
     </div>
+  );
+};
 
-    <script>
-        // Data Store (InternPath Working Data)
-        const internships = [
-            { id: 1, title: "Summer Fellowship Programme", company: "IIT Madras", category: "Academic Research", mode: "On-campus", duration: "2 Months", stipend: "₹6,000 Total", stipendDetail: "Lump sum disbursement at end.", accommodation: "❌ Self-arrangement required.", logo: "🏛️", tags: ["Engineering", "Research"], applyLink: "https://ssp.iitm.ac.in/", desc: "Enhance interest in high-quality academic research." },
-            { id: 2, title: "SURGE Program 2026", company: "IIT Kanpur", category: "Academic Research", mode: "On-campus", duration: "8 Weeks", stipend: "Financial Support", stipendDetail: "Varies by department.", accommodation: "✅ Hostel included.", logo: "🏫", tags: ["STEM", "Innovation"], applyLink: "https://surge.iitk.ac.in/", desc: "Undergraduate Research Graduate Excellence focuses on faculty-led projects." },
-            { id: 3, title: "SURE Internship Scheme", company: "IIT Hyderabad", category: "Academic Research", mode: "On-campus", duration: "1-2 Months", stipend: "Fixed Stipend", stipendDetail: "Research exposure for external students.", accommodation: "✅ Subsidized rates.", logo: "🔬", tags: ["Core", "SURE"], applyLink: "https://iith.ac.in/", desc: "Intensive training across all engineering branches." },
-            { id: 4, title: "Software Development Intern", company: "IIIT Delhi", category: "Software Development", mode: "Hybrid", duration: "3 Months", stipend: "₹10,000/mo", stipendDetail: "Performance-based.", accommodation: "❌ Not guaranteed.", logo: "💻", tags: ["AI/ML", "CSE"], applyLink: "https://iiitd.ac.in/", desc: "Work on cutting-edge research in AI and Security." },
-            { id: 6, title: "Research Intern (ML)", company: "IIIT Hyderabad", category: "Data Science", mode: "On-campus", duration: "6 Months", stipend: "₹25,000/mo", stipendDetail: "Top-tier stipend.", accommodation: "✅ Provided.", logo: "🧠", tags: ["PyTorch", "High-Impact"], applyLink: "https://www.iiit.ac.in/", desc: "Work with Kohli Centre on Intelligent Systems." },
-            { id: 7, title: "Global Internship (GIP)", company: "IIT Bombay", category: "Academic Research", mode: "On-campus", duration: "3 Months", stipend: "₹10,000/mo", stipendDetail: "Total: ₹30,000.", accommodation: "✅ Hostel provided.", logo: "🌊", tags: ["IRCC", "Prestige"], applyLink: "https://www.ircc.iitb.ac.in/", desc: "Centralized portal for external students to access IITB's ecosystem." },
-            { id: 8, title: "C-SURE Summer Intern", company: "NIT Rourkela", category: "Academic Research", mode: "On-campus", duration: "2 Months", stipend: "❌ No Stipend", stipendDetail: "Purely experience-oriented.", accommodation: "❌ Self-arrangement.", logo: "🏗️", tags: ["Civil", "Mechanical"], applyLink: "https://www.nitrkl.ac.in/", desc: "Laboratory exposure in core engineering branches." }
-        ];
+const Hero = () => {
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+  const y2 = useTransform(scrollY, [0, 500], [0, 100]);
+  const { t } = useTranslation();
 
-        // UI Handlers
-        function toggleMobileMenu() { document.getElementById('mobile-menu-overlay').classList.toggle('active'); }
-        function showPortal() { toggleView('intern-portal-view'); renderInternships(internships); }
-        function hidePortal() { toggleView('main-site-view'); }
-        function showProductDetail() { toggleView('product-detail-view'); }
-        function hideProductDetail() { toggleView('main-site-view'); }
+  return (
+    <section className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden px-6 pt-24">
+      {/* Background Gradients */}
+      <div className="absolute inset-0 bg-black">
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-[120px] mix-blend-screen" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] mix-blend-screen" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
+      </div>
 
-        function toggleView(id) {
-            ['main-site-view', 'intern-portal-view', 'product-detail-view'].forEach(v => {
-                document.getElementById(v).classList.add('hidden-view');
-            });
-            document.getElementById(id).classList.remove('hidden-view');
-            window.scrollTo(0, 0);
+      <div className="relative z-10 max-w-5xl mx-auto text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-white/5 border border-white/10 text-zinc-400 text-xs tracking-wide uppercase"
+        >
+          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+          {t('hero.status')}
+        </motion.div>
+
+        <motion.h1
+          style={{ y: y2 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/40 mb-8 whitespace-pre-line"
+        >
+          {t('hero.title')}
+        </motion.h1>
+
+        <motion.p
+          style={{ y: y1 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-12 leading-relaxed"
+        >
+          {t('hero.subtitle')}
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
+          <a href="#projects" className="group relative px-8 py-3.5 bg-white text-black rounded-full font-semibold transition-transform active:scale-95 hover:scale-105">
+            {t('hero.btn_work')}
+            <ArrowRight className="inline-block ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </a>
+          <a href="#contact" className="px-8 py-3.5 bg-white/5 text-white border border-white/10 rounded-full font-semibold hover:bg-white/10 transition-colors backdrop-blur-sm">
+            {t('hero.btn_contact')}
+          </a>
+        </motion.div>
+      </div>
+
+      <motion.div 
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-zinc-500"
+      >
+        <ChevronDown className="w-6 h-6" />
+      </motion.div>
+    </section>
+  );
+};
+
+const SectionHeading = ({ children, align = "center" }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6 }}
+    className={`mb-16 ${align === "left" ? "text-left" : "text-center"}`}
+  >
+    <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-white">
+      {children}
+    </h2>
+    <div className={`h-1 w-12 bg-indigo-500 rounded-full ${align === "center" ? "mx-auto" : ""}`} />
+  </motion.div>
+);
+
+const BentoCard = ({ children, className = "", title, subtitle, icon: Icon, delay = 0 }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5, delay }}
+    className={`group relative p-6 bg-zinc-900/50 border border-white/5 rounded-3xl backdrop-blur-sm overflow-hidden hover:bg-zinc-900/80 transition-colors ${className}`}
+  >
+    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+    
+    <div className="relative z-10 h-full flex flex-col">
+      {Icon && (
+        <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center mb-4 text-zinc-300 group-hover:text-white group-hover:bg-white/10 transition-colors">
+          <Icon className="w-5 h-5" />
+        </div>
+      )}
+      {title && <h3 className="text-lg font-semibold text-zinc-100 mb-1">{title}</h3>}
+      {subtitle && <p className="text-sm text-zinc-500">{subtitle}</p>}
+      <div className="mt-auto pt-4">
+        {children}
+      </div>
+    </div>
+  </motion.div>
+);
+
+const About = () => {
+  const { t } = useTranslation();
+  return (
+    <section id="about" className="py-32 bg-black relative">
+      <div className="max-w-6xl mx-auto px-6">
+        <SectionHeading align="left">{t('about.title')}</SectionHeading>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-lg text-zinc-400 leading-relaxed space-y-6"
+          >
+            <p>{t('about.p1')}</p>
+            <p>
+              {t('about.p2_prefix')} <span className="text-zinc-100 font-medium">{t('about.p2_highlight')}</span> {t('about.p2_suffix')}
+            </p>
+            <p>{t('about.p3')}</p>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="relative"
+          >
+            <div className="aspect-square rounded-3xl overflow-hidden bg-zinc-900 border border-white/5 relative group">
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/20 to-purple-600/20 mix-blend-overlay z-10" />
+              <img 
+                src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1000&auto=format&fit=crop" 
+                alt="Workspace" 
+                className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+            {/* Decorative floaty elements */}
+            <div className="absolute -bottom-6 -left-6 w-48 p-4 bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl z-20 shadow-2xl">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+                  <Code2 size={20} />
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-white">{t('about.stat_years')}</div>
+                  <div className="text-xs text-zinc-500">{t('about.stat_exp')}</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Skills = () => {
+  const { t } = useTranslation();
+  
+  return (
+    <section id="skills" className="py-32 bg-black relative border-t border-white/5">
+      <div className="max-w-6xl mx-auto px-6">
+        <SectionHeading>{t('skills.title')}</SectionHeading>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Main Tech Stack - Large Card */}
+          <BentoCard 
+            title={t('skills.frontend.title')}
+            subtitle={t('skills.frontend.subtitle')}
+            icon={Layout}
+            className="md:col-span-2 md:row-span-2 min-h-[300px]"
+          >
+             <div className="flex flex-wrap gap-2 mt-4">
+               {['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Redux', 'WebGL', 'Three.js'].map((tech) => (
+                 <span key={tech} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-sm text-zinc-300">
+                   {tech}
+                 </span>
+               ))}
+             </div>
+             <div className="mt-8 relative h-32 overflow-hidden rounded-xl border border-white/5 bg-black/50">
+               <div className="absolute inset-0 flex items-center justify-center text-zinc-700 text-sm font-mono">
+                 &lt;Component /&gt; Structure
+               </div>
+               {/* Abstract code visual */}
+               <div className="absolute top-4 left-4 right-4 space-y-2 opacity-30">
+                 <div className="h-2 w-1/3 bg-zinc-600 rounded"></div>
+                 <div className="h-2 w-2/3 bg-zinc-600 rounded"></div>
+                 <div className="h-2 w-1/2 bg-zinc-600 rounded"></div>
+               </div>
+             </div>
+          </BentoCard>
+
+          {/* Backend Card */}
+          <BentoCard 
+            title={t('skills.backend.title')} 
+            subtitle={t('skills.backend.subtitle')}
+            icon={Terminal}
+            delay={0.1}
+            className="md:col-span-1 min-h-[200px]"
+          >
+             <div className="space-y-3 mt-2">
+               {['Node.js', 'Python', 'PostgreSQL', 'AWS', 'Docker'].map((item, i) => (
+                 <div key={item} className="flex items-center gap-2">
+                   <div className="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>
+                   <span className="text-sm text-zinc-400">{item}</span>
+                 </div>
+               ))}
+             </div>
+          </BentoCard>
+
+          {/* AI/ML Card */}
+          <BentoCard 
+            title={t('skills.ai.title')}
+            subtitle={t('skills.ai.subtitle')}
+            icon={Cpu}
+            delay={0.2}
+            className="md:col-span-1 min-h-[200px]"
+          >
+             <div className="mt-2 text-sm text-zinc-400 leading-relaxed">
+               {t('skills.ai.desc')}
+             </div>
+          </BentoCard>
+
+          {/* Tools Card */}
+          <BentoCard 
+            title={t('skills.tools.title')}
+            icon={Globe}
+            delay={0.3}
+            className="md:col-span-3 lg:col-span-3 flex flex-row items-center justify-between gap-4"
+          >
+             <div className="flex flex-wrap gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                <span className="text-lg font-bold text-white">Figma</span>
+                <span className="text-lg font-bold text-white">Git</span>
+                <span className="text-lg font-bold text-white">Vercel</span>
+                <span className="text-lg font-bold text-white">Linear</span>
+                <span className="text-lg font-bold text-white">Notion</span>
+             </div>
+          </BentoCard>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// --- Updated Document Section ---
+
+const DocumentCard = ({ title, description, docId, onClick, delay = 0, btnText }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay, duration: 0.5 }}
+    className="group flex flex-col p-6 bg-zinc-900/50 border border-white/5 rounded-2xl hover:bg-zinc-800/50 transition-colors backdrop-blur-sm"
+  >
+    <div className="flex items-start justify-between mb-4">
+      <div className="p-3 bg-white/5 rounded-lg text-indigo-400 group-hover:text-white group-hover:bg-indigo-600 transition-colors">
+        <FileText size={24} />
+      </div>
+      <div className="p-2 text-zinc-500 group-hover:text-white transition-colors">
+        <Award size={20} />
+      </div>
+    </div>
+    <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
+    <p className="text-sm text-zinc-400 leading-relaxed mb-6 flex-grow">{description}</p>
+    
+    <div className="mt-auto pt-4 border-t border-white/5">
+      <button 
+        onClick={() => onClick(docId)}
+        className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white rounded-lg transition-all text-sm font-medium group-hover:bg-indigo-600 group-hover:border-transparent border border-white/10 cursor-pointer"
+      >
+        <Eye size={16} />
+        {btnText}
+        <ExternalLink size={14} className="ml-1 opacity-50" />
+      </button>
+    </div>
+  </motion.div>
+);
+
+const Documents = ({ onDocClick }) => {
+  const { t } = useTranslation();
+  
+  const docs = [
+    { 
+      title: t('documents.resume'), 
+      desc: t('documents.resume_desc'),
+      id: "resume"
+    },
+    { 
+      title: t('documents.lor_patna'), 
+      desc: t('documents.lor_patna_desc'),
+      id: "lor_patna"
+    },
+    { 
+      title: t('documents.lor_bits'), 
+      desc: t('documents.lor_bits_desc'),
+      id: "lor_bits"
+    },
+    { 
+      title: t('documents.lor_jodhpur'), 
+      desc: t('documents.lor_jodhpur_desc'),
+      id: "lor_jodhpur"
+    }
+  ];
+
+  return (
+    <section id="documents" className="py-32 bg-zinc-950 relative border-t border-white/5">
+      <div className="max-w-6xl mx-auto px-6">
+        <SectionHeading>{t('documents.title')}</SectionHeading>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {docs.map((doc, i) => (
+            <DocumentCard 
+              key={i} 
+              title={doc.title} 
+              description={doc.desc} 
+              docId={doc.id}
+              onClick={onDocClick}
+              btnText={t('documents.view_btn')}
+              delay={i * 0.1}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ProjectCard = ({ title, desc, tags, link, image }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    className="group relative rounded-3xl overflow-hidden bg-zinc-900 border border-white/5"
+  >
+    <div className="aspect-[16/9] overflow-hidden">
+      <img 
+        src={image} 
+        alt={title} 
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm">
+        <a href={link} className="p-3 bg-white text-black rounded-full hover:scale-110 transition-transform">
+          <ExternalLink size={20} />
+        </a>
+        <a href={link} className="p-3 bg-white/10 text-white rounded-full hover:scale-110 transition-transform backdrop-blur-md border border-white/20">
+          <Github size={20} />
+        </a>
+      </div>
+    </div>
+    
+    <div className="p-6">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-xl font-bold text-white">{title}</h3>
+      </div>
+      <p className="text-zinc-400 text-sm mb-4 leading-relaxed line-clamp-2">{desc}</p>
+      <div className="flex flex-wrap gap-2">
+        {tags.map((tag) => (
+          <span key={tag} className="px-2.5 py-1 text-xs font-medium text-indigo-300 bg-indigo-500/10 rounded-full border border-indigo-500/20">
+            {tag}
+          </span>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+);
+
+const Projects = () => {
+  const { t } = useTranslation();
+  const projectList = t('projects.items'); // This returns the array from translations
+
+  // We need to merge the static data (images/tags) with the translated strings
+  // In a real app, images/tags might also be in the data source, but here we merge manually
+  const staticProjectData = [
+    {
+      tags: ["React", "Python", "Flask", "LLM"],
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop",
+      link: "#"
+    },
+    {
+      tags: ["Python", "Java", "HTML/CSS"],
+      image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1000&auto=format&fit=crop",
+      link: "#"
+    },
+    {
+      tags: ["Data Analytics", "Excel", "BI Tools"],
+      image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1000&auto=format&fit=crop",
+      link: "#"
+    }
+  ];
+
+  const mergedProjects = projectList.map((p, i) => ({ ...p, ...staticProjectData[i] }));
+
+  return (
+    <section id="projects" className="py-32 bg-black relative border-t border-white/5">
+      <div className="max-w-6xl mx-auto px-6">
+        <SectionHeading>{t('projects.title')}</SectionHeading>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {mergedProjects.map((project, index) => (
+            <ProjectCard key={index} {...project} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Experience = () => {
+  const { t } = useTranslation();
+  const experiences = t('experience.roles');
+
+  return (
+    <section id="experience" className="py-32 bg-zinc-950 relative border-t border-white/5">
+      <div className="max-w-4xl mx-auto px-6">
+        <SectionHeading>{t('experience.title')}</SectionHeading>
+        
+        <div className="space-y-12">
+          {experiences.map((exp, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="relative pl-8 border-l border-white/10"
+            >
+              <div className="absolute left-[-5px] top-0 w-2.5 h-2.5 rounded-full bg-indigo-500 ring-4 ring-black" />
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                <h3 className="text-xl font-bold text-white">{exp.role}</h3>
+                <span className="text-sm font-mono text-zinc-500">{exp.period}</span>
+              </div>
+              <div className="text-indigo-400 font-medium mb-3">{exp.company}</div>
+              <p className="text-zinc-400 leading-relaxed max-w-2xl">
+                {exp.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Contact = () => {
+  const { t } = useTranslation();
+  return (
+    <section id="contact" className="py-32 bg-black relative border-t border-white/5">
+      <div className="max-w-3xl mx-auto px-6 text-center">
+        <SectionHeading>{t('contact.title')}</SectionHeading>
+        <p className="text-zinc-400 mb-10 text-lg">
+          {t('contact.desc')}
+        </p>
+        
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-16">
+          <a 
+            href="mailto:patilpranil576@gmail.com"
+            className="flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-bold hover:scale-105 transition-transform"
+          >
+            <Mail size={20} />
+            {t('contact.btn_email')}
+          </a>
+          <div className="flex gap-4">
+             <a href="#" className="p-4 rounded-full bg-zinc-900 border border-white/10 text-white hover:bg-zinc-800 transition-colors">
+               <Twitter size={20} />
+             </a>
+             <a href="#" className="p-4 rounded-full bg-zinc-900 border border-white/10 text-white hover:bg-zinc-800 transition-colors">
+               <Linkedin size={20} />
+             </a>
+             <a href="#" className="p-4 rounded-full bg-zinc-900 border border-white/10 text-white hover:bg-zinc-800 transition-colors">
+               <Github size={20} />
+             </a>
+          </div>
+        </div>
+
+        <form className="text-left space-y-4 max-w-md mx-auto">
+           <div>
+             <label htmlFor="email" className="block text-sm font-medium text-zinc-400 mb-2">{t('contact.form_email')}</label>
+             <input 
+              type="email" 
+              id="email"
+              className="w-full px-4 py-3 rounded-xl bg-zinc-900/50 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
+              placeholder={t('contact.form_placeholder_email')}
+            />
+           </div>
+           <div>
+             <label htmlFor="message" className="block text-sm font-medium text-zinc-400 mb-2">{t('contact.form_msg')}</label>
+             <textarea 
+              id="message"
+              rows="4"
+              className="w-full px-4 py-3 rounded-xl bg-zinc-900/50 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
+              placeholder={t('contact.form_placeholder_msg')}
+            />
+           </div>
+           <button type="button" className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-medium transition-colors">
+             {t('contact.form_send')}
+           </button>
+        </form>
+      </div>
+    </section>
+  );
+};
+
+const Footer = () => {
+  const { t } = useTranslation();
+  return (
+    <footer className="py-8 bg-black border-t border-white/5 text-center">
+      <p className="text-zinc-600 text-sm">
+        © {new Date().getFullYear()} {t('footer')}
+      </p>
+    </footer>
+  );
+};
+
+const MainApp = () => {
+  const { locale } = useTranslation();
+  const fontClass = LOCALE_CONFIG[locale].font;
+  const [view, setView] = useState('home');
+
+  // If view is not home, show document viewer
+  if (view !== 'home') {
+    return (
+      <div className={`min-h-screen bg-black text-white selection:bg-indigo-500/30 ${fontClass}`}>
+        <Navbar />
+        <DocumentViewer docId={view} onBack={() => setView('home')} />
+      </div>
+    )
+  }
+
+  return (
+    <div className={`min-h-screen bg-black text-white selection:bg-indigo-500/30 ${fontClass}`}>
+      <Navbar />
+      <Hero />
+      <About />
+      <Skills />
+      <Experience />
+      <Documents onDocClick={setView} />
+      <Projects />
+      <Contact />
+      <Footer />
+    </div>
+  );
+}
+
+const App = () => {
+  return (
+    <LanguageProvider>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+Devanagari:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        .font-sans { font-family: 'Inter', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-jp { font-family: 'Noto Sans JP', sans-serif; }
+        .font-cn { font-family: 'Noto Sans SC', sans-serif; }
+        .font-devanagari { font-family: 'Noto Sans Devanagari', sans-serif; }
+        
+        html { scroll-behavior: smooth; }
+        @media print {
+          body { background: white; color: black; }
+          nav, footer, button { display: none !important; }
         }
+      `}</style>
+      <MainApp />
+    </LanguageProvider>
+  );
+};
 
-        // Logic for Internships
-        function renderInternships(data) {
-            const grid = document.getElementById('internshipGrid');
-            grid.innerHTML = data.map(item => `
-                <div class="intern-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col h-full">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-xl shadow-inner border border-slate-100">${item.logo}</div>
-                        <span class="text-[10px] font-bold px-2 py-1 bg-indigo-50 text-indigo-600 rounded-md uppercase tracking-tight">${item.duration}</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-800 mb-1 leading-tight">${item.title}</h3>
-                    <p class="text-indigo-600 font-semibold mb-4 text-xs">${item.company}</p>
-                    <div class="flex flex-wrap gap-2 mb-6">
-                        ${item.tags.map(t => `<span class="px-2 py-1 bg-slate-100 text-slate-500 rounded text-[9px] font-bold uppercase">${t}</span>`).join('')}
-                    </div>
-                    <div class="mt-auto flex justify-between items-center pt-4 border-t border-slate-50">
-                        <div>
-                
+export default App;
